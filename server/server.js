@@ -28,6 +28,9 @@ const routes = require("./controllers/routes.js");
 
 app.use(routes);
 
+if(process.env.NODE_ENV === "production"){
+    
+}
 
 const PORT = process.env.PORT || 3000;
 db.sequelize.sync({ force: false }).then(function () {
