@@ -7,7 +7,6 @@ require('dotenv').config()
 
 const app = express();
 
-app.use(express.static("public"));
 app.use(compression());
 app.use(cors())
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -29,7 +28,7 @@ const routes = require("./controllers/routes.js");
 app.use(routes);
 
 if(process.env.NODE_ENV === "production"){
-    
+    app.use(express.static("../client/build"))
 }
 
 const PORT = process.env.PORT || 3000;
