@@ -7,8 +7,8 @@ const router = express.Router();
 require('dotenv').config()
 const {ensureAuthenticated} = require("./helpers")
 
-router.get("/", (req, res) => {
-    res.json({msg: "This is the home page"})
-})
+// router.get("/", (req, res) => {
+//     res.json({msg: "This is the home page"})
+// })
 
 module.exports = router;
