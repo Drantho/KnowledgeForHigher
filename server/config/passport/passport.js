@@ -13,9 +13,7 @@ module.exports = function (passport, user) {
             passReqToCallback: true
         },
         function (req, userName, password, done) {
-            console.log(`passport-local stuff fires`);
             const generateHash = password => {
-                console.log(`generating hash`)
                 return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
             }
             User.findOne({
@@ -24,7 +22,6 @@ module.exports = function (passport, user) {
                 }
             }).then(user => {
                 if (user) {
-                    console.log(`username unavailable`);
                     return done(null, false, {
                         message: "User name is unavailable"
                     });
@@ -41,7 +38,6 @@ module.exports = function (passport, user) {
 
                     User.create(data).then((newUser, created) => {
                         if (!newUser) {
-                            console.log(`no user created`);
                             return done(null, false)
                         }
                         return done(null, newUser)
@@ -86,8 +82,6 @@ module.exports = function (passport, user) {
                 return done(null, userinfo);
             }).catch(err => {
 
-                console.log("Error:", err);
-    
                 return done(null, false, {
                     message: 'Something went wrong with your Signin'
                 });
