@@ -3,6 +3,8 @@ const session = require("express-session");
 const cors = require("cors");
 const compression = require("compression");
 const db = require("./models");
+const passport = require("passport");
+
 require('dotenv').config()
 
 const app = express();
@@ -20,7 +22,10 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 2
     }
-}))
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 const routes = require("./controllers/routes.js");
 
