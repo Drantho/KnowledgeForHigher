@@ -53,6 +53,49 @@ module.exports = function (passport, user) {
         }
     ));
 
+    passport.use("local-signin", new LocalStrategy(
+        {
+            usernameField: "userName",
+            passwordField: "password",
+            passReqToCallback: true
+        },
+        function (req, userName, password, done) {
+            const User = user;
+            const isValidPassword = function (userPass, password) {
+                return bcrypt.compareSync(password, userPass)
+            }
+
+            User.findOne({
+                where: {
+                    userName: userName
+                }
+            }).then(user => {
+                if (!user) {
+                    return done(null, false, {
+                        message: "user/password incorrect"
+                    });
+                }
+
+                if (!isValidPassword(user.password, password)){
+                    return done(null, false,{ 
+                        message: "user/password incorrect"
+                    })
+                }
+
+                var userinfo = user.get();
+                return done(null, userinfo);
+            }).catch(err => {
+
+                console.log("Error:", err);
+    
+                return done(null, false, {
+                    message: 'Something went wrong with your Signin'
+                });
+    
+            });
+        }
+    ))
+
     //serialize
     passport.serializeUser(function (user, done) {
 
@@ -63,9 +106,10 @@ module.exports = function (passport, user) {
     // deserialize user 
     passport.deserializeUser(function (id, done) {
 
-        User.findOne({where:{
-            id: id
-        }
+        User.findOne({
+            where: {
+                id: id
+            }
         }).then(function (user) {
 
             if (user) {
