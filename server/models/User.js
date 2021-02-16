@@ -25,6 +25,13 @@ module.exports = function(sequelize, Sequelize){
             type: Sequelize.STRING,
             allowNull: false
         },
+        isProfessional: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        stripeInfo: {
+            type: Sequelize.STRING
+        },
         status: {
             type: Sequelize.ENUM('active', 'inactive'),
             defaultValue: 'active'
