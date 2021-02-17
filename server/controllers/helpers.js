@@ -5,15 +5,14 @@ const axios = require('axios')
 
 require('dotenv').config()
 
-function ensureAuthenticated(req, res, next) {
+function isLoggedIn(req, res, next) {
 
-    if (req.session.user) {
+    if (req.isAuthenticated())
+    
         return next();
-    }
-    else {
-        res.redirect("/signin")
-    }
+        
+    res.redirect('/signin');
 
 }
 
-module.exports = {ensureAuthenticated: ensureAuthenticated}
+module.exports = {isLoggedIn: isLoggedIn}
