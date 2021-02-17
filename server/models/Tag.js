@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Tag.associate = (models) => {
-        Tag.belongsToMany( models.User, { through: 'following' });
-        Tag.belongsToMany( models.Service, { through: 'service_tags' });
+        Tag.belongsToMany( models.User,     { through: 'following' });
+        Tag.belongsToMany( models.Service,  { through: 'service_tags' });
+        Tag.belongsToMany( models.Question, { through: 'question_tags' })
     }
 }
