@@ -11,10 +11,6 @@ module.exports = function(sequelize, Sequelize){
         isAnswer: {
             type: Sequelize.BOOLEAN,
             defaultValue: false
-        },
-        date: {
-            type: Sequelize.DATEONLY,
-            defaultValue: new Date()
         }
     });
     return Answer;

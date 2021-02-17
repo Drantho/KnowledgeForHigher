@@ -5,10 +5,6 @@ module.exports = function(sequelize, Sequelize){
             primaryKey: true,
             type: Sequelize.INTEGER
         },
-        date:{
-            type: Sequelize.DATE,
-            defaultValue: new Date()
-        },
         stripeInfo: {
             type: Sequelize.STRING
         }
