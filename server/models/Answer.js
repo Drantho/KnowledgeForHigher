@@ -13,5 +13,12 @@ module.exports = function(sequelize, Sequelize){
             defaultValue: false
         }
     });
+
+    Answer.associate = models => {
+        Answer.belongsTo(models.Question);
+        Answer.belongsTo(models.User);
+        Answer.hasMany(models.Comment);
+        Answer.hasMany(models.Rating);
+    }
     return Answer;
 }
