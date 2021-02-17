@@ -1,4 +1,4 @@
-module.exports = function(sequelize, Sequelize){
+module.exports = (sequelize, Sequelize) => {
     const Answer = sequelize.define("Answer", {
         id: {
             autoIncrement: true,

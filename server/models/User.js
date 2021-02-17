@@ -1,4 +1,4 @@
-module.exports = function(sequelize, Sequelize){
+module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("User", {
         id: {
             autoIncrement: true,
@@ -37,5 +37,15 @@ module.exports = function(sequelize, Sequelize){
             defaultValue: 'active'
         }
     });
+
+    User.associate = (models) => {
+        User.hasMany(models.Comment);
+        User.hasMany(models.Question);
+        User.hasMany(models.Answer);
+        User.hasMany(models.Rating);
+        User.hasMany(models.Service);
+        User.hasMany(models.Purchase);
+        User.belongsToMany(models.Tags, { through: 'following' });
+    }
     return User;
 }
