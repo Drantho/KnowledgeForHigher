@@ -14,5 +14,11 @@ module.exports = function(sequelize, Sequelize){
             defaultValue: true
         }
     });
+
+    Rating.associate = models => {
+        Answer.belongsTo(models.Question);
+        Answer.belongsTo(models.Comment);
+        Answer.belongsTo(models.Rating);
+    }
     return Rating;
 }
