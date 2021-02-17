@@ -9,5 +9,10 @@ module.exports = function(sequelize, Sequelize){
             type: Sequelize.STRING
         }
     });
+
+    Purchase.associate = models => {
+        Purchase.belongsTo(models.User);
+        Purchase.hasOne(models.Service);
+    }
     return Purchase;
 }

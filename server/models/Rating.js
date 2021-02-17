@@ -16,9 +16,9 @@ module.exports = function(sequelize, Sequelize){
     });
 
     Rating.associate = models => {
-        Answer.belongsTo(models.Question);
-        Answer.belongsTo(models.Comment);
-        Answer.belongsTo(models.Rating);
+        Rating.belongsTo(models.Question);
+        Rating.belongsTo(models.Comment);
+        Rating.belongsTo(models.Service);
     }
     return Rating;
 }
