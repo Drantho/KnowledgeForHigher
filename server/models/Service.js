@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Service.associate = (models) => {
         Service.belongsTo(models.User);
-        Service.belongsToMany(models.Tag, { through: 'service_tags' })
+        Service.belongsToMany(models.Tag, { through: 'service_tags' });
+        Service.hasMany(models.Rating);
     }
 
     return Service;
