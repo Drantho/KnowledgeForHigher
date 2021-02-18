@@ -21,4 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         Service.belongsTo(models.User);
         Service.belongsToMany(models.Tag, { through: 'service_tags' })
     }
+
+    return Service;
 }

@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
             validate: { len: [1] }
+        },
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: true
         }
     });
 
@@ -14,4 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         Tag.belongsToMany( models.Service,  { through: 'service_tags' });
         Tag.belongsToMany( models.Question, { through: 'question_tags' })
     }
+
+    return Tag;
 }
