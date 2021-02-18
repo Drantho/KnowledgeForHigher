@@ -1,4 +1,4 @@
-module.exports = function(sequelize, Sequelize){
+module.exports = (sequelize, Sequelize) => {
     const Rating = sequelize.define("Rating", {
         id: {
             autoIncrement: true,
@@ -14,5 +14,11 @@ module.exports = function(sequelize, Sequelize){
             defaultValue: true
         }
     });
+
+    Rating.associate = models => {
+        Rating.belongsTo(models.Question);
+        Rating.belongsTo(models.Comment);
+        Rating.belongsTo(models.Service);
+    }
     return Rating;
 }
