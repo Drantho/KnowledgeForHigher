@@ -15,4 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         Question.belongsTo(models.User);
         Question.belongsToMany(models.Tag, { through: 'question_tags' });
     }
+
+    return Question;
 }
