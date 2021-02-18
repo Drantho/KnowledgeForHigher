@@ -35,7 +35,7 @@ if(process.env.NODE_ENV === "production"){
     app.use(express.static("../client/build"))
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 db.sequelize.sync({ force: false }).then(function () {
     app.listen(PORT, function () {
         console.log(`App now listening on port: ${PORT} view at: http://localhost:${PORT}`);

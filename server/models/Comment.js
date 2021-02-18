@@ -12,6 +12,5 @@ module.exports = function (sequelize, DataTypes) {
         Comment.belongsTo(models.User);
         Comment.belongsTo(models.Question);
     };
+    return Comment;
 };
-
-return Comment;
