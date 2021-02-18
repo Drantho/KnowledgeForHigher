@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     Question.associate = (models) => {
         Question.belongsTo(models.User);
         Question.belongsToMany(models.Tag, { through: 'question_tags' });
+        Question.hasMany(models.Answer);
+        Question.hasMany(models.Comment);
+        Question.hasMany(models.Rating);
     }
 
     return Question;
