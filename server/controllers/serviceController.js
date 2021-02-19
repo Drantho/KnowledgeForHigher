@@ -19,6 +19,8 @@ router.get('/', (request, response) => {
     }
 
     const includes = [];
+
+    // If a user ID is provided, get all services offered by that user
     if (request.query.user) {
         includes.push({
             model: db.User,
@@ -28,6 +30,7 @@ router.get('/', (request, response) => {
         });
     }
 
+    // If a tag name is specified, get all services with that tag name
     if (request.query.tag) {
         includes.push({
             model: db.Tag,
@@ -37,8 +40,18 @@ router.get('/', (request, response) => {
         });
     }
 
+    // Add a search condition to the query if one is provided
+    const condition = {};
+    if (request.query.search) {
+        condition[[Op.or]] = [
+            { name: { [Op.like]: '%' + request.query.search + '%' } },
+            { description: { [Op.like]: '%' + request.query.search + '%' } }
+        ];
+    }
+
     db.Service.findAll({
-        include: includes
+        include: includes,
+        where: condition
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
@@ -58,8 +71,15 @@ router.post('/', (request, response) => {
     })
 });
 
+// Utilize the 'delete' method to deactivate a service
 router.delete('/:id', (request, response) => {
-
+    db.Service.update({ isActive: false }, {
+        where: { id: request.params.id }
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
 });
 
 module.exports = router;
