@@ -70,3 +70,15 @@ router.get('/unanswered', (request, response) => {
         response.status(500).json(err);
     });
 });
+
+router.post('/', (request, response) => {
+    const body = request.body;
+    db.Question.create({
+        title: body.title,
+        text: body.text
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    })
+})
