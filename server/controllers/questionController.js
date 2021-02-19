@@ -105,3 +105,5 @@ router.delete('/:id', (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
