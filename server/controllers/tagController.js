@@ -8,9 +8,12 @@ router.get('/', (request, response) => {
 
     // Get individual tag by ID or by NAME
     if (request.query.id || request.query.name) {
-        
+        const condition = {};
+        if (request.query.id) { where.id = request.query.id; }
+        else { where.name = request.query.name; }
+
         db.Tag.findOne({
-            where: { id: (request.query.id || request.query.name) }
+            where: condition
         }).then( (result) => {
             response.json(result);
             return;
@@ -20,25 +23,60 @@ router.get('/', (request, response) => {
         });
     }
 
+    // If a user ID is provided, get all tags that said user is following
     if (request.query.user) {
         db.Tag.findAll({
             include: {
                 model: db.User,
-                where: {
-                    id: request.query.user
-                },
+                where: { id: request.query.user },
                 attributes: [],
                 through: { attributes: [] }
             }
         }).then( (result) => {
             response.json(result);
+            return;
         }).catch( (err) => {
             response.status(500).json(err);
+            return;
         });
     }
 
-    // Get all tags that a user is following
+    // If a question ID is provided get all tags linked to said question
+    if (request.query.question) {
+        db.Tag.findAll({
+            include: {
+                model: db.Question,
+                where: { id: request.query.question },
+                attributes: [],
+                through: { attributes: [] }
+            }
+        }).then( (result) => {
+            response.json(result);
+            return;
+        }).catch( (err) => {
+            response.status(500).json(err);
+            return;
+        });
+    }
 
-    //
+    // If a service ID is provided get all tags linked to said service
+    if (request.query.service) {
+        db.Tag.findAll({
+            include: {
+                model: db.Service,
+                where: { id: request.query.service },
+                attributes: [],
+                through: { attributes: [] }
+            }
+        }).then( (result) => {
+            response.json(result);
+            return;
+        }).catch( (err) => {
+            response.status(500).json(err);
+            return;
+        });
+    }
+
+
 });
 
