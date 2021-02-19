@@ -33,30 +33,31 @@ router.get('/', (request, response) => {
     // If a tag name is specified, get all services with that tag name
     if (request.query.tag) {
         includes.push({
-            model: db.Tag,
-            where: { name: request.query.tag },
+            model:      db.Tag,
+            where:      { name: request.query.tag },
             attributes: [],
-            through: { attributes: [] }
+            through:    { attributes: [] }
         });
     }
 
+    const queryParams = { include: includes };
+
     // Add a search condition to the query if one is provided
-    const condition = {};
     if (request.query.search) {
-        condition[[Op.or]] = [
-            { name: { [Op.like]: '%' + request.query.search + '%' } },
-            { description: { [Op.like]: '%' + request.query.search + '%' } }
-        ];
+        queryParams[where] = {
+            [Op.or]: [
+                { name:        { [Op.like]: '%' + request.query.search + '%' } },
+                { description: { [Op.like]: '%' + request.query.search + '%' } }
+            ]
+        };
     }
 
-    db.Service.findAll({
-        include: includes,
-        where: condition
-    }).then( (result) => {
-        response.json(result);
-    }).catch( (err) => {
-        response.status(500).json(err);
-    });
+    db.Service.findAll(queryParams)
+        .then((result) => {
+            response.json(result);
+        }).catch((err) => {
+            response.status(500).json(err);
+        });
 });
 
 router.post('/', (request, response) => {
