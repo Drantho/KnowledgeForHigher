@@ -77,6 +77,30 @@ router.get('/', (request, response) => {
         });
     }
 
+    if (request.query.search) {
+        db.Tag.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: '%' + request.query.search + '%' } },
+                    { description: { [Op.like]: '%' + request.query.search + '%' } }
+                ]
+            }
+        }).then( (result) => {
+            response.json(result);
+        }).catch( (err) => {
+            response.status(500).json(err);
+        });
+    }
 
 });
 
+router.post('/', (request, response) => {
+    db.Tag.create({
+        name: request.body.name,
+        description: request.body.description
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
