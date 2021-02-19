@@ -6,10 +6,12 @@ const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
 
-    // If an ID is provided in the query, run a findOne query and return
     if (request.query.id) {
         db.Question.findOne({
-            where: { id: request.query.id }
+            where: {
+                id: request.query.id
+            },
+            attributes: ['id', 'title', 'text', 'updatedAt']
         }).then( (result) => {
             response.json(result);
             return;
