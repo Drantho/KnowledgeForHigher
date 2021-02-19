@@ -47,7 +47,15 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', (request, response) => {
-
+    db.Service.create({
+        name: request.body.name,
+        description: request.body.description,
+        UserId: request.body.user
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    })
 });
 
 router.delete('/:id', (request, response) => {
