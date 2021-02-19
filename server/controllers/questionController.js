@@ -76,7 +76,8 @@ router.get('/unanswered', (request, response) => {
 router.post('/', (request, response) => {
     db.Question.create({
         title: request.body.title,
-        text: request.body.text
+        text: request.body.text,
+        UserId: request.body.user
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
