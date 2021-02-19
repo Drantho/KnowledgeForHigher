@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
 
-    // If an ID is provided in the query, submit a findOne query and return
+    // If an ID is provided in the query, run a findOne query and return
     if (request.query.id) {
         db.Question.findOne({
             where: { id: request.query.id }
@@ -61,6 +61,7 @@ router.get('/', (request, response) => {
 
 });
 
+// Retreive all unanswered questions
 router.get('/unanswered', (request, response) => {
     db.Question.findAll({
         where: { isAnswered: false }
@@ -71,14 +72,36 @@ router.get('/unanswered', (request, response) => {
     });
 });
 
+// Create a question
 router.post('/', (request, response) => {
-    const body = request.body;
     db.Question.create({
-        title: body.title,
-        text: body.text
+        title: request.body.title,
+        text: request.body.text
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
         response.status(500).json(err);
-    })
-})
+    });
+});
+
+// Deactivate a question
+router.put('/deactivate/:id', (request, response) => {
+    db.Question.update({ isActive: false }, {
+        where: { id: request.params.id }
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
+// Delete a question (will delete any attached comments, answers, ratings)
+router.delete('/:id', (request, response) => {
+    db.Question.destroy({
+        where: { id: request.params.id }
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
