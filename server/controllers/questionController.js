@@ -76,7 +76,8 @@ router.get('/unanswered', (request, response) => {
 router.post('/', (request, response) => {
     db.Question.create({
         title: request.body.title,
-        text: request.body.text
+        text: request.body.text,
+        UserId: request.body.user
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
@@ -105,3 +106,5 @@ router.delete('/:id', (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
