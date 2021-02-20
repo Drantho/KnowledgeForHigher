@@ -8,22 +8,48 @@ export default function Ask() {
     const [formObj, setFormObj] = useState({
         title: "",
         text: "",
-        user: 1
+        user: 1,
+        tagsString: "",
+        tagsArray: []
     });
     
     const handleInputChanged = event => {
         const {name, value} = event.target;
-        setFormObj({
-            ...formObj,
-            [name]: value
-        });
+        if(name === "tagsString"){
+            const arr = value.split(",").map(element => element.trim());
+            setFormObj({
+                ...formObj,
+                tagsString: event.target.value,
+                tagsArray: arr
+            });
+        }else{
+            setFormObj({
+                ...formObj,
+                [name]: value
+            });
+        }
+        
     }
     
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
     
         API.createQuestion(formObj).then(response => {
-            history.push('profile');
+            console.log(response);
+            const id = response.data.id;
+
+            formObj.tagsArray.forEach(async element => {
+                await API.createTag({name: element});
+            });
+
+            API.linkTagToQuestion({
+              tags: formObj.tagsArray,
+              question: response.data.id          
+            }).catch(err => {
+                console.log(err);
+            });
+
+            
         }).catch(err => {
             console.log(err);
         })
@@ -36,11 +62,15 @@ export default function Ask() {
                 <label htmlFor="title">
                     Question:                    
                 </label>
-                <input name="title" value={formObj.title} onChange={handleInputChanged}/>
+                <input name="title" value={formObj.title} onChange={handleInputChanged}/><br/>
                 <label htmlFor="text">
                     Details:                    
                 </label>
-                <textarea name="text" value={formObj.text} onChange={handleInputChanged}/>
+                <textarea name="text" value={formObj.text} onChange={handleInputChanged}/><br/>
+                <label htmlFor="tags">
+                    Tags
+                    </label>
+                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas."/><br/>
                 <button type="submit" onClick={handleSubmit}>Ask Question</button>
             </form>
         </div>

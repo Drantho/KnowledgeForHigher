@@ -186,7 +186,7 @@ router.put('/question', (request, response) => {
         }
     }).then((result) => {
         const insertArr = result.map((r) => {
-            return { QuestionId: request.body.user, TagId: r.dataValues.id };
+            return { QuestionId: request.body.question, TagId: r.dataValues.id };
         });
 
         db.sequelize.models.question_tags.bulkCreate(insertArr)
