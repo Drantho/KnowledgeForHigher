@@ -43,23 +43,16 @@ router.get('/', (request, response) => {
         });
     }
 
-    // const queryParams = { include: includes };
-    let queryParams = { include: includes };
+    const queryParams = { include: includes };
 
     // Add a search condition to the query if one is provided
     if (request.query.search) {
-        // queryParams[where] = {
-        //     [ Op.or ]: [
-        //         { title: { [Op.like ]: '%' + request.query.search + '%'} },
-        //         { text:  { [Op.like]: '%' + request.query.search + '%' } }
-        //     ]
-        // };
-        queryParams = {where : {
+        queryParams["where"] = {
             [ Op.or ]: [
                 { title: { [Op.like ]: '%' + request.query.search + '%'} },
                 { text:  { [Op.like]: '%' + request.query.search + '%' } }
             ]
-        }};
+        };
     }
 
     db.Question.findAll( queryParams )
