@@ -95,12 +95,107 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', (request, response) => {
-    db.Tag.create({
-        name: request.body.name,
+    db.Tag.findOne({
+        where: { name: request.body.name }
+    }).then( (result) => {
+        if (result) {
+            response.json(result);
+        } else {
+            db.Tag.create({
+                name: request.body.name,
+                description: request.body.description
+            }).then( (result) => {
+                return response.json(result);
+            }).catch( (err) => {
+                return response.status(500).json(err);
+            });
+        }
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.put('/name', (request, response) => {
+    db.Tag.update({
+        name: request.body.name
+    }, {
+        where: { id: request.body.id }
+    }).then((result) => {
+        response.json(result);
+    }).catch((err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.put('/description', (request, response) => {
+    db.Tag.update({
         description: request.body.description
+    }, { 
+        where: { id: request.body.id } 
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.put('/user', (request, response) => {
+    db.Tag.findAll({
+        where: {
+            name: { [ Op.in ] : request.body.tags }
+        }
+    }).then( (result) => {
+        const insertArr = result.map( (r) => {
+            return { UserId: request.body.user, TagId: r.dataValues.id };
+        });
+        db.sequelize.models.following.bulkCreate(insertArr)
+            .then( (linkResult) => {
+                response.json(linkResult);
+            }).catch( (err) => {
+                response.status(500).json(err);
+            });
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.put('/service', (request, response) => {
+    db.Tag.findAll({
+        where: {
+            name: { [Op.in]: request.body.tags }
+        }
+    }).then((result) => {
+        const insertArr = result.map((r) => {
+            return { ServiceId: request.body.user, TagId: r.dataValues.id };
+        });
+        db.sequelize.models.service_tags.bulkCreate(insertArr)
+            .then((linkResult) => {
+                response.json(linkResult);
+            }).catch((err) => {
+                response.status(500).json(err);
+            });
+    }).catch((err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.put('/question', (request, response) => {
+    db.Tag.findAll({
+        where: {
+            name: { [Op.in]: request.body.tags }
+        }
+    }).then((result) => {
+        const insertArr = result.map((r) => {
+            return { QuestionId: request.body.user, TagId: r.dataValues.id };
+        });
+
+        db.sequelize.models.question_tags.bulkCreate(insertArr)
+            .then((linkResult) => {
+                response.json(linkResult);
+            }).catch((err) => {
+                response.status(500).json(err);
+            });
+    }).catch((err) => {
         response.status(500).json(err);
     });
 });
