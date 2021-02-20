@@ -16,6 +16,11 @@ export default function Navbar() {
                     </Link>
                 </li>
                 <li>
+                    <Link to="/ask">
+                        Ask
+                    </Link>
+                </li>
+                <li>
                     <Link to="/profile">
                         Profile
                     </Link>
