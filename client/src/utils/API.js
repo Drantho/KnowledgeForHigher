@@ -37,6 +37,10 @@ export default {
     console.log((`${url}/api/tag/question/`));
     console.log(data);
     return axios.put(`${url}/api/tag/question/`, data)
+  },
+  getAllTags: () => {
+    console.log((`${url}/api/tag/`));
+    return axios.get(`${url}/api/tag/`)
   }
   
 };
