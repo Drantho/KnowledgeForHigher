@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import API from "../utils/API";
+import { useHistory } from 'react-router-dom';
 
 export default function Ask() {
+    const history = useHistory();
     
     const [formObj, setFormObj] = useState({
         title: "",
@@ -21,7 +23,7 @@ export default function Ask() {
         event.preventDefault();
     
         API.createQuestion(formObj).then(response => {
-            console.log(response);
+            history.push('profile');
         }).catch(err => {
             console.log(err);
         })
