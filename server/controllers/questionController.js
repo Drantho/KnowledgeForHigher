@@ -11,7 +11,11 @@ router.get('/', (request, response) => {
             where: {
                 id: request.query.id
             },
-            attributes: ['id', 'title', 'text', 'updatedAt']
+            attributes: ['id', 'title', 'text', 'updatedAt'],
+            include: {
+              model: db.Tag,
+              through: { attributes: [] } 
+            }
         }).then( (result) => {
             response.json(result);
             return;
