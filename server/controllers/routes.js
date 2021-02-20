@@ -11,7 +11,7 @@ const {ensureAuthenticated} = require("./helpers");
 const passport = require("passport");
 
 router.use("/api/question", questionRoutes);
-// router.use("/api/tag", tagRoutes);
+router.use("/api/tag", tagRoutes);
 
 router.get("/", (req, res) => {
     res.json({msg: "This is the home page"})

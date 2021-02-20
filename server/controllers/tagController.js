@@ -199,3 +199,5 @@ router.put('/question', (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
