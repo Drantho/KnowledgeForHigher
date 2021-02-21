@@ -5,6 +5,7 @@ const db = require('../models');
 const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
+    // Find an individual answer
     if (request.query.id) {
         db.Answer.findOne({
             where: { id: request.query.id }
@@ -46,6 +47,7 @@ router.get('/', (request, response) => {
     }
 });
 
+// Create an answer
 router.post('/', (request, response) => {
 
     // Validate user
