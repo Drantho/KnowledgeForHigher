@@ -24,9 +24,9 @@ router.get('/', (request, response) => {
                 attributes: []
             }
         }).then( (result) => {
-            response.json(result);
+            return response.json(result);
         }).catch( (err) => {
-            response.status(500).json(err);
+            return response.status(500).json(err);
         });
     }
 
@@ -39,9 +39,9 @@ router.get('/', (request, response) => {
                 attributes: []
             }
         }).then( (result) => {
-            response.json(result);
+            return response.json(result);
         }).catch( (err) => {
-            response.status(500).json(err);
+            return response.status(500).json(err);
         });
     }
 });
