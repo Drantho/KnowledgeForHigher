@@ -9,22 +9,32 @@ router.get('/', (request, response) => {
     // Get individual tag by ID or by NAME
     if (request.query.id || request.query.name) {
         const condition = {};
-        if (request.query.id) { where.id = request.query.id; }
+        if (request.query.id) { condition.id = request.query.id; }
         else { where.name = request.query.name; }
 
         db.Tag.findOne({
             where: condition,
             include: [{
-              model: db.Answer,
-              through: { attributes: [] } 
-            },{
-                model: db.model.Service,
+                model: db.Question,
                 through: { attributes: [] }
+            },
+            {
+                model: db.Service,
+                through: { attributes: [] },
+                where: {
+                    active: true
+                },
+                required: false,
+                include: [{
+                    model: db.User,
+                    attributes: ['userName', 'id']
+                }]
             }]
-        }).then( (result) => {
+        }).then((result) => {
             response.json(result);
             return;
-        }).catch( (err) => {
+        }).catch((err) => {
+            console.log(err);
             response.status(500).json(err);
             return;
         });
@@ -39,10 +49,10 @@ router.get('/', (request, response) => {
                 attributes: [],
                 through: { attributes: [] }
             }
-        }).then( (result) => {
+        }).then((result) => {
             response.json(result);
             return;
-        }).catch( (err) => {
+        }).catch((err) => {
             response.status(500).json(err);
             return;
         });
@@ -57,10 +67,10 @@ router.get('/', (request, response) => {
                 attributes: [],
                 through: { attributes: [] }
             }
-        }).then( (result) => {
+        }).then((result) => {
             response.json(result);
             return;
-        }).catch( (err) => {
+        }).catch((err) => {
             response.status(500).json(err);
             return;
         });
@@ -75,10 +85,10 @@ router.get('/', (request, response) => {
                 attributes: [],
                 through: { attributes: [] }
             }
-        }).then( (result) => {
+        }).then((result) => {
             response.json(result);
             return;
-        }).catch( (err) => {
+        }).catch((err) => {
             response.status(500).json(err);
             return;
         });
@@ -92,9 +102,9 @@ router.get('/', (request, response) => {
                     { description: { [Op.like]: '%' + request.query.search + '%' } }
                 ]
             }
-        }).then( (result) => {
+        }).then((result) => {
             response.json(result);
-        }).catch( (err) => {
+        }).catch((err) => {
             response.status(500).json(err);
         });
     }
@@ -104,20 +114,20 @@ router.get('/', (request, response) => {
 router.post('/', (request, response) => {
     db.Tag.findOne({
         where: { name: request.body.name }
-    }).then( (result) => {
+    }).then((result) => {
         if (result) {
             response.json(result);
         } else {
             db.Tag.create({
                 name: request.body.name,
                 description: request.body.description
-            }).then( (result) => {
+            }).then((result) => {
                 return response.json(result);
-            }).catch( (err) => {
+            }).catch((err) => {
                 return response.status(500).json(err);
             });
         }
-    }).catch( (err) => {
+    }).catch((err) => {
         response.status(500).json(err);
     });
 });
@@ -137,11 +147,11 @@ router.put('/name', (request, response) => {
 router.put('/description', (request, response) => {
     db.Tag.update({
         description: request.body.description
-    }, { 
-        where: { id: request.body.id } 
-    }).then( (result) => {
+    }, {
+        where: { id: request.body.id }
+    }).then((result) => {
         response.json(result);
-    }).catch( (err) => {
+    }).catch((err) => {
         response.status(500).json(err);
     });
 });
@@ -149,19 +159,19 @@ router.put('/description', (request, response) => {
 router.put('/user', (request, response) => {
     db.Tag.findAll({
         where: {
-            name: { [ Op.in ] : request.body.tags }
+            name: { [Op.in]: request.body.tags }
         }
-    }).then( (result) => {
-        const insertArr = result.map( (r) => {
+    }).then((result) => {
+        const insertArr = result.map((r) => {
             return { UserId: request.body.user, TagId: r.dataValues.id };
         });
         db.sequelize.models.following.bulkCreate(insertArr)
-            .then( (linkResult) => {
+            .then((linkResult) => {
                 response.json(linkResult);
-            }).catch( (err) => {
+            }).catch((err) => {
                 response.status(500).json(err);
             });
-    }).catch( (err) => {
+    }).catch((err) => {
         response.status(500).json(err);
     });
 });
