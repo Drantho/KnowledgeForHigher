@@ -48,9 +48,9 @@ router.get('/', (request, response) => {
 
 router.post('/', (request, response) => {
 
-    // Validate user
+    // TODO: Validate user
 
-    // Validate profanity
+    // TODO: Validate profanity
 
     db.Answer.create({
         text: request.body.text,
