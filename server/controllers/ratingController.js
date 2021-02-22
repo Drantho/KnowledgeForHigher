@@ -50,7 +50,7 @@ router.get('/', (request, response) => {
 
 
 router.put('/', (request, response) => {
-    db.Rating.update({isPositive: Sequelize.literal('NOT isPositive')}, {
+    db.Rating.update({isPositive: Sequelize.literal('NOT isPositive')}, { // The sequelize literal may not work for this use-case
         where: {
             id: request.body.id
         }
@@ -67,6 +67,16 @@ router.post('/', (request, response) => {
         isPositive: request.body.isPositive,
         type: request.body.type,
         ref: request.body.ref
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
+router.delete('/:id', (request, response) => {
+    db.Rating.destroy({
+        where: { id: request.params.id }
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
