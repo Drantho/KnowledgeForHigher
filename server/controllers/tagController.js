@@ -13,7 +13,14 @@ router.get('/', (request, response) => {
         else { where.name = request.query.name; }
 
         db.Tag.findOne({
-            where: condition
+            where: condition,
+            include: [{
+              model: db.Answer,
+              through: { attributes: [] } 
+            },{
+                model: db.model.Service,
+                through: { attributes: [] }
+            }]
         }).then( (result) => {
             response.json(result);
             return;
