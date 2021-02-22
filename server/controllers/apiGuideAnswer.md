@@ -1,21 +1,29 @@
 ## Creating
-- URL: `/api/answer/`
-- Method: `POST`
+- URL - `/api/answers/`
+- Method - `POST`
 - Body parameters
-    - `text: <name : string>` - Text content of the answer
-    - `user: <userID : integer>` - User who submitted the answer
-    - `question: <questionID : integer>` - Question that the answer is answering
-- Query parameters
-    - N/A
-- URL paramters
-    - N/A
+    - `text: <text: string>` - The text content of the answer
+    - `UserId: <userID: integer>` - The ID number of the user who submitted this answer
+    - `QuestionId: <questionID: integer` - The ID number of the question that this answer is a response to.
 
 ## Reading
-- URL: `/api/answer`
-- Method: `GET`
+- URL - `/api/answers/`
+- Method - `GET`
 - Body parameters
     - N/A
 - Query parameters
-    - `?id=<id> : integer` - Retrieves a single answer by ID
-    - `?user=<userID : integer>` - Retrieves answers submitted by a specified user
-    - `?question=<tagName : string>` - Retrieves all of a question's answers
+    - `?id=<id: integer>` - ID of individual answer to retreive
+    - `?user=<userID: integer>` - ID of user (if provided, will retrieve all answers submitted by that user)
+    - `?question=<questionID: integer>` - ID of question (if provided, will retrieve all answers in response to that question)
+- URL parameters
+    - N/A
+
+## Deleting
+- URL - `/api/answers/:id`
+- Method - `DELETE`
+- Body parameters
+    - N/A
+- Query parameters
+    - N/A
+- URL parameters
+    - `/:id - <answerID : integer>` - ID of individual answer to delete

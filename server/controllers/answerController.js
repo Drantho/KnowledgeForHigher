@@ -5,6 +5,7 @@ const db = require('../models');
 const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
+    // Find an individual answer
     if (request.query.id) {
         db.Answer.findOne({
             where: { id: request.query.id }
@@ -24,9 +25,9 @@ router.get('/', (request, response) => {
                 attributes: []
             }
         }).then( (result) => {
-            response.json(result);
+            return response.json(result);
         }).catch( (err) => {
-            response.status(500).json(err);
+            return response.status(500).json(err);
         });
     }
 
@@ -39,13 +40,14 @@ router.get('/', (request, response) => {
                 attributes: []
             }
         }).then( (result) => {
-            response.json(result);
+            return response.json(result);
         }).catch( (err) => {
-            response.status(500).json(err);
+            return response.status(500).json(err);
         });
     }
 });
 
+// Create an answer
 router.post('/', (request, response) => {
 
     // TODO: Validate user
