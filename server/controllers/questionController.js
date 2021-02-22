@@ -11,7 +11,11 @@ router.get('/', (request, response) => {
             where: {
                 id: request.query.id
             },
-            attributes: ['id', 'title', 'text', 'updatedAt']
+            attributes: ['id', 'title', 'text', 'updatedAt'],
+            include: {
+              model: db.Tag,
+              through: { attributes: [] } 
+            }
         }).then( (result) => {
             response.json(result);
             return;
@@ -21,7 +25,10 @@ router.get('/', (request, response) => {
         });
     }
 
-    const includes = [];
+    const includes = [{
+        model: db.Tag,
+        through: { attributes: [] } 
+      }];
 
     // If a tag name is provided, include the Tags table and specify which tag
     if (request.query.tag) {
@@ -47,7 +54,7 @@ router.get('/', (request, response) => {
 
     // Add a search condition to the query if one is provided
     if (request.query.search) {
-        queryParams[where] = {
+        queryParams["where"] = {
             [ Op.or ]: [
                 { title: { [Op.like ]: '%' + request.query.search + '%'} },
                 { text:  { [Op.like]: '%' + request.query.search + '%' } }
