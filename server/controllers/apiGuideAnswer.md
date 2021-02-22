@@ -18,6 +18,13 @@
 - URL parameters
     - N/A
 
+## Updating
+- URL - `/api/answers/`
+- Method - `PUT`
+- Body parameters
+    - `text : <newText : string>` - New answer text
+    - `id : <answerID : string>` - ID for answer to update
+
 ## Deleting
 - URL - `/api/answers/:id`
 - Method - `DELETE`

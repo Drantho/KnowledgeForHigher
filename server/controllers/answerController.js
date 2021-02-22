@@ -65,6 +65,16 @@ router.post('/', (request, response) => {
     });
 });
 
+router.put('/', (request, response) => {
+    db.Answer.update({ text: request.body.text }, {
+        where: { id: request.body.id }
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+});
+
 // Delete an individual Answer (will also delete any of its comments and ratings)
 router.delete('/:id', (request, response) => {
     db.Answer.destroy({
