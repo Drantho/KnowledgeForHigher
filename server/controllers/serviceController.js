@@ -25,8 +25,7 @@ router.get('/', (request, response) => {
         includes.push({
             model: db.User,
             where: { id: request.query.user },
-            attributes: [],
-            through: { attributes: [] }
+            attributes: []
         });
     }
 
@@ -56,6 +55,7 @@ router.get('/', (request, response) => {
         .then((result) => {
             response.json(result);
         }).catch((err) => {
+            console.log(err);
             response.status(500).json(err);
         });
 });

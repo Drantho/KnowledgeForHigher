@@ -41,6 +41,10 @@ export default {
   getAllTags: () => {
     console.log((`${url}/api/tag/`));
     return axios.get(`${url}/api/tag/`)
+  },
+  getServicesByUser: id =>{
+    console.log((`${url}/api/service?user=${id}`));
+    return axios.get(`${url}/api/service?user=${id}`)
   }
   
 };
