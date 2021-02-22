@@ -5,7 +5,11 @@
     - `text: <text : string>` - The comment's text
     - `UserId: <userID : integer>` - The user who submitted the comment
     - `type: <type : ['service', 'answer', 'question']>` - The type of entry this comment is replying to
-    - `red: <refID : integer>` - The ID of the entry this comment is replying to
+    - `ref: <refID : integer>` - The ID of the entry this comment is replying to
+- Query parameters
+    - N/A
+- URL paramters
+    - N/A
 
 ## Reading
 - URL: `/api/comment/`
