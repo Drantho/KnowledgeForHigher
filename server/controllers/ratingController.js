@@ -12,6 +12,7 @@ router.get('/', (request, response) => {
         db.Rating.findOne({
             where: {
                 UserId: request.query.user,
+                type: request.query.type,
                 ref: request.query.ref
             }
         }).then( (result) => {
