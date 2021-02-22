@@ -79,7 +79,10 @@ router.post('/', (request, response) => {
     // TODO: check for profanity
 
     db.Comment.create({
-        text: request.body.text
+        text: request.body.text,
+        UserId: request.body.user,
+        type: request.body.type,
+        ref: request.body.ref
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
