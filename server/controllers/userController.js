@@ -35,9 +35,13 @@ router.get('/', (request, response) => {
 
 router.post('/', ({ body }, response) => {
 
+    // TODO: authentication, password hashing
+    // TODO: run username through profanity filter
+
     db.User.create({
         firstName: body.firstName,
         lastName: body.lastName,
+        username: body.username,
         email: body.email,
         password: body.password
     }).then( (result) => {
@@ -48,6 +52,10 @@ router.post('/', ({ body }, response) => {
 });
 
 router.put('/', ({body}, response) => {
+
+    // TODO: authentication, password hashing
+    // TODO: run username through profanity filter
+    
     db.User.update({
         username: body.username,
         firstName: body.firstName,
