@@ -38,8 +38,8 @@
     - N/A
 
 ## Deleting
-- URL: `/api/user/`
-- Method: `GET`
+- URL: `/api/user/:id`
+- Method: `DELETE`
 - Body parameters
     - N/A
 - Query parameters
