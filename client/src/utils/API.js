@@ -42,7 +42,14 @@ export default {
     console.log((`${url}/api/tag/`));
     return axios.get(`${url}/api/tag/`)
   },
-<<<<<<< HEAD
+  getTagById: id => {
+    console.log(`${url}/api/tag?id=${id}`);
+    return axios.get(`${url}/api/tag?id=${id}`);
+  },
+  getTagBySearch: search => {
+    console.log(`${url}/api/tag?search=${search}`);
+    return axios.get(`${url}/api/tag?search=${search}`);
+  },
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)
@@ -56,14 +63,5 @@ export default {
     console.log((`${url}/api/tag/service/`));
     console.log(data);
     return axios.put(`${url}/api/tag/service/`, data)
-=======
-  getTagById: id => {
-    console.log(`${url}/api/tag?id=${id}`);
-    return axios.get(`${url}/api/tag?id=${id}`);
-  },
-  getTagBySearch: search => {
-    console.log(`${url}/api/tag?search=${search}`);
-    return axios.get(`${url}/api/tag?search=${search}`);
->>>>>>> 5c94f9ea5bf032d5cacfa4541dbb718dd61319fb
   }
 };
