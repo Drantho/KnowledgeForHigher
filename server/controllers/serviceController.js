@@ -64,10 +64,12 @@ router.post('/', (request, response) => {
     db.Service.create({
         name: request.body.name,
         description: request.body.description,
-        UserId: request.body.user
+        UserId: request.body.user,
+        price: request.body.price
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
+        console.log(err);
         response.status(500).json(err);
     })
 });

@@ -42,12 +42,14 @@ export default function Ask() {
                 await API.createTag({name: element});
             });
 
-            API.linkTagToQuestion({
-              tags: formObj.tagsArray,
-              question: response.data.id          
-            }).catch(err => {
-                console.log(err);
-            });
+                API.linkTagToQuestion({
+                    tags: formObj.tagsArray,
+                    question: response.data.id          
+                  }).catch(err => {
+                      console.log(err);
+                  });
+
+            
 
             
         }).catch(err => {

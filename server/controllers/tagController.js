@@ -166,15 +166,18 @@ router.put('/service', (request, response) => {
         }
     }).then((result) => {
         const insertArr = result.map((r) => {
-            return { ServiceId: request.body.user, TagId: r.dataValues.id };
+            return { ServiceId: request.body.service, TagId: r.dataValues.id };
         });
+        console.log(`insertArr: `, insertArr);
         db.sequelize.models.service_tags.bulkCreate(insertArr)
             .then((linkResult) => {
                 response.json(linkResult);
             }).catch((err) => {
+                console.log(err);
                 response.status(500).json(err);
             });
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });
@@ -188,6 +191,8 @@ router.put('/question', (request, response) => {
         const insertArr = result.map((r) => {
             return { QuestionId: request.body.question, TagId: r.dataValues.id };
         });
+
+        console.log(insertArr);
 
         db.sequelize.models.question_tags.bulkCreate(insertArr)
             .then((linkResult) => {

@@ -45,6 +45,15 @@ export default {
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)
+  },
+  createService: data => {
+    console.log((`${url}/api/service/`));
+    console.log(data);
+    return axios.post(`${url}/api/service/`, data)
+  },
+  linkServiceToTag: data => {
+    console.log((`${url}/api/tag/service/`));
+    console.log(data);
+    return axios.put(`${url}/api/tag/service/`, data)
   }
-  
 };
