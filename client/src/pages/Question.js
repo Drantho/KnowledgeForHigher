@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import API from '../utils/API';
 
 export default function Question() {
@@ -25,7 +25,7 @@ export default function Question() {
             <p>{question.text}</p>
             <strong>Tags</strong>
             <ul>
-                {question.Tags.map(tag => <li key={tag.id}>{tag.name}</li>)}
+                {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
             </ul>
         </div>        
     )

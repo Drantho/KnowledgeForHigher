@@ -5,12 +5,14 @@ import API from "../utils/API";
 export default function Browse() {
 
     const [allQuestions, setAllQuestions] = useState([{
+        id:"1",
         title: "",
         text: "",
         Tags: []
     }]);
 
     const [searchQuestions, setSearchQuestions] = useState([{
+        id:"1",
         title: "",
         text: "",
         Tags: []
@@ -44,6 +46,15 @@ export default function Browse() {
         })
     }
 
+    const handleTagInputChange = event => {
+        setTagSearchString(event.target.value);
+
+        API.getTagBySearch(event.target.value).then(response => {
+            setSearchTags(response.data);
+            console.log(`searchTags: `, searchTags);            
+        })
+    }
+
     useEffect(() => {
         API.getAllQuestions().then(response => {
             setAllQuestions(response.data);
@@ -58,10 +69,14 @@ export default function Browse() {
     return (
         <div>
             <h1>Browse Page</h1>
-            <h2>All Tags</h2>
+            
+            <h2>Search Tags</h2>
+            <input name="tagSearchString" value={tagSearchString} onChange={handleTagInputChange}/>
             <ul>
-                {allTags.map(tag => {<li key={tag.id}>{tag.name}</li>})}
+                {searchTags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
             </ul>
+
+
             <h2>Search Questions</h2>
             <label htmlFor="searchQuestion">Search</label>
             <input name="searchQuestion" value={questionSearchString} onChange={handleQuestionInputChange} />
