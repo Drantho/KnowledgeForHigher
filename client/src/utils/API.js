@@ -84,5 +84,14 @@ export default {
   getAnswersByUser: id => {
     console.log((`${url}/api/answer?user=${id}`));
     return axios.get(`${url}/api/answer?user=${id}`)
+  },
+  createServiceComment: data => {
+    console.log((`${url}/api/comment/?type=service`));
+    console.log(data);
+    return axios.post(`${url}/api/comment/?type=service`, data)
+  },
+  getAllServiceComments: id => {
+    console.log((`${url}/api/comment?service=${id}&`));
+    return axios.get(`${url}/api/comment?service=${id}`)
   }
 };

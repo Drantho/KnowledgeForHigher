@@ -59,6 +59,23 @@ router.get('/', (request, response) => {
         }).catch( (err) => {
             response.status(500).json(err);
         });  
+    }    
+
+    // Get all comments attached to a specified service
+    if (request.query.service) {
+        db.Comment.findAll({
+            include: {
+                model: db.User
+            },
+            where:[
+                {ServiceId: request.query.service}
+            ],
+        }).then( (result) => {
+            response.json(result);
+        }).catch( (err) => {
+            console.log(err);
+            response.status(500).json(err);
+        });  
     }
 });
 
@@ -80,19 +97,20 @@ router.post('/', (request, response) => {
     
     const createParams = {
         text: request.body.text,
-        UserId: request.body.user,
-        type: request.body.type
+        UserId: request.body.user
     };
+
+    console.log(`request.body`, request.body);
 
     switch (request.body.type) {
         case 'answer':
-            createParams.AnswerId = request.body.answer;
+            createParams.AnswerId = request.body.ref;
             break;
         case 'question':
-            createParams.QuestionId = request.body.question;
+            createParams.QuestionId = request.body.ref;
             break;
-        case 'answer':
-            createParams.ServiceId = request.body.service;
+        case 'service':
+            createParams.ServiceId = request.body.ref;
             break;
         default:
             break;
@@ -101,6 +119,7 @@ router.post('/', (request, response) => {
     db.Comment.create( createParams ).then( (result) => {
         response.json(result);
     }).catch( (err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });
@@ -115,3 +134,5 @@ router.delete('/:id', (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
