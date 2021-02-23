@@ -54,6 +54,10 @@ export default {
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)
   },
+  getServiceById: id => {
+    console.log((`${url}/api/service?id=${id}`));
+    return axios.get(`${url}/api/service?id=${id}`)
+  },
   createService: data => {
     console.log((`${url}/api/service/`));
     console.log(data);

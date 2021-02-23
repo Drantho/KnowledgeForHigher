@@ -10,12 +10,17 @@ router.get('/', (request, response) => {
     const includes = [{
         model: db.Tag,
         through: { attributes: [] }
+    },{
+        model: db.User,
+        attributes: ['userName', 'id']
     }];
 
     if (request.query.id) {
+        console.log(`------------------------------------------- id found ${request.query.id}--------------------------------`);
+        console.log(`=======================includes: `, includes);
         db.Service.findOne({
             where: { id: request.query.id },
-            includes
+            include: includes
         }).then( (result) => {
             response.json(result);
             return;
@@ -58,13 +63,13 @@ router.get('/', (request, response) => {
         };
     }
 
-    db.Service.findAll(queryParams)
-        .then((result) => {
-            response.json(result);
-        }).catch((err) => {
-            console.log(err);
-            response.status(500).json(err);
-        });
+    // db.Service.findAll(queryParams)
+    //     .then((result) => {
+    //         response.json(result);
+    //     }).catch((err) => {
+    //         console.log(err);
+    //         response.status(500).json(err);
+    //     });
 });
 
 router.post('/', (request, response) => {
