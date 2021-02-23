@@ -1,10 +1,14 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
+import {useHistory} from "react-router-dom"
 
 export default function Profile() {
+    const history = useHistory();
 
     const [questions, setQuestions] = useState([]);
-    const [services, setServices] = useState([]);
+    const [services, setServices] = useState([{
+        Tags: []
+    }]);
     const [formObj, setFormObj] = useState({
         name: "",
         description: "",
@@ -12,17 +16,21 @@ export default function Profile() {
         tagsArr: [],
         tagsStr: "",
         user: 1
-    })
+    });
+
+    const getServices = () => {
+        API.getServicesByUser("1").then(response => {
+            setServices(response.data);
+            console.log(`services: `, response.data);
+        });
+    }
 
     useEffect(() => {
         API.getQuestionByUser("1").then(response => {
             setQuestions(response.data);
         });
 
-        API.getServicesByUser("1").then(response => {
-            setServices(response.data);
-            console.log(`services: `, response.data);
-        });
+        getServices();
     }, []);
 
     const handleInputChange = event => {
@@ -30,7 +38,7 @@ export default function Profile() {
 
         let tagsArr = formObj.tagsArr;
         if (name === "tagsStr") {
-            tagsArr = formObj.tagsStr.split(",").map(str => str.trim());
+            tagsArr = value.split(",").map(str => str.trim());
         }
 
         setFormObj({
@@ -47,21 +55,28 @@ export default function Profile() {
             price: parseFloat(formObj.price)
         });
 
+        // TODO Convert to async so we can redirect when complete
         API.createService(formObj).then(async response => {
             console.log(response.data);
 
-            formObj.tagsArr.forEach(element => {
-                API.createTag({ name: element }).then(tagsResponse => {
-                    API.linkServiceToTag({
-                        service: response.data.id,
-                        tags: [element]
-                    }).then(tagsLinkResponse => {
-                        console.log(`tags linked`);
-                    });
-                });                
-            });
+            for(const element of formObj.tagsArr){
+                const id = await API.createTag({ name: element });                
+            }
 
-            
+            API.linkServiceToTag({
+                service: response.data.id,
+                tags: [formObj.tagsArr]
+            }).then(tagsLinkResponse => {
+                getServices();
+                setFormObj({
+                    name: "",
+                    description: "",
+                    price: 0,
+                    tagsArr: [],
+                    tagsStr: "",
+                    user: 1
+                })
+            });
 
         })
     }
@@ -100,7 +115,12 @@ export default function Profile() {
             <button onClick={handleSubmit}>Add Service</button>
             <h2>My Services</h2>
             <ul>
-                {services.map(service => <li key={service.id}>{service.name}</li>)}
+                {services.map(service => {
+                return <li key={service.id}>
+                    {service.name}<br/>
+                    {service.Tags.map(tag => <span key={tag.id}>{tag.name} - </span>)}
+                    </li>
+                })}
             </ul>
         </div>
     )

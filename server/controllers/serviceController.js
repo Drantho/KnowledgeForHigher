@@ -6,9 +6,16 @@ const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
     // find an individual service
+
+    const includes = [{
+        model: db.Tag,
+        through: { attributes: [] }
+    }];
+
     if (request.query.id) {
         db.Service.findOne({
-            where: { id: request.query.id }
+            where: { id: request.query.id },
+            includes
         }).then( (result) => {
             response.json(result);
             return;
@@ -18,7 +25,7 @@ router.get('/', (request, response) => {
         });
     }
 
-    const includes = [];
+    
 
     // If a user ID is provided, get all services offered by that user
     if (request.query.user) {
