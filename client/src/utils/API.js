@@ -71,5 +71,14 @@ export default {
   getUserById: id => {
     console.log((`${url}/api/user?id=${id}`));
     return axios.get(`${url}/api/user?id=${id}`)
+  },
+  createAnswer: data => {
+    console.log((`${url}/api/answer/`));
+    console.log(data);
+    return axios.post(`${url}/api/answer/`, data)
+  },
+  getAnswersByQuestion: id => {
+    console.log((`${url}/api/answer?question=${id}`));
+    return axios.get(`${url}/api/answer?question=${id}`)
   }
 };

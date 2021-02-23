@@ -8,15 +8,56 @@ export default function Question() {
     const [question, setQuestion] = useState({
         title: "",
         text: "",
-        Tags: []
+        Tags: [{
+            id: "1"
+        }],
     });
+
+    const [answer, setAnswer] = useState({
+        text: "",
+        userId: 1,
+        questionId: id
+    });
+
+    const [answers, setAnswers] = useState([{
+        text: "",
+        userId: "1",
+        questionId: id,
+        User: {
+            userName: "",
+            id: ""
+        }
+    }])
+
+    const handleInputChaged = event => {
+        setAnswer({...answer, text: event.target.value});
+    }
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        API.createAnswer(answer).then(response => {
+            console.log(response.data);
+            setAnswer({...answer, text: ""});
+
+        });
+        
+        API.getAnswersByQuestion(id).then(response => {
+            setAnswers(response.data);
+            console.log(response.data);
+        });
+    }
 
     useEffect(() => {
         API.getQuestionById(id).then(response => {
             setQuestion(response.data);
+        });
+
+        API.getAnswersByQuestion(id).then(response => {
+            setAnswers(response.data);
             console.log(response.data);
-        })
-    }, [])
+        });
+
+    }, []);
 
     return (
         <div>
@@ -27,6 +68,15 @@ export default function Question() {
             <ul>
                 {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
             </ul>
+            <strong>Answers</strong>
+            <ul>
+                {answers.map(answer => <li key={answer.id}>{answer.text} - <Link to={`/users/${answer.User.id}`}>{answer.User.userName}</Link></li>)}
+            </ul>
+            <h2>Add your anwer</h2>
+            <form>
+                <textarea name="text" value={answer.text} onChange={handleInputChaged}/><br/>
+                <button onClick={handleSubmit}>Submit</button>
+            </form>
         </div>        
     )
 }

@@ -7,7 +7,7 @@ const questionRoutes = require("./questionController");
 const tagRoutes = require("./tagController");
 const serviceRoutes = require("./serviceController");
 const userRoutes = require("./userController");
-
+const answerRoutes = require("./answerController");
 
 require('dotenv').config()
 const {ensureAuthenticated} = require("./helpers");
@@ -17,6 +17,7 @@ router.use("/api/question", questionRoutes);
 router.use("/api/tag", tagRoutes);
 router.use("/api/service", serviceRoutes);
 router.use("/api/user", userRoutes);
+router.use("/api/answer", answerRoutes);
 
 
 router.get("/", (req, res) => {
