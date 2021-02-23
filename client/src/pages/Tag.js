@@ -25,7 +25,8 @@ export default function Tag() {
             console.log(response.data);
         }).catch(err => {
             console.log(`oops!`, err);
-        })
+        });
+
     },[])
 
     return (
