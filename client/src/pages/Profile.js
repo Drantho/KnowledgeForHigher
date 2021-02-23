@@ -30,7 +30,10 @@ export default function Profile() {
             setQuestions(response.data);
         });
 
-        getServices();
+        API.getServicesByUser("1").then(response => {
+            setServices(response.data);
+            console.log(`services: `, response.data);
+        });
     }, []);
 
     const handleInputChange = event => {
@@ -113,7 +116,7 @@ export default function Profile() {
             <textarea name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
             <br />
             <button onClick={handleSubmit}>Add Service</button>
-            <h2>My Services</h2>
+            <h2>My Services {services.length}</h2>
             <ul>
                 {services.map(service => {
                 return <li key={service.id}>
