@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react'
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import API from "../utils/API";
 
 export default function User() {
@@ -8,8 +8,12 @@ export default function User() {
 
     const [user, setUser] = useState({
         userName: "",
-        Services: [],
-        Questions: [],
+        Services: [{
+            Tags: []
+        }],
+        Questions: [{
+            Tags: []
+        }],
         Answers: []
 
     });
@@ -33,9 +37,19 @@ export default function User() {
                 </pre>            
             </p> */}
             <h3>Services</h3>
-            {user.Services.map(service => <li key={service.id}>{service.name}</li>)}
+            {user.Services.map(service => {
+            return <li key={service.id}>
+                <Link to={`/service/${service.id}`}>{service.name}</Link><br/>
+                {service.Tags.map(tag => <span><Link to={`/tag/${tag.id}`} key={tag.id}>{tag.name}</Link> </span>)}
+            </li>
+            })}
             <h3>Questions</h3>
-            {user.Questions.map(question => <li key={question.id}>{question.title}</li>)}
+            {user.Questions.map(question => {
+            return <li key={question.id}>
+                <Link to={`/question/${id}`}>{question.title}</Link><br/>
+                {question.Tags.map(tag => <Link to={`/tag/${tag.id}`} key={tag.id}> {tag.name}</Link>)}
+            </li>
+            })}
         </div>
     )
 }
