@@ -82,3 +82,5 @@ router.delete('/:id', ({ params }, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
