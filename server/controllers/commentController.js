@@ -77,13 +77,28 @@ router.put('/', (request, response) => {
 router.post('/', (request, response) => {
 
     // TODO: check for profanity
-
-    db.Comment.create({
+    
+    const createParams = {
         text: request.body.text,
         UserId: request.body.user,
-        type: request.body.type,
-        ref: request.body.ref
-    }).then( (result) => {
+        type: request.body.type
+    };
+
+    switch (request.body.type) {
+        case 'answer':
+            createParams.AnswerId = request.body.answer;
+            break;
+        case 'question':
+            createParams.QuestionId = request.body.question;
+            break;
+        case 'answer':
+            createParams.ServiceId = request.body.service;
+            break;
+        default:
+            break;
+    }
+
+    db.Comment.create( createParams ).then( (result) => {
         response.json(result);
     }).catch( (err) => {
         response.status(500).json(err);

@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
             validate: { len: [1] }
         },
         description: {
@@ -13,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         active: {
             type: DataTypes.BOOLEAN,
-            default: true
+            defaultValue: true
+        },
+        price: {
+            type: DataTypes.DECIMAL,
+            allowNull: false
         }
     });
 
