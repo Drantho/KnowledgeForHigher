@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 export default function Ask() {
     const history = useHistory();
-    
+
     const [formObj, setFormObj] = useState({
         title: "",
         text: "",
@@ -12,44 +12,56 @@ export default function Ask() {
         tagsString: "",
         tagsArray: []
     });
-    
+
     const handleInputChanged = event => {
-        const {name, value} = event.target;
-        if(name === "tagsString"){
+        const { name, value } = event.target;
+        if (name === "tagsString") {
             const arr = value.split(",").map(element => element.trim());
             setFormObj({
                 ...formObj,
                 tagsString: event.target.value,
                 tagsArray: arr
             });
-        }else{
+        } else {
             setFormObj({
                 ...formObj,
                 [name]: value
             });
         }
-        
+
     }
-    
+
     const handleSubmit = async event => {
         event.preventDefault();
-    
-        API.createQuestion(formObj).then(response => {
+
+        API.createQuestion(formObj).then(async response => {
             console.log(response);
             const id = response.data.id;
 
+            // TODO convert to async so we can redirect when complete
             formObj.tagsArray.forEach(async element => {
-                await API.createTag({name: element});
+                API.createTag({ name: element }).then(tagResponse => {
+                    API.linkTagToQuestion({
+                        tags: [element],
+                        question: response.data.id
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                });
             });
+
+            for (const element of formObj.tagsArray) {
+                const id = await API.createTag({ name: element })
+            }
 
             API.linkTagToQuestion({
-              tags: formObj.tagsArray,
-              question: response.data.id          
+                tags: formObj.tagsArray,
+                question: response.data.id
             }).catch(err => {
                 console.log(err);
+                history.push("/profile")
             });
 
-            
         }).catch(err => {
             console.log(err);
         })
@@ -60,17 +72,17 @@ export default function Ask() {
             <h1>Ask Page</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">
-                    Question:                    
+                    Question:
                 </label>
-                <input name="title" value={formObj.title} onChange={handleInputChanged}/><br/>
+                <input name="title" value={formObj.title} onChange={handleInputChanged} /><br />
                 <label htmlFor="text">
-                    Details:                    
+                    Details:
                 </label>
-                <textarea name="text" value={formObj.text} onChange={handleInputChanged}/><br/>
+                <textarea name="text" value={formObj.text} onChange={handleInputChanged} /><br />
                 <label htmlFor="tags">
                     Tags
                     </label>
-                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas."/><br/>
+                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas." /><br />
                 <button type="submit" onClick={handleSubmit}>Ask Question</button>
             </form>
         </div>

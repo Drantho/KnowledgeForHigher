@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
+import Service from './pages/Service';
 
 function App() {
   return (
@@ -41,6 +42,9 @@ function App() {
         </Route>
         <Route exact path="/ask">
           <Ask/>
+        </Route>
+        <Route path="/service/:id">
+          <Service/>
         </Route>
         <Route exact path="/signin">
           <Signin/>          
