@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
-import {useHistory} from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
 
 export default function Profile() {
     const history = useHistory();
@@ -9,6 +9,8 @@ export default function Profile() {
     const [services, setServices] = useState([{
         Tags: []
     }]);
+    const [answers, setAnswers] = useState([]);
+
     const [formObj, setFormObj] = useState({
         name: "",
         description: "",
@@ -34,6 +36,11 @@ export default function Profile() {
             setServices(response.data);
             console.log(`services: `, response.data);
         });
+
+        API.getAnswersByUser(1).then(response => {
+            setAnswers(response.data);
+            console.log(`answers: `, response.data)
+        })
     }, []);
 
     const handleInputChange = event => {
@@ -124,6 +131,10 @@ export default function Profile() {
                     {service.Tags.map(tag => <span key={tag.id}>{tag.name} - </span>)}
                     </li>
                 })}
+            </ul>
+            <h2>My Answers</h2>
+            <ul>
+                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
             </ul>
         </div>
     )

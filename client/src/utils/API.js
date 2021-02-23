@@ -80,5 +80,9 @@ export default {
   getAnswersByQuestion: id => {
     console.log((`${url}/api/answer?question=${id}`));
     return axios.get(`${url}/api/answer?question=${id}`)
+  },
+  getAnswersByUser: id => {
+    console.log((`${url}/api/answer?user=${id}`));
+    return axios.get(`${url}/api/answer?user=${id}`)
   }
 };
