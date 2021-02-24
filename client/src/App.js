@@ -9,15 +9,18 @@ import UserHome from './pages/UserHome';
 import Ask from './pages/Ask';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import Navbar from './components/Navbar';
+import NavbarTest from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
-
+import UserNavbar from './components/UserNavbar/index'
+import LoginNavbar from './components/LoginNavbar'
 function App() {
   return (
     <Router>
-      <Navbar/>
+      <UserNavbar/>
+      {/* <LoginNavbar/> */}
+      <NavbarTest/>
       <Switch>
         <Route exact path="/">
           <Home/>
