@@ -93,5 +93,14 @@ export default {
   getAllServiceComments: id => {
     console.log((`${url}/api/comment?service=${id}&`));
     return axios.get(`${url}/api/comment?service=${id}`)
+  },
+  createQuestionComment: data => {
+    console.log((`${url}/api/comment/?type=question`));
+    console.log(data);
+    return axios.post(`${url}/api/comment/?type=question`, data)
+  },
+  getAllQuestionComments: id => {
+    console.log((`${url}/api/comment?question=${id}&`));
+    return axios.get(`${url}/api/comment?question=${id}`)
   }
 };
