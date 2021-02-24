@@ -71,5 +71,10 @@ export default {
   getUserById: id => {
     console.log((`${url}/api/user?id=${id}`));
     return axios.get(`${url}/api/user?id=${id}`)
+  },
+  signIn: data => {
+    console.log((`${url}/api/user/signin`));
+    console.log(data);
+    return axios.post(`${url}/api/user/signin`, data)
   }
 };

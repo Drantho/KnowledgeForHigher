@@ -11,7 +11,8 @@ module.exports = (sequelize, Sequelize) => {
         },
         lastName: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         userName: {
             type: Sequelize.STRING,
@@ -19,7 +20,8 @@ module.exports = (sequelize, Sequelize) => {
         },
         email: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         password: {
             type: Sequelize.STRING,
@@ -47,5 +49,10 @@ module.exports = (sequelize, Sequelize) => {
         User.belongsToMany(models.Purchase, { through: 'user_purchases' });
         User.belongsToMany(models.Tag, { through: 'following' });
     }
+
+    User.beforeCreate(function (user) {
+        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)
+    })
+
     return User;
 }

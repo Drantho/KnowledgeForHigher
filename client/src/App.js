@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
@@ -16,6 +16,17 @@ import Service from './pages/Service';
 import UserNavbar from './components/UserNavbar/index'
 import LoginNavbar from './components/LoginNavbar'
 function App() {
+
+  const [userState, setUserState] = useState({
+    id: "",
+    userName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    isSignedIn: false,
+    token: ""
+  });
+
   return (
     <Router>
       <UserNavbar/>
