@@ -19,6 +19,8 @@ export default function Question() {
         questionId: id
     });
 
+    const [questionComment, setQuestionComment] = useState(""); 
+
     const [answers, setAnswers] = useState([{
         text: "",
         userId: "1",
@@ -68,6 +70,11 @@ export default function Question() {
             <ul>
                 {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
             </ul>
+            <strong>Comments</strong>
+            <ul>
+
+            </ul>
+            <textarea/>
             <strong>Answers</strong>
             <ul>
                 {answers.map(answer => <li key={answer.id}>{answer.text} - <Link to={`/users/${answer.User.id}`}>{answer.User.userName}</Link></li>)}

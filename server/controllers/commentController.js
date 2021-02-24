@@ -69,7 +69,7 @@ router.get('/', (request, response) => {
             },
             where:[
                 {ServiceId: request.query.service}
-            ],
+            ]
         }).then( (result) => {
             response.json(result);
         }).catch( (err) => {

@@ -6,18 +6,20 @@ export default function Service() {
 
     const {id} = useParams();
 
+    const emptyComment = {
+        text: "",
+        type: "service",
+        ref: id,
+        user: 1
+    };    
+
     const [service, setService] = useState({
         id: "",    
         Tags: [],
         User: {}
     });
 
-    const [comment, setComment] = useState({
-        text: "",
-        type: "service",
-        ref: id,
-        user: 1
-    });
+    const [comment, setComment] = useState(emptyComment);
 
     const [comments, setComments] = useState([{
         text: "",
@@ -34,17 +36,16 @@ export default function Service() {
         setComment({...comment, text: event.target.value});
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
 
         API.createServiceComment(comment).then(response => {
             console.log(response);
 
-            setComment({
-                text: "",
-                ref: id,
-                user: 1
+            API.getAllServiceComments(id).then(response => {
+                setComments(response.data);
             });
+            setComment(emptyComment);
         })
     }
     

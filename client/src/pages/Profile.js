@@ -99,7 +99,7 @@ export default function Profile() {
             <h2>My Questions</h2>
             <p>TODO: user id hard coded - change to logged in user</p>
             <ul>
-                {questions.map(question => <li key={question.id}><strong>{question.title}</strong><p>{question.text}</p></li>)}
+                {questions.map(question => <li key={question.id}><Link to={`/question/${question.id}`}><strong>{question.title}</strong></Link><p>{question.text}</p></li>)}
             </ul>
             <h2>Add Service</h2>
             <label htmlFor="name">
