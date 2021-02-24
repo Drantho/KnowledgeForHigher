@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     Purchase.associate = models => {
-        Purchase.belongsTo(models.User);
+        Purchase.belongsToMany(models.User, { through: 'user_purchases' });
         Purchase.hasOne(models.Service);
     }
     return Purchase;
