@@ -44,7 +44,7 @@ module.exports = (sequelize, Sequelize) => {
         User.hasMany(models.Answer);
         User.hasMany(models.Rating);
         User.hasMany(models.Service);
-        User.hasMany(models.Purchase);
+        User.belongsToMany(models.Purchase, { through: 'user_purchases' });
         User.belongsToMany(models.Tag, { through: 'following' });
     }
     return User;
