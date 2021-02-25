@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
@@ -24,7 +25,7 @@ router.get('/', (request, response) => {
     });
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
     db.Purchase.create({
         UserId: request.body.user,
         ServiceId: request.body.service
@@ -35,6 +36,6 @@ router.post('/', (request, response) => {
     });
 });
 
-router.delete('/', (request, response) => {
+router.delete('/', authenticate, (request, response) => {
 
 });

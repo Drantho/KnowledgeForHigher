@@ -44,9 +44,10 @@ export default function User() {
             </li>
             })}
             <h3>Questions</h3>
+            {console.log(`user.Questions`, user.Questions)}
             {user.Questions.map(question => {
             return <li key={question.id}>
-                <Link to={`/question/${id}`}>{question.title}</Link><br/>
+                <Link to={`/question/${question.id}`}>{question.title}</Link><br/>
                 {question.Tags.map(tag => <Link to={`/tag/${tag.id}`} key={tag.id}> {tag.name}</Link>)}
             </li>
             })}
