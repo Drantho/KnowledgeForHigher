@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 
 const Icon = '/bookicon.png';
 
-class UserNavbar extends Component {
-    render() {
+export default function UserNavbar() {
+    
         return (
             <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">
                 <Box direction="row" align="center" gap="small">
                     <Anchor color="white">
-                        <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
+                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
                     </Anchor>
                 </Box>
             
@@ -19,7 +19,7 @@ class UserNavbar extends Component {
 
                     <Box direction="row" align="center" gap="small" pad="small">
                         <Anchor color="#FCE181">
-                            <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
                         </Anchor>
                     </Box>
 
@@ -42,6 +42,5 @@ class UserNavbar extends Component {
 
         )
     }
-}
 
-export default UserNavbar;
+

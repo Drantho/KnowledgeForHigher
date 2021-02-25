@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 const Icon = '/bookicon.png';
 
-class LoginNavbar extends Component {
-    render() {
+export default function LoginNavbar() {
+    
         return (
             <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">
                 <Box direction="row" align="center" gap="small">
@@ -15,7 +15,7 @@ class LoginNavbar extends Component {
                     </Anchor>
                 </Box>
 
-                <Nav direction="row">
+                <Nav direction="row" >
 
                     <Box direction="row" align="center" gap="small" pad="small" className="navText">
                         <Anchor color="#FCE181">
@@ -36,6 +36,5 @@ class LoginNavbar extends Component {
 
         )
     }
-}
 
-export default LoginNavbar;
+

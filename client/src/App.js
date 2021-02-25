@@ -15,12 +15,13 @@ import NotFound from './pages/NotFound';
 import Service from './pages/Service';
 import UserNavbar from './components/UserNavbar/index'
 import LoginNavbar from './components/LoginNavbar'
+import './index.css';
 function App() {
   return (
     <Router>
       <UserNavbar/>
       {/* <LoginNavbar/> */}
-      <NavbarTest/>
+      {/* <NavbarTest/> */}
       <Switch>
         <Route exact path="/">
           <Home/>
