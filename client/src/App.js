@@ -1,5 +1,5 @@
 import  { React, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -19,8 +19,6 @@ import API from "./utils/API";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-
-  const history = useHistory();
 
   const [formObj, setFormObj] = useState({
     userName: "",
@@ -46,7 +44,6 @@ function App() {
   }
 
   const handleSignUpSubmit = cb => {
-    event.preventDefault();
 
     API.signUp(formObj).then(response => {
       setUserState({
@@ -112,9 +109,9 @@ function App() {
       {/* <LoginNavbar/> */}
       <NavbarTest />
       <Switch>
-        <ProtectedRoute exact path="/" isSignedIn={userState.isSignedIn}>
+        <Route exact path="/">
           <Home />
-        </ProtectedRoute>
+        </Route>
         <Route exact path="/browse">
           <Browse />
         </Route>
@@ -130,7 +127,7 @@ function App() {
         <Route exact path="/users/:id">
           <User />
         </Route>
-        <ProtectedRoute exact path="/home">
+        <ProtectedRoute exact path="/home" isSignedIn={userState.isSignedIn}>
           <UserHome />
         </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
