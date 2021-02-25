@@ -74,7 +74,7 @@ router.post('/', authenticate, (request, response) => {
     db.Service.create({
         name: request.body.name,
         description: request.body.description,
-        UserId: request.body.userId,
+        UserId: request.userId,
         price: request.body.price
     }).then((result) => {
         response.json(result);

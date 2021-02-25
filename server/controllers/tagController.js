@@ -164,7 +164,7 @@ router.put('/user', authenticate, (request, response) => {
         }
     }).then((result) => {
         const insertArr = result.map((r) => {
-            return { UserId: request.body.userId, TagId: r.dataValues.id };
+            return { UserId: request.userId, TagId: r.dataValues.id };
         });
         db.sequelize.models.following.bulkCreate(insertArr)
             .then((linkResult) => {

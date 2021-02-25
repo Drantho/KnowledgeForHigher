@@ -65,7 +65,7 @@ router.put('/', authenticate, (request, response) => {
 
 router.post('/', authenticate, (request, response) => {
     db.Rating.create({
-        UserId: request.body.userId,
+        UserId: request.userId,
         isPositive: request.body.isPositive,
         type: request.body.type,
         ref: request.body.ref

@@ -103,9 +103,14 @@ router.post('/', authenticate, (request, response) => {
 });
 
 // Deactivate a question
-router.put('/deactivate/:id', (request, response) => {
+router.put('/deactivate/:id'. authenticate, (request, response) => {
     db.Question.update({ isActive: false }, {
-        where: { id: request.params.id }
+        where: [{ 
+            id: request.params.id 
+        },
+        {
+            UserId: request.userId
+        }]
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
@@ -114,14 +119,14 @@ router.put('/deactivate/:id', (request, response) => {
 });
 
 // Delete a question (will delete any attached comments, answers, ratings)
-router.delete('/:id', (request, response) => {
-    db.Question.destroy({
-        where: { id: request.params.id }
-    }).then((result) => {
-        response.json(result);
-    }).catch((err) => {
-        response.status(500).json(err);
-    });
-});
+// router.delete('/:id', (request, response) => {
+//     db.Question.destroy({
+//         where: { id: request.params.id }
+//     }).then((result) => {
+//         response.json(result);
+//     }).catch((err) => {
+//         response.status(500).json(err);
+//     });
+// });
 
 module.exports = router;
