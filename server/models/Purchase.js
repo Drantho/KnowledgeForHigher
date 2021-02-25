@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
 
     Purchase.associate = models => {
         Purchase.belongsTo(models.User);
-        Purchase.hasOne(models.Service);
+        Purchase.belongsTo(models.Service);
     }
     return Purchase;
 }
