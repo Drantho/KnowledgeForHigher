@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const jwt = require("jsonwebtoken")
 
 const { Op } = require('sequelize');
+const {authenticate, getUserInfo} = require("../helpers/helpers");
 
 router.get('/', (request, response) => {
 
@@ -87,14 +89,16 @@ router.get('/unanswered', (request, response) => {
 });
 
 // Create a question
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
+    
     db.Question.create({
         title: request.body.title,
         text: request.body.text,
-        UserId: request.body.user
+        UserId: request.userId
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });

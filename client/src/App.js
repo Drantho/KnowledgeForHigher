@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -15,7 +15,18 @@ import NotFound from './pages/NotFound';
 import Service from './pages/Service';
 import UserNavbar from './components/UserNavbar/index'
 import LoginNavbar from './components/LoginNavbar'
+import API from "./utils/API";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
+
+  const [formObj, setFormObj] = useState({
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: ""
+  });
 
   const [userState, setUserState] = useState({
     id: "",
@@ -27,47 +38,132 @@ function App() {
     token: ""
   });
 
+  const handleInputChanged = event => {
+    const { name, value } = event.target;
+    setFormObj({ ...formObj, [name]: value })
+  }
+
+  const handleSignUpSubmit = event => {
+    event.preventDefault();
+
+    API.signUp(formObj).then(response => {
+      console.log(response);
+      setUserState({
+        id: response.data.id,
+        userName: response.data.user.userName,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
+        email: response.data.user.email,
+        isSignedIn: true,
+        token: response.data.token
+      });
+      localStorage.setItem("token", response.data.token);
+    }).catch(err => {
+      console.log(err);
+      localStorage.clear("token")
+    });
+  }
+
+  const handleSignInSubmit = event => {
+    event.preventDefault();
+
+    API.signIn(formObj).then(response => {
+      console.log(response);
+      setUserState({
+        id: response.data.id,
+        userName: response.data.user.userName,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
+        email: response.data.user.email,
+        isSignedIn: true,
+        token: response.data.token
+      });
+      localStorage.setItem("token", response.data.token);
+    }).catch(err => {
+      console.log(err);
+      localStorage.clear("token")
+    });
+  }
+
+  useEffect(()=> {
+    console.log(`useEffect() fires`);
+    const token = localStorage.getItem("token");
+    if(token){
+      console.log(`token found`);
+      API.authenticate(token).then(response => {
+        console.log(`response received`);
+        console.log(response);
+        setUserState({
+          id: response.data.user.id,
+          userName: response.data.user.userName,
+          firstName: response.data.user.firstName,
+          lastName: response.data.user.lastName,
+          email: response.data.user.email,
+          isSignedIn: true,
+          token: response.data.token
+        });
+      }).catch(err => {
+        console.log(err);
+        // localStorage.clear("token")
+      });
+    }
+    
+  }, [])
+
   return (
     <Router>
-      <UserNavbar/>
+      <UserNavbar />
       {/* <LoginNavbar/> */}
-      <NavbarTest/>
+      <NavbarTest />
       <Switch>
         <Route exact path="/">
-          <Home/>
+          <Home />
         </Route>
         <Route exact path="/browse">
-          <Browse/>
+          <Browse />
         </Route>
-        <Route exact path="/profile">
-          <Profile/>
-        </Route>
+        <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
+          <Profile userState={userState}/>
+        </ProtectedRoute>
         <Route exact path="/tag/:id">
-          <Tag/>
+          <Tag />
         </Route>
         <Route exact path="/question/:id">
-          <Question/>
+          <Question />
         </Route>
         <Route exact path="/users/:id">
-          <User/>
+          <User />
         </Route>
         <Route exact path="/home">
-          <UserHome/>
+          <UserHome />
         </Route>
         <Route exact path="/ask">
-          <Ask/>
+          <Ask userState={userState}/>
         </Route>
         <Route path="/service/:id">
-          <Service/>
+          <Service />
         </Route>
         <Route exact path="/signin">
-          <Signin/>          
+          <Signin
+            handleInputChanged={handleInputChanged} 
+            handleSubmit={handleSignInSubmit} 
+            formObj={formObj} 
+            setFormObj={setFormObj} 
+            userState={userState} 
+            setUserState={setUserState}  />
         </Route>
         <Route exact path="/signup">
-          <Signup/>
+          <Signup 
+            handleInputChanged={handleInputChanged} 
+            handleSubmit={handleSignUpSubmit} 
+            formObj={formObj} 
+            setFormObj={setFormObj} 
+            userState={userState} 
+            setUserState={setUserState} 
+          />
         </Route>
         <Route path="*">
-          <NotFound/>
+          <NotFound />
         </Route>
       </Switch>
     </Router>

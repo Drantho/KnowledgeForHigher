@@ -9,8 +9,8 @@ export default {
     return axios.get(`${url}/api/question?id=${id}`);
   },
   getQuestionByUser: id => {
-    console.log(`${url}/api/question?userId=${id}`);
-    return axios.get(`${url}/api/question?userId=${id}`);
+    console.log(`${url}/api/question?user=${id}`);
+    return axios.get(`${url}/api/question?user=${id}`);
   },
   getQuestionsByTagName: tagName => {
     console.log(`${url}/api/question?tag=${tagName}`);
@@ -24,9 +24,13 @@ export default {
     console.log(`${url}/api/question`);
     return axios.get(`${url}/api/question`);
   },
-  createQuestion: data => {
+  createQuestion: (data, token) => {
     console.log(`${url}/api/question`);
-    return axios.post(`${url}/api/question`, data);
+    return axios.post(`${url}/api/question`, data,{
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    });
   },
   createTag: data => {
     console.log((`${url}/api/tag/`));
@@ -81,5 +85,13 @@ export default {
     console.log((`${url}/api/user/signup`));
     console.log(data);
     return axios.post(`${url}/api/user/signup`, data)
+  },
+  authenticate: token => {
+    console.log((`${url}/api/user/authenticate`));
+    return axios.get(`${url}/api/user/authenticate`,{
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+  })
   }
 };

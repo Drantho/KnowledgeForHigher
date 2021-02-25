@@ -2,7 +2,7 @@ import { React, useState } from 'react'
 import { Link } from "react-router-dom";
 import API from "../utils/API";
 
-export default function Signin() {
+export default function Signin(props) {
 
     const [formObj, setFormObj] = useState({
         userName: "",
@@ -45,10 +45,10 @@ export default function Signin() {
         <div>
             <h1>Sign In</h1>
             user name:
-            <input name="userName" value={formObj.userName} onChange={handleInputChanged} /><br />
+            <input name="userName" value={props.formObj.userName} onChange={props.handleInputChanged} /><br />
             password:
-            <input name="password" value={formObj.password} onChange={handleInputChanged} /><br />
-            <button onClick={handleSubmit}>Sign in</button>
+            <input name="password" value={props.formObj.password} onChange={props.handleInputChanged} /><br />
+            <button onClick={props.handleSubmit}>Sign in</button>
         </div>
     )
 }

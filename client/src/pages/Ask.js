@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
 
-export default function Ask() {
+export default function Ask(props) {
     const history = useHistory();
 
     const [formObj, setFormObj] = useState({
@@ -34,7 +34,7 @@ export default function Ask() {
     const handleSubmit = async event => {
         event.preventDefault();
 
-        API.createQuestion(formObj).then(async response => {
+        API.createQuestion(formObj, props.userState.token).then(async response => {
             console.log(response);
             const id = response.data.id;
 
