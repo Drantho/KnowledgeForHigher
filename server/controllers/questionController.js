@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const jwt = require("jsonwebtoken")
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
-const {authenticate} = require("../helpers/helpers");
+
 
 router.get('/', (request, response) => {
 

@@ -3,10 +3,10 @@ const router = express.Router();
 const db = require('../models');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
-const {authenticate} = require("../helpers/helpers");
 
 require('dotenv').config();
 
@@ -57,7 +57,6 @@ router.post('/', ({ body }, response) => {
 
 router.put('/',authenticate, ({ body }, response) => {
 
-    // TODO: authentication, password hashing
     // TODO: run username through profanity filter
 
     db.User.update({
