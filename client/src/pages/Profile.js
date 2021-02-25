@@ -28,7 +28,10 @@ export default function Profile(props) {
     useEffect(() => {
 
             API.getQuestionByUser(props.userState.id).then(response => {
+                console.log(`getQuestions: `, response);
                 setQuestions(response.data);
+            }).catch(err => {
+                console.log(err);
             });
 
             API.getServicesByUser(props.userState.id).then(response => {

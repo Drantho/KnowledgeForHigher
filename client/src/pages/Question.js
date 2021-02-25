@@ -14,7 +14,7 @@ export default function Question() {
     useEffect(() => {
         API.getQuestionById(id).then(response => {
             setQuestion(response.data);
-            console.log(response.data);
+            console.log(`question data`, response.data);
         })
     }, [])
 

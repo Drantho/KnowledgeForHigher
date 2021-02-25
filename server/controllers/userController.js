@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
-const {authenticate, getUserInfo} = require("../helpers/helpers");
+const {authenticate} = require("../helpers/helpers");
+
 require('dotenv').config();
 
 router.get('/', (request, response) => {
@@ -176,7 +177,5 @@ router.get("/authenticate", (req, res) => {
     })
 
 });
-
-
 
 module.exports = router;

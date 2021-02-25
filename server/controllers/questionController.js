@@ -4,11 +4,12 @@ const db = require('../models');
 const jwt = require("jsonwebtoken")
 
 const { Op } = require('sequelize');
-const {authenticate, getUserInfo} = require("../helpers/helpers");
+const {authenticate} = require("../helpers/helpers");
 
 router.get('/', (request, response) => {
 
     if (request.query.id) {
+        console.log(`req.query.id: `, request.query.id);
         db.Question.findOne({
             where: {
                 id: request.query.id
@@ -50,8 +51,7 @@ router.get('/', (request, response) => {
             includes.push({
                 model: db.User,
                 where: { id: request.query.user },
-                attributes: [],
-                through: { attributes: [] }
+                attributes: ["id", "userName"]
             });
         }
 
@@ -66,7 +66,7 @@ router.get('/', (request, response) => {
                 ]
             };
         }
-
+        
         db.Question.findAll(queryParams)
             .then((result) => {
                 response.json(result);
@@ -98,7 +98,6 @@ router.post('/', authenticate, (request, response) => {
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
-        console.log(err);
         response.status(500).json(err);
     });
 });

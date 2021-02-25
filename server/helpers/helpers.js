@@ -20,7 +20,7 @@ const helpers = {
                 if (err) {
                     return res.status(403).json({ msg: "you are not authorized to view this page." });
                 } else {
-                    req.userId = data.id;
+                    req.userId = data.id;                    
                     return next();
                 }
             })
