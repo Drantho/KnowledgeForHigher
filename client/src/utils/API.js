@@ -67,5 +67,9 @@ export default {
     console.log((`${url}/api/tag/service/`));
     console.log(data);
     return axios.put(`${url}/api/tag/service/`, data)
+  },
+  getUserById: id => {
+    console.log((`${url}/api/user?id=${id}`));
+    return axios.get(`${url}/api/user?id=${id}`)
   }
 };
