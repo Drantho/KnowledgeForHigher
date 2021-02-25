@@ -10,8 +10,8 @@ const subscriptionKey = process.env[key_var];
 const endpoint = "https://api.cognitive.microsofttranslator.com";
 const region = 'westus2';
 
-module.exports = (text) => {
-    return axios({
+module.exports = async (text) => {
+    const checkResult = await axios({
         baseURL: endpoint,
         url: '/translate',
         method: 'POST',
@@ -31,4 +31,6 @@ module.exports = (text) => {
         }],
         responseType: 'json'
     });
+
+    return checkResult.data[0].translations[0].text.includes('***');
 };
