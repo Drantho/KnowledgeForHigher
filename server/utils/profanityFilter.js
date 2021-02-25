@@ -1,36 +1,8 @@
-const axios = require('axios');
 
-const key_var = 'AZURE_TRANSLATE_KEY';
-if (!process.env[key_var]) {
-    throw new Error('Please set/export the following environment variable: ' + key_var);
-}
+const badWords = require('bad-words');
+const filter = new badWords();
 
-const subscriptionKey = process.env[key_var];
 
-const endpoint = "https://api.cognitive.microsofttranslator.com";
-const region = 'westus2';
-
-module.exports = async (text) => {
-    const checkResult = await axios({
-        baseURL: endpoint,
-        url: '/translate',
-        method: 'POST',
-        headers: {
-            'Ocp-Apim-Subscription-Key': subscriptionKey,
-            'Ocp-Apim-Subscription-Region': region,
-            'Content-type': 'application/json'
-        },
-        params: {
-            'api-version': '3.0',
-            'to': ['en'],
-            'profanityAction': 'Marked',
-            'profanityMarker': 'Asterisk'
-        },
-        data: [{
-            'text': text
-        }],
-        responseType: 'json'
-    });
-
-    return checkResult.data[0].translations[0].text.includes('***');
+module.exports = (text) => {
+    return filter.isProfane(text);
 };
