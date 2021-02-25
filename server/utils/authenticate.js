@@ -24,8 +24,9 @@ const authenticate = (req, res, next) => {
             }
         })
     }
-    // return res.status(403).json({ msg: "you are not authorized to view this page." });
-
+    else{
+        return res.status(403).json({ msg: "you are not authorized to view this page." });
+    }    
 }
 
 module.exports = authenticate;
