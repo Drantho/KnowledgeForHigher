@@ -71,6 +71,13 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', authenticate, (request, response) => {
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
+        response.status(400).json({
+            err: 'Service name or description contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Service.create({
         name: request.body.name,
         description: request.body.description,

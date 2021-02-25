@@ -91,6 +91,13 @@ router.get('/unanswered', (request, response) => {
 
 // Create a question
 router.post('/', authenticate, (request, response) => {
+
+    if (profanityCheck(request.body.title + ' ' + request.body.text)) {
+        response.status(400).json({
+            err: 'Question title or body contains disallowed term/phrase'
+        });
+        return;
+    }
     
     db.Question.create({
         title: request.body.title,
