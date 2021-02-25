@@ -1,6 +1,19 @@
-import React from 'react'
+import { React, useEffect } from 'react'
+import { useHistory } from "react-router-dom";
 
 export default function Signup(props) {
+
+    const history = useHistory();
+
+    useEffect(() => {
+        if(props.userState.isSignedIn){
+            history.push("/home")
+        }
+    }, []);
+
+    const redirect = () => {
+        history.push("/home")
+    }
 
     return (
         <div>
@@ -15,7 +28,7 @@ export default function Signup(props) {
             <input name="email" value={props.formObj.email} onChange={props.handleInputChanged} /><br />
             password:
             <input name="password" value={props.formObj.password} onChange={props.handleInputChanged} /><br />            
-            <button onClick={props.handleSubmit}>Sign in</button>
+            <button onClick={() => {props.handleSubmit(redirect)}}>Sign in</button>
         </div>
     )
 }

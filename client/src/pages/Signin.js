@@ -1,44 +1,17 @@
-import { React, useState } from 'react'
-import { Link } from "react-router-dom";
-import API from "../utils/API";
+import { React, useEffect } from 'react'
+import { useHistory } from "react-router-dom";
 
 export default function Signin(props) {
+    const history = useHistory();
 
-    const [formObj, setFormObj] = useState({
-        userName: "",
-        password: ""
-    });
+    useEffect(() => {
+        if(props.userState.isSignedIn){
+            history.push("/home");
+        }
+    },[]);
 
-    const [userState, setUserState] = useState({
-        id: "",
-        userName: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        isSignedIn: false,
-        token: ""
-    });
-
-    const handleInputChanged = event => {
-        const { name, value } = event.target;
-        setFormObj({ ...formObj, [formObj[name]]: value })
-    }
-
-    const handleSubmit = event => {
-        event.preventDefault();
-
-        API.signIn(formObj).then(response => {
-            console.log(response);
-            setUserState({
-                id: response.data.id,
-                userName: response.data.user.userName,
-                firstName: response.data.user.firstName,
-                lastName: response.data.user.lastName,
-                email: response.data.user.email,
-                isSignedIn: true,
-                token: response.data.token
-            });
-        })
+    const redirect = () => {
+        history.push("/home")
     }
 
     return (
@@ -48,7 +21,7 @@ export default function Signin(props) {
             <input name="userName" value={props.formObj.userName} onChange={props.handleInputChanged} /><br />
             password:
             <input name="password" value={props.formObj.password} onChange={props.handleInputChanged} /><br />
-            <button onClick={props.handleSubmit}>Sign in</button>
+            <button onClick={() => {props.handleSubmit(redirect)}}>Sign in</button>
         </div>
     )
 }

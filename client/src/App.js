@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import  { React, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -19,6 +19,8 @@ import API from "./utils/API";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+
+  const history = useHistory();
 
   const [formObj, setFormObj] = useState({
     userName: "",
@@ -43,11 +45,10 @@ function App() {
     setFormObj({ ...formObj, [name]: value })
   }
 
-  const handleSignUpSubmit = event => {
+  const handleSignUpSubmit = cb => {
     event.preventDefault();
 
     API.signUp(formObj).then(response => {
-      console.log(response);
       setUserState({
         id: response.data.id,
         userName: response.data.user.userName,
@@ -57,20 +58,19 @@ function App() {
         isSignedIn: true,
         token: response.data.token
       });
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.token);  
+      cb();    
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
     });
   }
 
-  const handleSignInSubmit = event => {
-    event.preventDefault();
+  const handleSignInSubmit = cb => {    
 
     API.signIn(formObj).then(response => {
-      console.log(response);
       setUserState({
-        id: response.data.id,
+        id: response.data.user.id,
         userName: response.data.user.userName,
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
@@ -79,6 +79,7 @@ function App() {
         token: response.data.token
       });
       localStorage.setItem("token", response.data.token);
+      cb();
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
@@ -86,13 +87,9 @@ function App() {
   }
 
   useEffect(()=> {
-    console.log(`useEffect() fires`);
     const token = localStorage.getItem("token");
     if(token){
-      console.log(`token found`);
       API.authenticate(token).then(response => {
-        console.log(`response received`);
-        console.log(response);
         setUserState({
           id: response.data.user.id,
           userName: response.data.user.userName,
@@ -104,10 +101,9 @@ function App() {
         });
       }).catch(err => {
         console.log(err);
-        // localStorage.clear("token")
+        localStorage.clear("token")
       });
     }
-    
   }, [])
 
   return (
@@ -116,9 +112,9 @@ function App() {
       {/* <LoginNavbar/> */}
       <NavbarTest />
       <Switch>
-        <Route exact path="/">
+        <ProtectedRoute exact path="/" isSignedIn={userState.isSignedIn}>
           <Home />
-        </Route>
+        </ProtectedRoute>
         <Route exact path="/browse">
           <Browse />
         </Route>
@@ -134,9 +130,9 @@ function App() {
         <Route exact path="/users/:id">
           <User />
         </Route>
-        <Route exact path="/home">
+        <ProtectedRoute exact path="/home">
           <UserHome />
-        </Route>
+        </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
           <Ask userState={userState}/>
         </ProtectedRoute>
