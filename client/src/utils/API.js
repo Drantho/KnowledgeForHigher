@@ -9,8 +9,8 @@ export default {
     return axios.get(`${url}/api/question?id=${id}`);
   },
   getQuestionByUser: id => {
-    console.log(`${url}/api/question?userId=${id}`);
-    return axios.get(`${url}/api/question?userId=${id}`);
+    console.log(`${url}/api/question?user=${id}`);
+    return axios.get(`${url}/api/question?user=${id}`);
   },
   getQuestionsByTagName: tagName => {
     console.log(`${url}/api/question?tag=${tagName}`);
@@ -24,19 +24,31 @@ export default {
     console.log(`${url}/api/question`);
     return axios.get(`${url}/api/question`);
   },
-  createQuestion: data => {
+  createQuestion: (data, token) => {
     console.log(`${url}/api/question`);
-    return axios.post(`${url}/api/question`, data);
+    return axios.post(`${url}/api/question`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    });
   },
-  createTag: data => {
+  createTag: (data, token) => {
     console.log((`${url}/api/tag/`));
     console.log(data);
-    return axios.post(`${url}/api/tag/`, data)
+    return axios.post(`${url}/api/tag/`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
   },
-  linkTagToQuestion: data => {
+  linkTagToQuestion: (data, token) => {
     console.log((`${url}/api/tag/question/`));
     console.log(data);
-    return axios.put(`${url}/api/tag/question/`, data)
+    return axios.put(`${url}/api/tag/question/`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
   },
   getAllTags: () => {
     console.log((`${url}/api/tag/`));
@@ -58,18 +70,44 @@ export default {
     console.log((`${url}/api/service?id=${id}`));
     return axios.get(`${url}/api/service?id=${id}`)
   },
-  createService: data => {
+  createService: (data, token) => {
     console.log((`${url}/api/service/`));
     console.log(data);
-    return axios.post(`${url}/api/service/`, data)
+    return axios.post(`${url}/api/service/`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })      
   },
-  linkServiceToTag: data => {
+  linkServiceToTag: (data, token) => {
     console.log((`${url}/api/tag/service/`));
     console.log(data);
-    return axios.put(`${url}/api/tag/service/`, data)
+    return axios.put(`${url}/api/tag/service/`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
   },
   getUserById: id => {
     console.log((`${url}/api/user?id=${id}`));
     return axios.get(`${url}/api/user?id=${id}`)
+  },
+  signIn: data => {
+    console.log((`${url}/api/user/signin`));
+    console.log(data);
+    return axios.post(`${url}/api/user/signin`, data)
+  },
+  signUp: data => {
+    console.log((`${url}/api/user/signup`));
+    console.log(data);
+    return axios.post(`${url}/api/user/signup`, data)
+  },
+  authenticate: token => {
+    console.log((`${url}/api/user/authenticate`));
+    return axios.get(`${url}/api/user/authenticate`,{
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+  })
   }
 };

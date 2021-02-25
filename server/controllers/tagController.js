@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
@@ -111,7 +112,7 @@ router.get('/', (request, response) => {
 
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
     db.Tag.findOne({
         where: { name: request.body.name }
     }).then((result) => {
@@ -132,17 +133,17 @@ router.post('/', (request, response) => {
     });
 });
 
-router.put('/name', (request, response) => {
-    db.Tag.update({
-        name: request.body.name
-    }, {
-        where: { id: request.body.id }
-    }).then((result) => {
-        response.json(result);
-    }).catch((err) => {
-        response.status(500).json(err);
-    });
-});
+// router.put('/name', (request, response) => {
+//     db.Tag.update({
+//         name: request.body.name
+//     }, {
+//         where: { id: request.body.id }
+//     }).then((result) => {
+//         response.json(result);
+//     }).catch((err) => {
+//         response.status(500).json(err);
+//     });
+// });
 
 router.put('/description', (request, response) => {
     db.Tag.update({
@@ -156,14 +157,14 @@ router.put('/description', (request, response) => {
     });
 });
 
-router.put('/user', (request, response) => {
+router.put('/user', authenticate, (request, response) => {
     db.Tag.findAll({
         where: {
             name: { [Op.in]: request.body.tags }
         }
     }).then((result) => {
         const insertArr = result.map((r) => {
-            return { UserId: request.body.user, TagId: r.dataValues.id };
+            return { UserId: request.userId, TagId: r.dataValues.id };
         });
         db.sequelize.models.following.bulkCreate(insertArr)
             .then((linkResult) => {
@@ -176,7 +177,7 @@ router.put('/user', (request, response) => {
     });
 });
 
-router.put('/service', (request, response) => {
+router.put('/service', authenticate, (request, response) => {
     db.Tag.findAll({
         where: {
             name: { [Op.in]: request.body.tags }
@@ -199,7 +200,7 @@ router.put('/service', (request, response) => {
     });
 });
 
-router.put('/question', (request, response) => {
+router.put('/question', authenticate, (request, response) => {
     db.Tag.findAll({
         where: {
             name: { [Op.in]: request.body.tags }
