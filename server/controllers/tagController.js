@@ -113,14 +113,13 @@ router.get('/', (request, response) => {
 
 });
 
-router.post('/', async (request, response) => {
+router.post('/', authenticate, (request, response) => {
 
-    const profanityCheckResult = await profanityCheck(request.body.name);
-
-    if (profanityCheckResult) {
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
         response.status(400).json({
             err: 'Tag contains disallowed term/phrase'
         });
+        return;
     }
 
     db.Tag.findOne({
@@ -155,7 +154,14 @@ router.post('/', async (request, response) => {
 //     });
 // });
 
-router.put('/description', (request, response) => {
+router.put('/description', authenticate, (request, response) => {
+    if (profanityCheck(request.body.description)) {
+        response.status(400).json({
+            err: 'Tag contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Tag.update({
         description: request.body.description
     }, {
