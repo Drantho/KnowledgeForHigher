@@ -40,7 +40,6 @@ router.get('/', (request, response) => {
 
 router.post('/', ({ body }, response) => {
 
-    // TODO: authentication, password hashing
     // TODO: run username through profanity filter
 
     db.User.create({
@@ -56,7 +55,7 @@ router.post('/', ({ body }, response) => {
     });
 });
 
-router.put('/', ({ body }, response) => {
+router.put('/',authenticate, ({ body }, response) => {
 
     // TODO: authentication, password hashing
     // TODO: run username through profanity filter
@@ -68,7 +67,7 @@ router.put('/', ({ body }, response) => {
         email: body.email,
         password: body.password
     }, {
-        where: { id: body.user }
+        where: { id: body.userId }
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
@@ -76,11 +75,11 @@ router.put('/', ({ body }, response) => {
     });
 });
 
-router.delete('/:id', ({ params }, response) => {
+router.delete('/:id', authenticate,  (request, response) => {
     db.User.update({
         status: Sequelize.literal('NOT status')
     }, {
-        where: { id: params.id }
+        where: { id: request.userId }
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
