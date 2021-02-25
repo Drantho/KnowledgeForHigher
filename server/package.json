@@ -23,6 +23,8 @@
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "sequelize": "^6.5.0"
+    "request": "^2.88.2",
+    "sequelize": "^6.5.0",
+    "uuid": "^8.3.2"
   }
 }

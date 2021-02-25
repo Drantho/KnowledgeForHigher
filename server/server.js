@@ -2,10 +2,10 @@ const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
 const compression = require("compression");
-const db = require("./models");
-const passport = require("passport");
+// const passport = require("passport");
 
-require('dotenv').config()
+require('dotenv').config();
+const db = require("./models");
 
 const app = express();
 
@@ -21,13 +21,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 const routes = require("./controllers/routes.js");
 
 
-require('./config/passport/passport.js')(passport, db.User);
+// require('./config/passport/passport.js')(passport, db.User);
 
 app.use(routes);
 

@@ -4,6 +4,8 @@ const db = require('../models');
 
 const { Op } = require('sequelize');
 
+const filter = require('../helpers/profanityFilter');
+
 router.get('/', (request, response) => {
 
     // Get individual tag by ID or by NAME
@@ -111,7 +113,16 @@ router.get('/', (request, response) => {
 
 });
 
-router.post('/', (request, response) => {
+router.post('/', async (request, response) => {
+
+    const filterResult = await filter(request.body.name);
+    
+    if (filterResult.data[0].translations[0].text.includes('***')) {
+        return response.status(400).json({
+            err: 'Tag contains profane text'
+        });
+    }
+
     db.Tag.findOne({
         where: { name: request.body.name }
     }).then((result) => {
