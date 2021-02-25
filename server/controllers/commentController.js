@@ -20,14 +20,17 @@ router.get('/', (request, response) => {
     // Get all comments attached to a specified question
     if (request.query.question) {
         db.Comment.findAll({
-            include: {
+            include: [{
                 model: db.Question,
                 where: { id: request.query.question },
                 attributes: []
-            }
+            },{
+                model: db.User
+            }]
         }).then( (result) => {
             response.json(result);
         }).catch( (err) => {
+            console.log(err);
             response.status(500).json(err);
         });
     }
@@ -102,8 +105,6 @@ router.post('/', authenticate, (request, response) => {
         UserId: request.userId,
         type: request.body.type
     };
-
-    console.log(`request.body`, request.body);
 
     switch (request.body.type) {
         case 'answer':

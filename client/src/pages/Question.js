@@ -2,14 +2,13 @@ import { React, useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import API from '../utils/API';
 
-export default function Question() {
+export default function Question(props) {
     const { id } = useParams();
     
     const emptyQuestionComment = {
         text: "",
         type: "question",
-        ref: id,
-        user: 1
+        ref: id
     }; 
 
     const [question, setQuestion] = useState({
@@ -22,8 +21,7 @@ export default function Question() {
 
     const [answer, setAnswer] = useState({
         text: "",
-        userId: 1,
-        questionId: id
+        question: id
     });
 
     const [questionComment, setQuestionComment] = useState(emptyQuestionComment);
@@ -32,7 +30,7 @@ export default function Question() {
 
     const [answers, setAnswers] = useState([{
         text: "",
-        userId: "1",
+        userId: "",
         questionId: id,
         User: {
             userName: "",
@@ -59,10 +57,12 @@ export default function Question() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        API.createAnswer(answer).then(response => {
+        API.createAnswer(answer, props.userState.token).then(response => {
             console.log(response.data);
             setAnswer({ ...answer, text: "" });
-
+            API.getAnswersByQuestion(id).then(response => {
+                setAnswers(response.data)
+            })
         });
 
         API.getAnswersByQuestion(id).then(response => {
@@ -74,7 +74,7 @@ export default function Question() {
     const handleAddQuestionComment = event => {
         event.preventDefault();
 
-        API.createQuestionComment(questionComment).then(response => {
+        API.createQuestionComment(questionComment, props.userState.token).then(response => {
             console.log(response);
 
             API.getAllQuestionComments(id).then(response => {
@@ -89,6 +89,16 @@ export default function Question() {
         API.getQuestionById(id).then(response => {
             setQuestion(response.data);
             console.log(`question data`, response.data);
+        });
+
+        API.getAllQuestionComments(id).then(response => {
+            setQuestionComments(response.data);
+            console.log(`all comments: `, response.data);
+        });
+
+        API.getAnswersByQuestion(id).then(response => {
+            console.log(response.data);
+            setAnswers(response.data);
         })
     }, [])
 
@@ -103,7 +113,7 @@ export default function Question() {
             </ul>
             <strong>Comments</strong>
             <ul>
-                {questionComments.map(comment => <li key={comment.id}>{comment.text}</li>)}
+                {questionComments.map(comment => <li key={comment.id}>{comment.text} - <Link to={`/users/${comment.UserId}`}>{comment.User.userName}</Link></li>)}
             </ul>
             <label htmlFor="questionComment">
                 Comment
@@ -121,7 +131,7 @@ export default function Question() {
             </ul>
             <h2>Add your anwer</h2>
             <form>
-                <textarea name="text" value={answer.text} onChange={handleInputChaged} /><br />
+                <textarea name="answer" value={answer.text} onChange={handleInputChaged} /><br />
                 <button onClick={handleSubmit}>Submit</button>
             </form>
         </div>

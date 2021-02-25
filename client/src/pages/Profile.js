@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 
 export default function Profile(props) {
     const history = useHistory();
