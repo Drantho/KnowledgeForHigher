@@ -137,7 +137,7 @@ function App() {
         <Route exact path="/home">
           <UserHome />
         </Route>
-        <ProtectedRoute exact path="/ask" userState={userState}>
+        <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
           <Ask userState={userState}/>
         </ProtectedRoute>
         <Route path="/service/:id">

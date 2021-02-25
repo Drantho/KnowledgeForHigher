@@ -103,7 +103,7 @@ router.post('/', authenticate, (request, response) => {
 });
 
 // Deactivate a question
-router.put('/deactivate/:id'. authenticate, (request, response) => {
+router.put('/deactivate/:id', authenticate, (request, response) => {
     db.Question.update({ isActive: false }, {
         where: [{ 
             id: request.params.id 
