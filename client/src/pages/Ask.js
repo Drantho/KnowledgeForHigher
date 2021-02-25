@@ -40,11 +40,11 @@ export default function Ask(props) {
 
             // TODO convert to async so we can redirect when complete
             formObj.tagsArray.forEach(async element => {
-                API.createTag({ name: element }).then(tagResponse => {
+                API.createTag({ name: element }, props.userState.token).then(tagResponse => {
                     API.linkTagToQuestion({
                         tags: [element],
                         question: response.data.id
-                    }).catch(err => {
+                    }, props.userState.token).catch(err => {
                         console.log(err);
                     });
                 });
@@ -57,7 +57,7 @@ export default function Ask(props) {
             API.linkTagToQuestion({
                 tags: formObj.tagsArray,
                 question: response.data.id
-            }).catch(err => {
+            }, props.userState.token).catch(err => {
                 console.log(err);
                 history.push("/profile")
             });

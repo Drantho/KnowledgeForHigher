@@ -64,17 +64,17 @@ export default function Profile(props) {
         });
 
         // TODO Convert to async so we can redirect when complete
-        API.createService(formObj).then(async response => {
+        API.createService(formObj, props.userState.token).then(async response => {
             console.log(response.data);
 
             for (const element of formObj.tagsArr) {
-                const id = await API.createTag({ name: element });
+                const id = await API.createTag({ name: element }, props.userState.token);
             }
 
             API.linkServiceToTag({
                 service: response.data.id,
                 tags: [formObj.tagsArr]
-            }).then(tagsLinkResponse => {
+            }, props.userState.token).then(tagsLinkResponse => {
                 getServices();
                 setFormObj({
                     name: "",
