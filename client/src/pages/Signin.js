@@ -45,9 +45,9 @@ export default function Signin() {
         <div>
             <h1>Sign In</h1>
             user name:
-            <input name="userName" value={userName} onChange={handleInputChanged} /><br />
+            <input name="userName" value={formObj.userName} onChange={handleInputChanged} /><br />
             password:
-            <input name="password" value={password} onChange={handleInputChanged} /><br />
+            <input name="password" value={formObj.password} onChange={handleInputChanged} /><br />
             <button onClick={handleSubmit}>Sign in</button>
         </div>
     )

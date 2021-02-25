@@ -89,7 +89,16 @@ router.delete('/:id', ({ params }, response) => {
 
 router.post("/signup", (req, res) => {
     db.User.create(req.body).then(user => {
-        res.json(user);
+        const token = jwt.sign({
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.userName,
+            isProfessional: user.isProfessional,
+            id: user.id
+        }, "SECRETSTRINGGOESHERE!");
+        console.log(token);
+        res.json({token, user})
     })
 });
 

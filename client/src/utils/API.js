@@ -76,5 +76,10 @@ export default {
     console.log((`${url}/api/user/signin`));
     console.log(data);
     return axios.post(`${url}/api/user/signin`, data)
+  },
+  signUp: data => {
+    console.log((`${url}/api/user/signup`));
+    console.log(data);
+    return axios.post(`${url}/api/user/signup`, data)
   }
 };
