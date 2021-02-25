@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
+require('dotenv').config();
+
 const db = require("./models");
-
-require('dotenv').config()
-
 const app = express();
 
 app.use(compression());
