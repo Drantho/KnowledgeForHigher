@@ -20,14 +20,17 @@ router.get('/', (request, response) => {
     // Get all comments attached to a specified question
     if (request.query.question) {
         db.Comment.findAll({
-            include: {
+            include: [{
                 model: db.Question,
                 where: { id: request.query.question },
                 attributes: []
-            }
+            },{
+                model: db.User
+            }]
         }).then( (result) => {
             response.json(result);
         }).catch( (err) => {
+            console.log(err);
             response.status(500).json(err);
         });
     }
@@ -60,6 +63,23 @@ router.get('/', (request, response) => {
         }).catch( (err) => {
             response.status(500).json(err);
         });  
+    }    
+
+    // Get all comments attached to a specified service
+    if (request.query.service) {
+        db.Comment.findAll({
+            include: {
+                model: db.User
+            },
+            where:[
+                {ServiceId: request.query.service}
+            ]
+        }).then( (result) => {
+            response.json(result);
+        }).catch( (err) => {
+            console.log(err);
+            response.status(500).json(err);
+        });  
     }
 });
 
@@ -88,13 +108,13 @@ router.post('/', authenticate, (request, response) => {
 
     switch (request.body.type) {
         case 'answer':
-            createParams.AnswerId = request.body.answer;
+            createParams.AnswerId = request.body.ref;
             break;
         case 'question':
-            createParams.QuestionId = request.body.question;
+            createParams.QuestionId = request.body.ref;
             break;
-        case 'answer':
-            createParams.ServiceId = request.body.service;
+        case 'service':
+            createParams.ServiceId = request.body.ref;
             break;
         default:
             break;
@@ -103,6 +123,7 @@ router.post('/', authenticate, (request, response) => {
     db.Comment.create( createParams ).then( (result) => {
         response.json(result);
     }).catch( (err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });
@@ -119,3 +140,5 @@ router.delete('/:id', authenticate, (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;

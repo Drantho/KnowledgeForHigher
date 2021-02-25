@@ -122,7 +122,7 @@ function App() {
           <Tag />
         </Route>
         <Route exact path="/question/:id">
-          <Question />
+          <Question userState={userState}/>
         </Route>
         <Route exact path="/users/:id">
           <User />

@@ -88,6 +88,36 @@ export default {
       }
     })
   },
+  getAllQuestionComments: id => {
+    console.log((`${url}/api/comment?question=${id}`));
+    return axios.get(`${url}/api/comment?question=${id}`)
+  },
+  createQuestionComment: (data, token) => {
+    console.log((`${url}/api/comment`));
+    console.log(data);
+    return axios.post(`${url}/api/comment`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
+  getAnswersByUser: id => {
+    console.log((`${url}/api/answer?user=${id}`));
+    return axios.get(`${url}/api/answer?user=${id}`)
+  },
+  getAnswersByQuestion: id => {
+    console.log((`${url}/api/answer?question=${id}`));
+    return axios.get(`${url}/api/answer?question=${id}`)
+  },
+  createAnswer: (data, token) => {
+    console.log((`${url}/api/answer`));
+    console.log(data);
+    return axios.post(`${url}/api/answer`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
   getUserById: id => {
     console.log((`${url}/api/user?id=${id}`));
     return axios.get(`${url}/api/user?id=${id}`)

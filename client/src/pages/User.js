@@ -8,6 +8,7 @@ export default function User() {
 
     const [user, setUser] = useState({
         userName: "",
+        createdAt: "",
         Services: [{
             Tags: []
         }],
@@ -17,25 +18,29 @@ export default function User() {
         Answers: []
 
     });
+    
 
     useEffect(async () => {
         const userFromAPI = await API.getUserById(id);
         const services = await API.getServicesByUser(id);
         const questions = await API.getQuestionByUser(id);
+        const answers = await API.getAnswersByUser(id);
 
-        setUser({userName: userFromAPI.data.userName, Services: services.data, Questions: questions.data})
+        console.log(`userFromApi: `, userFromAPI);
+
+        const joined = new Date(userFromAPI.data.createdAt);
+
+        setUser({userName: userFromAPI.data.userName, createdAt: (joined.getMonth()+1)+"/"+joined.getDate()+"/"+joined.getFullYear(), Services: services.data, Questions: questions.data, Answers: answers.data})
     }, [])
 
     return (
         <div>
             <h1>User Page: {id}</h1>
             <h2>{user.userName}</h2>
-
-            {/* <p>
-                <pre>
-                    {JSON.stringify(user, null, 4)}
-                </pre>            
-            </p> */}
+            <p>
+                <strong>Member since: </strong>
+                {user.createdAt}
+            </p>
             <h3>Services</h3>
             {user.Services.map(service => {
             return <li key={service.id}>
@@ -49,6 +54,13 @@ export default function User() {
             return <li key={question.id}>
                 <Link to={`/question/${question.id}`}>{question.title}</Link><br/>
                 {question.Tags.map(tag => <Link to={`/tag/${tag.id}`} key={tag.id}> {tag.name}</Link>)}
+            </li>
+            })}
+            <h3>Answers</h3>
+            {user.Answers.map(answer => {
+            return <li key={answer.id}>
+                {answer.text} - 
+                <Link to={`/question/${answer.QuestionId}`}>question</Link>
             </li>
             })}
         </div>

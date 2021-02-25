@@ -9,7 +9,11 @@ router.get('/', (request, response) => {
     // Find an individual answer
     if (request.query.id) {
         db.Answer.findOne({
-            where: { id: request.query.id }
+            where: { id: request.query.id },
+            include:[{ 
+                model: db.User,
+                attributes: ["userName", "id"]
+            }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
@@ -20,11 +24,14 @@ router.get('/', (request, response) => {
     // Get all of a question's answers
     if (request.query.question) {
         db.Answer.findAll({
-            include: {
+            include: [{
                 model: db.Question,
                 where: { id: request.query.question },
                 attributes: []
-            }
+            },{
+                model: db.User,
+                attributes: ["userName", "id"]
+            }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
@@ -88,3 +95,5 @@ router.delete('/:id', authenticate, (request, response) => {
         response.status(500).json(err);
     });
 });
+
+module.exports = router;
