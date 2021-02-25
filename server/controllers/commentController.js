@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
@@ -79,11 +80,12 @@ router.get('/', (request, response) => {
     }
 });
 
-router.put('/', (request, response) => {
+router.put('/', authenticate, (request, response) => {
     db.Comment.update({
         text: request.body.text
     }, {
-        where: { id: request.body.id }
+        where: [{ id: request.body.id },
+        {UserId: request.userId}]
     }).then( (result) => {  
         response.json(result);
     }).catch( (err) => {
@@ -91,13 +93,14 @@ router.put('/', (request, response) => {
     });
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
 
     // TODO: check for profanity
     
     const createParams = {
         text: request.body.text,
-        UserId: request.body.user
+        UserId: request.userId,
+        type: request.body.type
     };
 
     console.log(`request.body`, request.body);
@@ -125,9 +128,11 @@ router.post('/', (request, response) => {
 });
 
 // Delete an individual comment by ID (will also delete any attached ratings)
-router.delete('/:id', (request, response) => {
+router.delete('/:id', authenticate, (request, response) => {
     db.Comment.destroy({
-        where: { id: request.params.id }
+        where: [{ id: request.params.id },
+            {UserId: request.userId}
+        ]
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {

@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const jwt = require("jsonwebtoken")
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
+
 
 router.get('/', (request, response) => {
 
     if (request.query.id) {
+        console.log(`req.query.id: `, request.query.id);
         db.Question.findOne({
             where: {
                 id: request.query.id
@@ -48,8 +52,7 @@ router.get('/', (request, response) => {
             includes.push({
                 model: db.User,
                 where: { id: request.query.user },
-                attributes: [],
-                through: { attributes: [] }
+                attributes: ["id", "userName"]
             });
         }
 
@@ -64,7 +67,7 @@ router.get('/', (request, response) => {
                 ]
             };
         }
-
+        
         db.Question.findAll(queryParams)
             .then((result) => {
                 response.json(result);
@@ -87,11 +90,12 @@ router.get('/unanswered', (request, response) => {
 });
 
 // Create a question
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
+    
     db.Question.create({
         title: request.body.title,
         text: request.body.text,
-        UserId: request.body.user
+        UserId: request.userId
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
@@ -100,9 +104,14 @@ router.post('/', (request, response) => {
 });
 
 // Deactivate a question
-router.put('/deactivate/:id', (request, response) => {
+router.put('/deactivate/:id', authenticate, (request, response) => {
     db.Question.update({ isActive: false }, {
-        where: { id: request.params.id }
+        where: [{ 
+            id: request.params.id 
+        },
+        {
+            UserId: request.userId
+        }]
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
@@ -111,14 +120,14 @@ router.put('/deactivate/:id', (request, response) => {
 });
 
 // Delete a question (will delete any attached comments, answers, ratings)
-router.delete('/:id', (request, response) => {
-    db.Question.destroy({
-        where: { id: request.params.id }
-    }).then((result) => {
-        response.json(result);
-    }).catch((err) => {
-        response.status(500).json(err);
-    });
-});
+// router.delete('/:id', (request, response) => {
+//     db.Question.destroy({
+//         where: { id: request.params.id }
+//     }).then((result) => {
+//         response.json(result);
+//     }).catch((err) => {
+//         response.status(500).json(err);
+//     });
+// });
 
 module.exports = router;

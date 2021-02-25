@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
@@ -69,11 +70,11 @@ router.get('/', (request, response) => {
     }
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
     db.Service.create({
         name: request.body.name,
         description: request.body.description,
-        UserId: request.body.user,
+        UserId: request.userId,
         price: request.body.price
     }).then((result) => {
         response.json(result);
@@ -84,7 +85,7 @@ router.post('/', (request, response) => {
 });
 
 // Utilize the 'delete' method to deactivate a service
-router.delete('/:id', (request, response) => {
+router.delete('/:id', authenticate, (request, response) => {
     db.Service.update({ isActive: false }, {
         where: { id: request.params.id }
     }).then((result) => {

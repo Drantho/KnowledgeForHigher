@@ -1,8 +1,8 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
-import {Link, useHistory} from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
-export default function Profile() {
+export default function Profile(props) {
     const history = useHistory();
 
     const [questions, setQuestions] = useState([]);
@@ -17,30 +17,30 @@ export default function Profile() {
         price: 0,
         tagsArr: [],
         tagsStr: "",
-        user: 1
+        user: props.userState.id
     });
 
     const getServices = () => {
-        API.getServicesByUser("1").then(response => {
+        API.getServicesByUser(props.userState.id).then(response => {
             setServices(response.data);
             console.log(`services: `, response.data);
         });
     }
 
     useEffect(() => {
-        API.getQuestionByUser("1").then(response => {
-            setQuestions(response.data);
-        });
 
-        API.getServicesByUser("1").then(response => {
-            setServices(response.data);
-            console.log(`services: `, response.data);
-        });
+            API.getQuestionByUser(props.userState.id).then(response => {
+                console.log(`getQuestions: `, response);
+                setQuestions(response.data);
+            }).catch(err => {
+                console.log(err);
+            });
 
-        API.getAnswersByUser(1).then(response => {
-            setAnswers(response.data);
-            console.log(`answers: `, response.data)
-        })
+            API.getServicesByUser(props.userState.id).then(response => {
+                setServices(response.data);
+                console.log(`services: `, response.data);
+            });
+            
     }, []);
 
     const handleInputChange = event => {
@@ -66,17 +66,17 @@ export default function Profile() {
         });
 
         // TODO Convert to async so we can redirect when complete
-        API.createService(formObj).then(async response => {
+        API.createService(formObj, props.userState.token).then(async response => {
             console.log(response.data);
 
-            for(const element of formObj.tagsArr){
-                const id = await API.createTag({ name: element });                
+            for (const element of formObj.tagsArr) {
+                const id = await API.createTag({ name: element }, props.userState.token);
             }
 
             API.linkServiceToTag({
                 service: response.data.id,
                 tags: [formObj.tagsArr]
-            }).then(tagsLinkResponse => {
+            }, props.userState.token).then(tagsLinkResponse => {
                 getServices();
                 setFormObj({
                     name: "",
@@ -93,6 +93,9 @@ export default function Profile() {
 
     return (
         <div>
+            <pre>
+                {JSON.stringify(props, null, 4)}
+            </pre>
             <h1>
                 Profile Page
             </h1>
@@ -126,9 +129,9 @@ export default function Profile() {
             <h2>My Services {services.length}</h2>
             <ul>
                 {services.map(service => {
-                return <li key={service.id}>
-                    {service.name}<br/>
-                    {service.Tags.map(tag => <span key={tag.id}>{tag.name} - </span>)}
+                    return <li key={service.id}>
+                        {service.name}<br />
+                        {service.Tags.map(tag => <span key={tag.id}>{tag.name} - </span>)}
                     </li>
                 })}
             </ul>

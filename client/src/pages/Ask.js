@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
 
-export default function Ask() {
+export default function Ask(props) {
     const history = useHistory();
 
     const [formObj, setFormObj] = useState({
@@ -34,17 +34,17 @@ export default function Ask() {
     const handleSubmit = async event => {
         event.preventDefault();
 
-        API.createQuestion(formObj).then(async response => {
+        API.createQuestion(formObj, props.userState.token).then(async response => {
             console.log(response);
             const id = response.data.id;
 
             // TODO convert to async so we can redirect when complete
             formObj.tagsArray.forEach(async element => {
-                API.createTag({ name: element }).then(tagResponse => {
+                API.createTag({ name: element }, props.userState.token).then(tagResponse => {
                     API.linkTagToQuestion({
                         tags: [element],
                         question: response.data.id
-                    }).catch(err => {
+                    }, props.userState.token).catch(err => {
                         console.log(err);
                     });
                 });
@@ -57,7 +57,7 @@ export default function Ask() {
             API.linkTagToQuestion({
                 tags: formObj.tagsArray,
                 question: response.data.id
-            }).catch(err => {
+            }, props.userState.token).catch(err => {
                 console.log(err);
                 history.push("/profile")
             });

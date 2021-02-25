@@ -88,18 +88,9 @@ export default function Question() {
     useEffect(() => {
         API.getQuestionById(id).then(response => {
             setQuestion(response.data);
-        });
-
-        API.getAnswersByQuestion(id).then(response => {
-            setAnswers(response.data);
-            console.log(response.data);
-        });
-
-        API.getAllQuestionComments(id).then(response => {
-            setQuestionComments(response.data)
-        });
-
-    }, []);
+            console.log(`question data`, response.data);
+        })
+    }, [])
 
     return (
         <div>

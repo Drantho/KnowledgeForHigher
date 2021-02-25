@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
@@ -55,16 +56,14 @@ router.get('/', (request, response) => {
 });
 
 // Create an answer
-router.post('/', (request, response) => {
-
-    // TODO: Validate user
+router.post('/', authenticate, (request, response) => {
 
     // TODO: Validate profanity
 
     db.Answer.create({
         text: request.body.text,
-        UserId: request.body.userId,
-        QuestionId: request.body.questionId
+        UserId: request.userId,
+        QuestionId: request.body.question
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
@@ -72,9 +71,11 @@ router.post('/', (request, response) => {
     });
 });
 
-router.put('/', (request, response) => {
+router.put('/', authenticate, (request, response) => {
     db.Answer.update({ text: request.body.text }, {
-        where: { id: request.body.id }
+        where: [{ id: request.body.id },
+            {UserId: request.userId}
+        ]
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
@@ -83,9 +84,11 @@ router.put('/', (request, response) => {
 });
 
 // Delete an individual Answer (will also delete any of its comments and ratings)
-router.delete('/:id', (request, response) => {
+router.delete('/:id', authenticate, (request, response) => {
     db.Answer.destroy({
-        where: { id: request.params.id }
+        where: [{ id: request.params.id },
+            {UserId: request.userId}
+        ]
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {

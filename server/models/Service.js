@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         Service.belongsToMany(models.Tag, { through: 'service_tags' });
         Service.hasMany(models.Rating);
         Service.hasMany(models.Comment);
+        Service.hasMany(models.Purchase);
     }
 
     return Service;

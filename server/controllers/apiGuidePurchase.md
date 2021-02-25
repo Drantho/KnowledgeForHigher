@@ -2,7 +2,8 @@
 - URL: `/api/purchase/`
 - Method: `POST`
 - Body parameters
-    - 
+    - `user: <userID : integer>` - ID number of user paying for a service
+    - `service: <serviceID : integer>` - ID number of service the user is paying for
 - Query paramters
     - N/A
 - URL parameters
@@ -14,26 +15,12 @@
 - Body parameters
     - N/A
 - Query paramters
-    - 
+    - `?user=<userID : integer>` - ID number of user to fetch all purchases for
 - URL parameters
     - N/A
 
 ## Updating
-- URL: `/api/purchase/`
-- Method: `PUT`
-- Body parameters
-    - 
-- Query paramters
-    - N/A
-- URL parameters
-    - N/A
+- N/A
 
 ## Deleting
-- URL: `/api/purchase/:id`
-- Method: `DELETE`
-- Body parameters
-    - N/A
-- Query paramters
-    - N/A
-- URL parameters
-    - `:id - <purchaseID : integer>` - ID number of purchase to delete
+- N/A
