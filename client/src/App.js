@@ -137,9 +137,9 @@ function App() {
         <Route exact path="/home">
           <UserHome />
         </Route>
-        <Route exact path="/ask">
+        <ProtectedRoute exact path="/ask" userState={userState}>
           <Ask userState={userState}/>
-        </Route>
+        </ProtectedRoute>
         <Route path="/service/:id">
           <Service />
         </Route>
