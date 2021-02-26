@@ -78,6 +78,37 @@ router.get('/', (request, response) => {
 
 });
 
+// Get a list of unique questions when passed an array of tag names
+// Also conditionally show/hide tags based on "show" property
+router.post("/uniqueQuestionsByTags", (request, response) => {
+
+    const arr = request.body.tags;
+    orArr = [];
+    
+    arr.forEach(tag => {
+        if(tag.show){
+            orArr.push({name: tag.name})
+        }        
+    });
+
+    db.Question.findAll({
+        include: [{
+            model: db.Tag,
+            where: {
+                [Op.or]: orArr
+            },
+            through: { attributes: [] }
+        },{
+            model: db.Answer
+        }]
+    }).then(data => {
+        response.json(data);
+    }).catch(err => {
+        console.log(err);
+        response.status(500).json(err)
+    })
+});
+
 // Retreive all unanswered questions
 router.get('/unanswered', (request, response) => {
     db.Question.findAll({
@@ -91,6 +122,13 @@ router.get('/unanswered', (request, response) => {
 
 // Create a question
 router.post('/', authenticate, (request, response) => {
+
+    if (profanityCheck(request.body.title + ' ' + request.body.text)) {
+        response.status(400).json({
+            err: 'Question title or body contains disallowed term/phrase'
+        });
+        return;
+    }
     
     db.Question.create({
         title: request.body.title,

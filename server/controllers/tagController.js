@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
+const profanityCheck = require('../utils/profanityFilter');
 
 const { Op } = require('sequelize');
 
@@ -43,13 +44,16 @@ router.get('/', (request, response) => {
 
     // If a user ID is provided, get all tags that said user is following
     if (request.query.user) {
+        console.log(`finding user tags`);
         db.Tag.findAll({
-            include: {
+            include: [{
                 model: db.User,
-                where: { id: request.query.user },
+                through: { attributes: [] },
                 attributes: [],
-                through: { attributes: [] }
-            }
+                where: {
+                    id: request.query.user
+                }
+            }]
         }).then((result) => {
             response.json(result);
             return;
@@ -106,6 +110,7 @@ router.get('/', (request, response) => {
         }).then((result) => {
             response.json(result);
         }).catch((err) => {
+            console.log(err);
             response.status(500).json(err);
         });
     }
@@ -113,6 +118,14 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', authenticate, (request, response) => {
+
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
+        response.status(400).json({
+            err: 'Tag contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Tag.findOne({
         where: { name: request.body.name }
     }).then((result) => {
@@ -145,7 +158,14 @@ router.post('/', authenticate, (request, response) => {
 //     });
 // });
 
-router.put('/description', (request, response) => {
+router.put('/description', authenticate, (request, response) => {
+    if (profanityCheck(request.body.description)) {
+        response.status(400).json({
+            err: 'Tag contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Tag.update({
         description: request.body.description
     }, {
@@ -163,6 +183,7 @@ router.put('/user', authenticate, (request, response) => {
             name: { [Op.in]: request.body.tags }
         }
     }).then((result) => {
+        console.log(`tags found`);
         const insertArr = result.map((r) => {
             return { UserId: request.userId, TagId: r.dataValues.id };
         });
@@ -173,6 +194,7 @@ router.put('/user', authenticate, (request, response) => {
                 response.status(500).json(err);
             });
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });

@@ -71,6 +71,13 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', authenticate, (request, response) => {
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
+        response.status(400).json({
+            err: 'Service name or description contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Service.create({
         name: request.body.name,
         description: request.body.description,
@@ -81,6 +88,38 @@ router.post('/', authenticate, (request, response) => {
     }).catch((err) => {
         console.log(err);
         response.status(500).json(err);
+    })
+});
+
+// Get a list of unique services when passed an array of tag names
+// Also conditionally show/hide tags based on "show" property
+router.post("/uniqueServicesByTags", (req, res) => {
+
+    const arr = req.body.tags;
+    orArr = [];
+    
+    arr.forEach(tag => {
+        if(tag.show){
+            orArr.push({name: tag.name})
+        }        
+    });
+
+    db.Service.findAll({
+        include: [{
+            model: db.Tag,
+            where: {
+                [Op.or]: orArr
+            },
+            through: { attributes: [] }
+        },{
+            model: db.User,
+            attributes: ["id", "userName"]
+        }]
+    }).then(data => {
+        res.json(data);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(err)
     })
 });
 

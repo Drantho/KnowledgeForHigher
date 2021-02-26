@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import API from "../utils/API";
 
-export default function Browse() {
+export default function Browse(props) {
 
     const [allQuestions, setAllQuestions] = useState([{
         id:"1",
@@ -55,6 +55,13 @@ export default function Browse() {
         })
     }
 
+    const handleFollowTag = tag =>{
+        console.log(`handlefollowtag(${tag}) clicked`);
+        API.linkTagToUser({tags: [tag]}, props.userState.token).then(response => {
+            console.log(response);
+        });
+    }
+
     useEffect(() => {
         API.getAllQuestions().then(response => {
             setAllQuestions(response.data);
@@ -73,7 +80,7 @@ export default function Browse() {
             <h2>Search Tags</h2>
             <input name="tagSearchString" value={tagSearchString} onChange={handleTagInputChange}/>
             <ul>
-                {searchTags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
+                {searchTags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> - <button onClick={()=>handleFollowTag(tag.name)}>follow tag</button></li>)}
             </ul>
 
 
