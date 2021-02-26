@@ -113,7 +113,7 @@ function App() {
           <Home />
         </Route>
         <Route exact path="/browse">
-          <Browse />
+          <Browse userState={userState}/>
         </Route>
         <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
           <Profile userState={userState}/>
@@ -122,13 +122,13 @@ function App() {
           <Tag />
         </Route>
         <Route exact path="/question/:id">
-          <Question />
+          <Question userState={userState}/>
         </Route>
         <Route exact path="/users/:id">
           <User />
         </Route>
         <ProtectedRoute exact path="/home" isSignedIn={userState.isSignedIn}>
-          <UserHome />
+          <UserHome userState={userState}/>
         </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
           <Ask userState={userState}/>

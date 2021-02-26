@@ -40,12 +40,17 @@ router.get('/', (request, response) => {
 
 router.post('/', ({ body }, response) => {
 
-    // TODO: run username through profanity filter
+    if (profanityCheck(body.firstName + ' ' + body.lastName + ' ' + body.username)) {
+        response.status(400).json({
+            err: 'User contains disallowed term/phrase.'
+        });
+        return;
+    }
 
     db.User.create({
         firstName: body.firstName,
         lastName: body.lastName,
-        username: body.username,
+        userName: body.username,
         email: body.email,
         password: body.password
     }).then((result) => {
@@ -57,7 +62,12 @@ router.post('/', ({ body }, response) => {
 
 router.put('/',authenticate, ({ body }, response) => {
 
-    // TODO: run username through profanity filter
+    if (profanityCheck(body.firstName + ' ' + body.lastName + ' ' + body.username)) {
+        response.status(400).json({
+            err: 'User contains disallowed term/phrase.'
+        });
+        return;
+    }
 
     db.User.update({
         username: body.username,
@@ -89,6 +99,13 @@ router.delete('/:id', authenticate,  (request, response) => {
 // ===================================================
 
 router.post("/signup", (req, res) => {
+    if (profanityCheck(req.body.firstName + ' ' + req.body.lastName + ' ' + req.body.username)) {
+        response.status(400).json({
+            err: 'User contains disallowed term/phrase.'
+        });
+        return;
+    }
+
     db.User.create(req.body).then(user => {
         const token = jwt.sign({
             email: user.email,

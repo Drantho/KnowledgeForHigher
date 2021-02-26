@@ -62,6 +62,37 @@ export default {
     console.log(`${url}/api/tag?search=${search}`);
     return axios.get(`${url}/api/tag?search=${search}`);
   },
+  getTagsByUser: id => {
+    console.log(`${url}/api/tag?user=${id}`);
+    return axios.get(`${url}/api/tag?user=${id}`);
+  },
+  getTagQuestionFeed: (data, token) => {
+    console.log((`${url}/api/question/uniqueQuestionsByTags`));
+    console.log(data);
+    return axios.post(`${url}/api/question/uniqueQuestionsByTags`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
+  getTagServiceFeed: (data, token) => {
+    console.log((`${url}/api/service/uniqueServicesByTags`));
+    console.log(data);
+    return axios.post(`${url}/api/service/uniqueServicesByTags`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
+  linkTagToUser: (tag, token) => {
+    console.log((`${url}/api/tag/user`));
+    console.log(tag);
+    return axios.put(`${url}/api/tag/user`, tag, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)
@@ -83,6 +114,36 @@ export default {
     console.log((`${url}/api/tag/service/`));
     console.log(data);
     return axios.put(`${url}/api/tag/service/`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
+  getAllQuestionComments: id => {
+    console.log((`${url}/api/comment?question=${id}`));
+    return axios.get(`${url}/api/comment?question=${id}`)
+  },
+  createQuestionComment: (data, token) => {
+    console.log((`${url}/api/comment`));
+    console.log(data);
+    return axios.post(`${url}/api/comment`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
+  getAnswersByUser: id => {
+    console.log((`${url}/api/answer?user=${id}`));
+    return axios.get(`${url}/api/answer?user=${id}`)
+  },
+  getAnswersByQuestion: id => {
+    console.log((`${url}/api/answer?question=${id}`));
+    return axios.get(`${url}/api/answer?question=${id}`)
+  },
+  createAnswer: (data, token) => {
+    console.log((`${url}/api/answer`));
+    console.log(data);
+    return axios.post(`${url}/api/answer`, data, {
       headers:{
           authorization: `Bearer: ${token}`
       }
