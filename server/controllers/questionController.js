@@ -78,6 +78,38 @@ router.get('/', (request, response) => {
 
 });
 
+router.post("/uniqueQuestionsByTags", (req, res) => {
+
+    const arr = req.body.tags;
+    console.log(arr);
+    orArr = [];
+    
+    arr.forEach(tag => {
+        if(tag.show){
+            orArr.push({name: tag.name})
+        }        
+    });
+
+    console.log(`orArr: `, orArr);
+
+    db.Question.findAll({
+        include: [{
+            model: db.Tag,
+            where: {
+                [Op.or]: orArr
+            },
+            through: { attributes: [] }
+        },{
+            model: db.Answer
+        }]
+    }).then(data => {
+        res.json(data);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(err)
+    })
+});
+
 // Retreive all unanswered questions
 router.get('/unanswered', (request, response) => {
     db.Question.findAll({

@@ -62,6 +62,37 @@ export default {
     console.log(`${url}/api/tag?search=${search}`);
     return axios.get(`${url}/api/tag?search=${search}`);
   },
+  getTagsByUser: id => {
+    console.log(`${url}/api/tag?user=${id}`);
+    return axios.get(`${url}/api/tag?user=${id}`);
+  },
+  getTagQuestionFeed: (data, token) => {
+    console.log((`${url}/api/question/uniqueQuestionsByTags`));
+    console.log(data);
+    return axios.post(`${url}/api/question/uniqueQuestionsByTags`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
+  getTagServiceFeed: (data, token) => {
+    console.log((`${url}/api/service/uniqueServicesByTags`));
+    console.log(data);
+    return axios.post(`${url}/api/service/uniqueServicesByTags`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
+  linkTagToUser: (tag, token) => {
+    console.log((`${url}/api/tag/user`));
+    console.log(tag);
+    return axios.put(`${url}/api/tag/user`, tag, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })  
+  },
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)

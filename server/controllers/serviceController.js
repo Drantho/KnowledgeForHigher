@@ -91,6 +91,38 @@ router.post('/', authenticate, (request, response) => {
     })
 });
 
+router.post("/uniqueServicesByTags", (req, res) => {
+
+    const arr = req.body.tags;
+    orArr = [];
+    
+    arr.forEach(tag => {
+        if(tag.show){
+            orArr.push({name: tag.name})
+        }        
+    });
+
+    console.log(`orArr: `, orArr);
+
+    db.Service.findAll({
+        include: [{
+            model: db.Tag,
+            where: {
+                [Op.or]: orArr
+            },
+            through: { attributes: [] }
+        },{
+            model: db.User,
+            attributes: ["id", "userName"]
+        }]
+    }).then(data => {
+        res.json(data);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(err)
+    })
+});
+
 // Utilize the 'delete' method to deactivate a service
 router.delete('/:id', authenticate, (request, response) => {
     db.Service.update({ isActive: false }, {
