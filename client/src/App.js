@@ -158,6 +158,7 @@ function App() {
         <Route path="*">
           <NotFound />
         </Route>
+        
       </Switch>
     </Router>
   );
