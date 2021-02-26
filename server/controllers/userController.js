@@ -4,7 +4,8 @@ const db = require('../models');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../utils/authenticate");
-const profanityCheck = require("../utils/profanityFilter");
+const profanityCheck = require('../utils/profanityFilter');
+
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
