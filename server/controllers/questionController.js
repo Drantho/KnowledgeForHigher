@@ -78,10 +78,11 @@ router.get('/', (request, response) => {
 
 });
 
-router.post("/uniqueQuestionsByTags", (req, res) => {
+// Get a list of unique questions when passed an array of tag names
+// Also conditionally show/hide tags based on "show" property
+router.post("/uniqueQuestionsByTags", (request, response) => {
 
-    const arr = req.body.tags;
-    console.log(arr);
+    const arr = request.body.tags;
     orArr = [];
     
     arr.forEach(tag => {
@@ -89,8 +90,6 @@ router.post("/uniqueQuestionsByTags", (req, res) => {
             orArr.push({name: tag.name})
         }        
     });
-
-    console.log(`orArr: `, orArr);
 
     db.Question.findAll({
         include: [{
@@ -103,10 +102,10 @@ router.post("/uniqueQuestionsByTags", (req, res) => {
             model: db.Answer
         }]
     }).then(data => {
-        res.json(data);
+        response.json(data);
     }).catch(err => {
         console.log(err);
-        res.status(500).json(err)
+        response.status(500).json(err)
     })
 });
 

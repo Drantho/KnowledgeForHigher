@@ -91,6 +91,8 @@ router.post('/', authenticate, (request, response) => {
     })
 });
 
+// Get a list of unique services when passed an array of tag names
+// Also conditionally show/hide tags based on "show" property
 router.post("/uniqueServicesByTags", (req, res) => {
 
     const arr = req.body.tags;
@@ -101,8 +103,6 @@ router.post("/uniqueServicesByTags", (req, res) => {
             orArr.push({name: tag.name})
         }        
     });
-
-    console.log(`orArr: `, orArr);
 
     db.Service.findAll({
         include: [{
