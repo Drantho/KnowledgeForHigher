@@ -18,11 +18,7 @@ import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-import Chat from './utils/chatAPI';
-
 function App() {
-
-  const chat = Chat.build();
 
   const [formObj, setFormObj] = useState({
     userName: "",
