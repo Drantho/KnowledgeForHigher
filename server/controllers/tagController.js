@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
+const profanityCheck = require('../utils/profanityFilter');
 
 const { Op } = require('sequelize');
 
@@ -113,6 +114,14 @@ router.get('/', (request, response) => {
 });
 
 router.post('/', authenticate, (request, response) => {
+
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
+        response.status(400).json({
+            err: 'Tag contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Tag.findOne({
         where: { name: request.body.name }
     }).then((result) => {
@@ -145,7 +154,14 @@ router.post('/', authenticate, (request, response) => {
 //     });
 // });
 
-router.put('/description', (request, response) => {
+router.put('/description', authenticate, (request, response) => {
+    if (profanityCheck(request.body.description)) {
+        response.status(400).json({
+            err: 'Tag contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Tag.update({
         description: request.body.description
     }, {

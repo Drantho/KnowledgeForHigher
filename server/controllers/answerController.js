@@ -58,7 +58,12 @@ router.get('/', (request, response) => {
 // Create an answer
 router.post('/', authenticate, (request, response) => {
 
-    // TODO: Validate profanity
+    if (profanityCheck(request.body.text)) {
+        response.status(400).json({
+            err: 'Answer body contains disallowed term/phrase'
+        });
+        return;
+    }
 
     db.Answer.create({
         text: request.body.text,
@@ -72,6 +77,13 @@ router.post('/', authenticate, (request, response) => {
 });
 
 router.put('/', authenticate, (request, response) => {
+    if (profanityCheck(request.body.name + ' ' + request.body.description)) {
+        response.status(400).json({
+            err: 'Answer body contains disallowed term/phrase'
+        });
+        return;
+    }
+
     db.Answer.update({ text: request.body.text }, {
         where: [{ id: request.body.id },
             {UserId: request.userId}

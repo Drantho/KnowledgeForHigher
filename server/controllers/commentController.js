@@ -84,6 +84,13 @@ router.get('/', (request, response) => {
 });
 
 router.put('/', authenticate, (request, response) => {
+    if (profanityCheck(request.body.text)) {
+        response.status(400).json({
+            err: 'Comment body contains disallowed term/phrase.'
+        });
+        return;
+    }
+    
     db.Comment.update({
         text: request.body.text
     }, {
@@ -98,7 +105,12 @@ router.put('/', authenticate, (request, response) => {
 
 router.post('/', authenticate, (request, response) => {
 
-    // TODO: check for profanity
+    if (profanityCheck(request.body.text)) {
+        response.status(400).json({
+            err: 'Comment body contains disallowed term/phrase'
+        });
+        return;
+    }
     
     const createParams = {
         text: request.body.text,
