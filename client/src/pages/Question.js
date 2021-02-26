@@ -107,6 +107,9 @@ export default function Question(props) {
             <h1>Question Page: {id}</h1>
             <h2>{question.title}</h2>
             <p>{question.text}</p>
+            <p>
+                <strong>Rating</strong><button>Up</button><button>Down</button>
+            </p>            
             <strong>Tags</strong>
             <ul>
                 {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}

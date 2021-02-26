@@ -170,5 +170,14 @@ export default {
           authorization: `Bearer: ${token}`
       }
   })
+  },
+  createRating: (data, token) => {
+    console.log((`${url}/api/rating`));
+    console.log(data);
+    return axios.post(`${url}/api/rating`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
   }
 };

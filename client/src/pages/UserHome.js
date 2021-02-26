@@ -4,13 +4,7 @@ import API from "../utils/API";
 
 export default function UserHome(props) {
 
-    const [tags, setTags] = useState([
-        {
-            id: "",
-            name: "",
-            show: true
-        }
-    ]);
+    const [tags, setTags] = useState([]);
 
     const [filter, setFilter] = useState(false);
 
