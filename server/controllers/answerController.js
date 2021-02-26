@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
+const profanityCheck = require('../utils/profanityFilter');
+
 
 const { Op } = require('sequelize');
 
