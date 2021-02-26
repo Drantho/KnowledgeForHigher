@@ -44,13 +44,16 @@ router.get('/', (request, response) => {
 
     // If a user ID is provided, get all tags that said user is following
     if (request.query.user) {
+        console.log(`finding user tags`);
         db.Tag.findAll({
-            include: {
+            include: [{
                 model: db.User,
-                where: { id: request.query.user },
+                through: { attributes: [] },
                 attributes: [],
-                through: { attributes: [] }
-            }
+                where: {
+                    id: request.query.user
+                }
+            }]
         }).then((result) => {
             response.json(result);
             return;
@@ -107,6 +110,7 @@ router.get('/', (request, response) => {
         }).then((result) => {
             response.json(result);
         }).catch((err) => {
+            console.log(err);
             response.status(500).json(err);
         });
     }
@@ -179,6 +183,7 @@ router.put('/user', authenticate, (request, response) => {
             name: { [Op.in]: request.body.tags }
         }
     }).then((result) => {
+        console.log(`tags found`);
         const insertArr = result.map((r) => {
             return { UserId: request.userId, TagId: r.dataValues.id };
         });
@@ -189,6 +194,7 @@ router.put('/user', authenticate, (request, response) => {
                 response.status(500).json(err);
             });
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });
