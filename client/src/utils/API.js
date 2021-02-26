@@ -179,5 +179,9 @@ export default {
           authorization: `Bearer: ${token}`
       }
     })
+  },
+  getRating: (id, type) => {
+    console.log((`${url}/api/rating?ref=${id}?type=${type}`));
+    return axios.get(`${url}/api/rating?ref=${id}&type=${type}`)
   }
 };

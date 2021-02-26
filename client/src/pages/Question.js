@@ -36,7 +36,9 @@ export default function Question(props) {
             userName: "",
             id: ""
         }
-    }])
+    }]);
+
+    const [ratings, setRatings] = useState({});
 
     const handleInputChaged = event => {
         const { name, value } = event.target;
@@ -85,6 +87,24 @@ export default function Question(props) {
         })
     }
 
+    const HandleRating = (rating, target, type) => {
+        API.createRating(
+            {
+                isPositive: rating,
+                type: type,
+                ref: target 
+            },
+            props.userState.token    
+        ).then(response => {
+            console.log(response);
+            API.getRating(id, "question").then(response => {
+                setRatings(response.data)
+            })
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     useEffect(() => {
         API.getQuestionById(id).then(response => {
             setQuestion(response.data);
@@ -99,6 +119,11 @@ export default function Question(props) {
         API.getAnswersByQuestion(id).then(response => {
             console.log(response.data);
             setAnswers(response.data);
+        });
+
+        API.getRating(id, "question").then(response => {
+            console.log(response);
+            setRatings(response.data);
         })
     }, [])
 
@@ -108,8 +133,15 @@ export default function Question(props) {
             <h2>{question.title}</h2>
             <p>{question.text}</p>
             <p>
-                <strong>Rating</strong><button>Up</button><button>Down</button>
-            </p>            
+                <strong>Rating</strong><br/>                
+                <button onClick={()=>{HandleRating(true, id, "question")}}>Up</button><button onClick={()=>{HandleRating(false, id, "question")}}>Down</button>
+            </p>         
+            <p>
+                <strong>Up: {ratings.positive}</strong>
+            </p>         
+            <p>
+                <strong>Down: {ratings.negative}</strong>
+            </p>   
             <strong>Tags</strong>
             <ul>
                 {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
