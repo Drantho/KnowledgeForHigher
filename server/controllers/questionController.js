@@ -3,6 +3,8 @@ const router = express.Router();
 const db = require('../models');
 const jwt = require("jsonwebtoken")
 const authenticate = require("../utils/authenticate");
+const profanityCheck = require('../utils/profanityFilter');
+
 
 const { Op } = require('sequelize');
 
