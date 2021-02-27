@@ -2,7 +2,7 @@ import {React, useState, useEffect} from 'react'
 import API from '../utils/API';
 import { useParams, Link } from 'react-router-dom';
 
-export default function Service() {
+export default function Service(props) {
 
     const {id} = useParams();
 
@@ -32,6 +32,8 @@ export default function Service() {
         }        
     }]);
 
+    const [ratings, setRatings] = useState({});
+
     const handleInputChanged = event => {
         setComment({...comment, text: event.target.value});
     }
@@ -48,6 +50,24 @@ export default function Service() {
             setComment(emptyComment);
         })
     }
+
+    const HandleRating = (rating, target, type) => {
+        API.createRating(
+            {
+                isPositive: rating,
+                type: type,
+                ref: target 
+            },
+            props.userState.token    
+        ).then(response => {
+            console.log(response);
+            API.getRating(id, "question").then(response => {
+                setRatings(response.data)
+            })
+        }).catch(err => {
+            console.log(err);
+        })
+    }
     
     useEffect(() => {
         
@@ -59,7 +79,12 @@ export default function Service() {
         API.getAllServiceComments(id).then(response => {
             setComments(response.data);
             console.log(response.data);
-        })
+        });
+
+        API.getRating(id, "service").then(response => {
+            console.log(response);
+            setRatings(response.data);
+        });
 
     }, [])
 
@@ -68,6 +93,16 @@ export default function Service() {
             <h1>Service Page: {service.id}</h1>
             <h2>{service.name}</h2>
             <h2>Provided By: <Link to={`/users/${service.User.id}`}>{service.User.userName}</Link></h2>
+            <p>
+                <strong>Rating</strong><br/>                
+                <button onClick={()=>{HandleRating(true, id, "question")}}>Up</button><button onClick={()=>{HandleRating(false, id, "question")}}>Down</button>
+            </p>
+            <p>
+                <strong>Up: {ratings.positive}</strong>
+            </p>         
+            <p>
+                <strong>Down: {ratings.negative}</strong>
+            </p> 
             <p>{service.description}</p>
             <p>
                 <strong>Price: </strong>${service.price}

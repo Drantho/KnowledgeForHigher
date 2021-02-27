@@ -119,6 +119,10 @@ export default {
       }
     })
   },
+  getAllServiceComments: id => {
+    console.log((`${url}/api/comment?service=${id}`));
+    return axios.get(`${url}/api/comment?service=${id}`)
+  },
   getAllQuestionComments: id => {
     console.log((`${url}/api/comment?question=${id}`));
     return axios.get(`${url}/api/comment?question=${id}`)
