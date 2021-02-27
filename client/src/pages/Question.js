@@ -4,12 +4,12 @@ import API from '../utils/API';
 
 export default function Question(props) {
     const { id } = useParams();
-    
+
     const emptyQuestionComment = {
         text: "",
         type: "question",
         ref: id
-    }; 
+    };
 
     const [question, setQuestion] = useState({
         title: "",
@@ -35,7 +35,8 @@ export default function Question(props) {
         User: {
             userName: "",
             id: ""
-        }
+        },
+        Ratings: []
     }]);
 
     const [ratings, setRatings] = useState({});
@@ -47,7 +48,7 @@ export default function Question(props) {
                 setAnswer({ ...answer, text: value });
                 break;
             case "questionComment":
-                setQuestionComment({...questionComment, text: value});
+                setQuestionComment({ ...questionComment, text: value });
                 break;
             case "anwerComment":
                 break;
@@ -57,74 +58,71 @@ export default function Question(props) {
 
     }
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        API.createAnswer(answer, props.userState.token).then(response => {
-            console.log(response.data);
+    const handleSubmit = async () => {
+
+        if (answer) {
+
+            await API.createAnswer(answer, props.userState.token).catch(err => console.log(err));
+
             setAnswer({ ...answer, text: "" });
-            API.getAnswersByQuestion(id).then(response => {
-                setAnswers(response.data)
-            })
-        });
 
-        API.getAnswersByQuestion(id).then(response => {
-            setAnswers(response.data);
-            console.log(response.data);
-        });
+            const newAnswers = await API.getAnswersByQuestion(id).catch(err => console.log(err));
+            setAnswers(newAnswers.data);
+
+        }
     }
 
-    const handleAddQuestionComment = event => {
-        event.preventDefault();
+    const handleAddQuestionComment = async () => {
 
-        API.createQuestionComment(questionComment, props.userState.token).then(response => {
-            console.log(response);
-
-            API.getAllQuestionComments(id).then(response => {
-                setQuestionComments(response.data);
-            });
-
+        if(questionComment){
+            
+            await API.createQuestionComment(questionComment, props.userState.token).catch(err => console.log(err));
+            
+            const newQuestionComments = await API.getAllQuestionComments(id).catch(err => console.log(err));
+            setQuestionComments(newQuestionComments.data);
+            
             setQuestionComment(emptyQuestionComment);
-        })
+        }
+
     }
 
-    const HandleRating = (rating, target, type) => {
-        API.createRating(
-            {
-                isPositive: rating,
-                type: type,
-                ref: target 
-            },
-            props.userState.token    
-        ).then(response => {
-            console.log(response);
-            API.getRating(id, "question").then(response => {
-                setRatings(response.data)
-            })
-        }).catch(err => {
-            console.log(err);
-        })
+    const HandleRating = async (rating, target, type) => {
+
+        const newRating = {
+            isPositive: rating,
+            type: type,
+            ref: target
+        }
+
+        await API.createRating(newRating, props.userState.token).catch(err => console.log(err));
+
+        switch (type) {
+            case "answer":
+                const newAnswers = await API.getAnswersByQuestion(id);
+                setAnswers(newAnswers.data);
+                break;
+            case "question":
+                const newRatings = await API.getRating(id, "question");
+                setRatings(newRatings.data);
+                break;
+            default:
+                break;
+        }
     }
 
-    useEffect(() => {
-        API.getQuestionById(id).then(response => {
-            setQuestion(response.data);
-            console.log(`question data`, response.data);
-        });
+    useEffect(async () => {
+        const questionToShow = await API.getQuestionById(id).catch(err => console.log(err));
+        setQuestion(questionToShow.data);
 
-        API.getAllQuestionComments(id).then(response => {
-            setQuestionComments(response.data);
-            console.log(`all comments: `, response.data);
-        });
+        const commentsToShow = await API.getAllQuestionComments(id).catch(err => console.log(err));;
+        setQuestionComments(commentsToShow.data);
 
-        API.getAnswersByQuestion(id).then(response => {
-            console.log(response.data);
-            setAnswers(response.data);
-        });
+        const answerToShow = await API.getAnswersByQuestion(id).catch(err => console.log(err));;
+        setAnswers(answerToShow.data);
 
-        API.getRating(id, "question").then(response => {
-            console.log(response);
-            setRatings(response.data);
-        })
+        const ratingToShow = await API.getRating(id, "question").catch(err => console.log(err));;
+        setRatings(ratingToShow.data);
+
     }, [])
 
     return (
@@ -133,15 +131,15 @@ export default function Question(props) {
             <h2>{question.title}</h2>
             <p>{question.text}</p>
             <p>
-                <strong>Rating</strong><br/>                
-                <button onClick={()=>{HandleRating(true, id, "question")}}>Up</button><button onClick={()=>{HandleRating(false, id, "question")}}>Down</button>
-            </p>         
+                <strong>Rating</strong><br />
+                <button onClick={() => { HandleRating(true, id, "question") }}>Up</button><button onClick={() => { HandleRating(false, id, "question") }}>Down</button>
+            </p>
             <p>
                 <strong>Up: {ratings.positive}</strong>
-            </p>         
+            </p>
             <p>
                 <strong>Down: {ratings.negative}</strong>
-            </p>   
+            </p>
             <strong>Tags</strong>
             <ul>
                 {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
@@ -154,21 +152,24 @@ export default function Question(props) {
                 Comment
             </label><br />
             <textarea name="questionComment" value={questionComment.text} onChange={handleInputChaged} placeholder="comments about the question itself" /><br />
-            <button onClick={handleAddQuestionComment}>Submit</button><br/>
+            <button onClick={handleAddQuestionComment}>Submit</button><br />
             <strong>Answers</strong>
             <ul>
                 {answers.map(answer => {
-                return <li key={answer.id}>{answer.text} - 
-                    <Link to={`/users/${answer.User.id}`}>{answer.User.userName}
-                    </Link>
+                    return <li key={answer.id}>{answer.text}<br />
+                        Up: {answer.Ratings.filter(rating => rating.isPositive).length} -
+                        Down: {answer.Ratings.filter(rating => !rating.isPositive).length}<br />
+                        <button onClick={() => HandleRating(true, answer.id, "answer")}>Up</button>
+                        <button onClick={() => HandleRating(false, answer.id, "answer")}>Down</button><br />
+                        <Link to={`/users/${answer.User.id}`}>{answer.User.userName}
+                        </Link>
                     </li>
                 })}
             </ul>
             <h2>Add your anwer</h2>
-            <form>
-                <textarea name="answer" value={answer.text} onChange={handleInputChaged} /><br />
-                <button onClick={handleSubmit}>Submit</button>
-            </form>
+            <textarea name="answer" value={answer.text} onChange={handleInputChaged} /><br />
+            <button onClick={handleSubmit}>Submit</button>
+
         </div>
     )
 }

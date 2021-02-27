@@ -185,7 +185,7 @@ export default {
     })
   },
   getRating: (id, type) => {
-    console.log((`${url}/api/rating?ref=${id}?type=${type}`));
+    console.log((`${url}/api/rating?ref=${id}&type=${type}`));
     return axios.get(`${url}/api/rating?ref=${id}&type=${type}`)
   }
 };

@@ -82,7 +82,7 @@ export default function Service(props) {
         });
 
         API.getRating(id, "service").then(response => {
-            console.log(response);
+            console.log(`ratings: `, response);
             setRatings(response.data);
         });
 
@@ -95,7 +95,7 @@ export default function Service(props) {
             <h2>Provided By: <Link to={`/users/${service.User.id}`}>{service.User.userName}</Link></h2>
             <p>
                 <strong>Rating</strong><br/>                
-                <button onClick={()=>{HandleRating(true, id, "question")}}>Up</button><button onClick={()=>{HandleRating(false, id, "question")}}>Down</button>
+                <button onClick={()=>{HandleRating(true, id, "service")}}>Up</button><button onClick={()=>{HandleRating(false, id, "service")}}>Down</button>
             </p>
             <p>
                 <strong>Up: {ratings.positive}</strong>

@@ -28,7 +28,7 @@ router.get('/', (request, response) => {
         where: {
             type: request.query.type,
             QuestionId: request.query.type === "question" ? request.query.ref : null,
-            ServiceId: request.query.type === "servicce" ? request.query.ref : null,
+            ServiceId: request.query.type === "service" ? request.query.ref : null,
             AnswerId: request.query.type === "answer" ? request.query.ref : null,
             isPositive: true
         }
@@ -37,7 +37,7 @@ router.get('/', (request, response) => {
             where: {
                 type: request.query.type,
                 QuestionId: request.query.type === "question" ? request.query.ref : null,
-                ServiceId: request.query.type === "servicce" ? request.query.ref : null,
+                ServiceId: request.query.type === "service" ? request.query.ref : null,
                 AnswerId: request.query.type === "answer" ? request.query.ref : null,
                 isPositive: false
             }

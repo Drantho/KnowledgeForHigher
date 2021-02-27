@@ -15,7 +15,10 @@ router.get('/', (request, response) => {
             include:[{ 
                 model: db.User,
                 attributes: ["userName", "id"]
-            }]
+            },
+        {
+            model: db.Rating
+        }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
@@ -33,7 +36,10 @@ router.get('/', (request, response) => {
             },{
                 model: db.User,
                 attributes: ["userName", "id"]
-            }]
+            },
+            {
+                model: db.Rating
+        }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
