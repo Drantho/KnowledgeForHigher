@@ -1,49 +1,73 @@
 import React, { Component } from 'react';
-import { Box, Anchor, Avatar, Button,Grid,Text, Paragraph } from 'grommet';
+import { Box, Anchor, Avatar, Button, Grid, Text, Paragraph } from 'grommet';
 import { Link } from 'react-router-dom'
+import Tags from '../Tags'
 import './style.css';
 
 
-export default function Question() {
+export default function Question(props) {
 
     const Icon = '/bookicon.png';
     return (
-        <Box
-            justify="center"
-            align="center"
-            pad="10px"
-            background="#F3F3F3"
-            round="5px"
-            id="questionBox"
-        >
-           
-                <Grid
-                    areas={[
-                        ['add', 'search',  'search'],
-                        ['description', 'description', 'description']
-                    ]}
-                    columns={['1/4', 'flex',  'flex']}
-                    rows={['flex']}
-                    responsive="true"
+        <Box>
+                <Box
+                    justify="center"
+                    align="center"
+                    pad="10px"
+                    background="#F3F3F3"
+                    round="5px"
+                    gridArea="questionbox"
+                    id="questionBox"
                 >
-                    <Box gridArea="add" border="bottom">
+
+                    <Grid
+                        areas={[
+                            ['search', 'search', 'search'],
+                            ['border', 'border', 'border'],
+                            ['description', 'description', 'description'],
+                        ]}
+                        columns={['flex', 'flex', 'flex']}
+                        rows={['flex']}
+                        responsive="true"
+                    >
+                        {/* <Box gridArea="add"  id="avatarIcon">
                         <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon} size="37px"/></Link>
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon} size="50px"/></Link>
                         </Anchor>
-                    </Box>
+                    </Box> */}
 
-                    <Box gridArea="search" id="questionTitleBox" border="bottom">
-                         <Text id="questionTitle" size="20px"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 15 </Text>
-                    </Box>
+                        {/* <Box gridArea="search" border id="questionTitleBox" >
+                        
+                         <Text id="questionTitle" size="40px" >{props.props.title}</Text>
+                    </Box> */}
 
-                    <Box gridArea="description" id="questionSizeBox">
-                         <Box id="questionSize" wordBreak="break-word" pad="5px"><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p></Box>
-                    </Box>
+                        <Box gridArea="search">
+                            <Anchor color="white" >
+                                <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="50px" /></Link>
+                            </Anchor>
+                        </Box>
 
-                </Grid>
-        
-            </Box>
+                        <Box gridArea="search" width="1000px" >
+                            <Text size="40px" wordBreak="break-word" id="questionTitle">{props.props.title}</Text>
+                        </Box>
 
+                        <Box gridArea="border" border="bottom" />
+
+                        <Box gridArea="description" id="questionSizeBox">
+                            <Box id="questionSize" wordBreak="break-word" pad="5px">
+                                <Text size="medium">{props.props.text}</Text>
+                            </Box>
+                        </Box>
+
+                        {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
+                    </Grid>
+
+                </Box>
+
+                <Box alignSelf="start" margin={{ "top": "-45px" }} pad={{ "bottom": "30px" }} gridArea="tagbox" direction="row">
+                    {props.props.Tags.map(tag => <Tags key={tag.id}>{tag.name}</Tags>)}
+                </Box>
+        </Box>
     )
 }
 

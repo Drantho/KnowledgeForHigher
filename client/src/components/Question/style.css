@@ -3,23 +3,25 @@
 }
 
 #avatarIcon {
-    margin-right: 5px;
+    margin-right: 250px;
 }
 
 #questionTitle {
-    margin-left: -120px;
+    /* margin-left: 5px;
     margin-bottom: 5px;
-    margin-right: 5px;
-    hyphens: manual;
+     */
+    margin-left: 75px;
 }
 
 #questionTitleBox{
-    margin-right: 5px;
+    /* margin-left: -200px;
+     */
+    
 }
 
 #questionSize {
     font-size: 15px;
-    margin-left: 20px;
+    margin-left: 5px;
 }
 
 #questionSizeBox {

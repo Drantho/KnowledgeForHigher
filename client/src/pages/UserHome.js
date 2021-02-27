@@ -1,9 +1,13 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import API from "../utils/API";
+import { Box, Grid } from 'grommet';
+import QuestionBox from '../components/QuestionBox'
+import Question from '../components/Question'
+import UserTags from '../components/UserTags'
 
 export default function UserHome(props) {
-
+    console.log(props)
     const [tags, setTags] = useState([
         {
             id: "",
@@ -27,7 +31,7 @@ export default function UserHome(props) {
     }
 
     useEffect(async () => {
-        const tagsToFeed = await API.getTagsByUser(props.userState.id);        
+        const tagsToFeed = await API.getTagsByUser(props.userState.id);
         setTags(tagsToFeed.data.map(tag => {
             tag.show = true;
             return tag;
@@ -58,7 +62,7 @@ export default function UserHome(props) {
             <ul>
                 {tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></li>)}
             </ul>
-            <h3>Questions</h3>
+            {/* <h3>Questions</h3>
             <ul>
                 {questions.map(question => {
                     return <li key={question.id}>
@@ -66,7 +70,7 @@ export default function UserHome(props) {
                         {question.Tags.map(tag => <span key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                     </li>
                 })}
-            </ul>
+            </ul> */}
             <h3>Services</h3>
             <ul>
                 {services.map(service => {
@@ -77,6 +81,38 @@ export default function UserHome(props) {
                 }
                 )}
             </ul>
+
+            <Grid
+                areas={[
+                    ['blank3', 'blank3', 'blank3'],
+                    ['blank1', 'main', 'blank2'],
+                    ['myTags', 'question', 'blank2'],
+                    ['myTags', 'question', 'blank2']
+                ]}
+                columns={['1/4', 'flex', '1/4']}
+                rows={['50px']}
+                gap="small"
+                responsive="true"
+            >
+                <Box gridArea="blank1" />
+                <Box gridArea="blank2" />
+                <Box gridArea="blank3" height="500px" />
+
+                <Box gridAreah="myTags">
+                    <UserTags/>
+                </Box>
+
+                <Box gridArea="main" height="flex">
+                    <QuestionBox />
+                </Box>
+
+                <Box gridArea="question" pad="5px">
+                    {questions.map(question=><Question props={question}/>)}
+                </Box>
+
+            </Grid>
         </div>
+
+
     )
 }

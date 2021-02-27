@@ -12,7 +12,7 @@ export default function QuestionBox() {
             pad="5px"
             background="#2B3952"
             round="5px"
-            height="35px"
+            height="60px"
         >
            
                 <Grid
