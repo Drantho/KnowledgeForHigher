@@ -60,6 +60,11 @@ export default function NavbarTest() {
                         404
                     </Link>
                 </li>
+                <li>
+                    <Link to='/messages'>
+                        Messages
+                    </Link>
+                </li>
             </ul>
         </div>
     )
