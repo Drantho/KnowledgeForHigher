@@ -104,12 +104,12 @@ export default function UserHome(props) {
                 <Box gridAreah="myTags">
                     <UserTags />
                     <Box direction="row">
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name} </Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
                     </Box>
                 </Box>
 
                 <Box gridArea="main" height="flex">
-                    <QuestionBox />
+                    
                 </Box>
 
                 <Box gridArea="question" pad="5px">
