@@ -5,6 +5,7 @@ import { Box, Grid } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
 import UserTags from '../components/UserTags'
+import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 
 export default function UserHome(props) {
@@ -57,12 +58,12 @@ export default function UserHome(props) {
 
     return (
         <div>
-            <h1>User Home</h1>
+            {/* <h1>User Home</h1>
             <h2>My feed</h2>
             <h3>Tags</h3>
             <ul>
                 {tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></li>)}
-            </ul>
+            </ul> */}
             {/* <h3>Questions</h3>
             <ul>
                 {questions.map(question => {
@@ -72,7 +73,7 @@ export default function UserHome(props) {
                     </li>
                 })}
             </ul> */}
-            <h3>Services</h3>
+            {/* <h3>Services</h3>
             <ul>
                 {services.map(service => {
                     return <li key={service.id}>
@@ -81,7 +82,7 @@ export default function UserHome(props) {
                     </li>
                 }
                 )}
-            </ul>
+            </ul> */}
 
             <Grid
                 areas={[
@@ -100,9 +101,9 @@ export default function UserHome(props) {
                 <Box gridArea="blank3" height="500px" />
 
                 <Box gridAreah="myTags">
-                    <UserTags/>
+                    <UserTags />
                     <Box direction="row">
-                    {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
                     </Box>
                 </Box>
 
@@ -111,11 +112,20 @@ export default function UserHome(props) {
                 </Box>
 
                 <Box gridArea="question" pad="5px">
-                    {questions.map(question=><Question props={question}/>)}
+                    {questions.map(question => <Question props={question} />)}
                 </Box>
 
                 <Box gridArea="services">
-                    <UserTags/>
+                    <FollowedServices />
+                    <Box>
+                        {services.map(service => {
+                            return <li key={service.id}>
+                                <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
+                                {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
+                            </li>
+                        }
+                        )}
+                    </Box>
                 </Box>
 
             </Grid>
