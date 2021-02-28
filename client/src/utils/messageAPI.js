@@ -11,15 +11,27 @@ export default {
         });
     },
 
-    getThreads: (userID) => {
-        return axios.get(`${url}/api/thread/?=$${userID}`);
+    getThreads: (token) => {
+        return axios.get(`${url}/api/thread/`, {
+            headers: {
+                authorization: `Bearer: ${token}`
+            }
+        });
     },
 
-    getThreadMessages: (threadID) => {
-
+    getThreadMessages: (threadID, token) => {
+        return axios.get(`${url}/api/message/?thread=${threadID}`, {
+            headers: {
+                authorization: `Bearer: ${token}`
+            }
+        });
     },
 
-    sendMessage: (threadID) => {
-
+    sendMessage: (threadID, data, token) => {
+        return axios.post(`${url}/api/message`, data, {
+            headers: {
+                authorization: `Bearer: ${token}`
+            }
+        })
     }
 }
