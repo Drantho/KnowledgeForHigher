@@ -6,18 +6,16 @@ const authenticate = require("../utils/authenticate");
 const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
-    // Get all messages b/w two users
+    // Get all messages in a thread
     db.Message.findAll({
-        where: {
-            [ Op.or ] : [
-                { senderId: request.query.sender },
-                { senderId: request.query.recipient }
-            ],
-            [ Op.or ] : [
-                { recipientId: request.query.recipient },
-                { recipientId: request.query.sender }
-            ]
-        }
+        include: {
+            model: db.Thread,
+            where: {
+                id: request.query.thread
+            },
+            attributes: []
+        },
+        order: [ ['createdAt', 'DESC'] ]
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
@@ -27,8 +25,9 @@ router.get('/', (request, response) => {
 
 router.post('/', (request, response) => {
     db.Message.create({
-        senderId: request.body.sender,
-        recipientId: request.body.recipient,
+        senderId: request.body.senderId,
+        recipientId: request.body.recipientId,
+        ThreadId: request.body.thread,
         body: request.body.body
     }).then( (result) => {
         response.json(result);
