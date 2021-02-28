@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
+const profanityCheck = require('../utils/profanityFilter');
+
 
 const { Op } = require('sequelize');
 
@@ -13,7 +15,10 @@ router.get('/', (request, response) => {
             include:[{ 
                 model: db.User,
                 attributes: ["userName", "id"]
-            }]
+            },
+        {
+            model: db.Rating
+        }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
@@ -31,7 +36,10 @@ router.get('/', (request, response) => {
             },{
                 model: db.User,
                 attributes: ["userName", "id"]
-            }]
+            },
+            {
+                model: db.Rating
+        }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {

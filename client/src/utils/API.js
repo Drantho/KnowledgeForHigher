@@ -119,6 +119,10 @@ export default {
       }
     })
   },
+  getAllServiceComments: id => {
+    console.log((`${url}/api/comment?service=${id}`));
+    return axios.get(`${url}/api/comment?service=${id}`)
+  },
   getAllQuestionComments: id => {
     console.log((`${url}/api/comment?question=${id}`));
     return axios.get(`${url}/api/comment?question=${id}`)
@@ -170,5 +174,18 @@ export default {
           authorization: `Bearer: ${token}`
       }
   })
+  },
+  createRating: (data, token) => {
+    console.log((`${url}/api/rating`));
+    console.log(data);
+    return axios.post(`${url}/api/rating`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
+  getRating: (id, type) => {
+    console.log((`${url}/api/rating?ref=${id}&type=${type}`));
+    return axios.get(`${url}/api/rating?ref=${id}&type=${type}`)
   }
 };
