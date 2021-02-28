@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
 
-const { Op, Sequelize } = require('sequelize');
+const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
     db.Thread.findAll({
@@ -52,7 +52,7 @@ router.post('/', (request, response) => {
     }).then( (result) => {
         if (result) {
             response.json(result);
-        } else {
+        } else { // If thread doesn't exist, create it
             db.Thread.create({
                 user1Id: request.body.user1,
                 user2Id: request.body.user2

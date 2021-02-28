@@ -3,8 +3,6 @@ const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
 
-const { Op } = require('sequelize');
-
 router.get('/', (request, response) => {
     // Get all messages in a thread
     db.Message.findAll({
@@ -19,7 +17,7 @@ router.get('/', (request, response) => {
     }).then( (result) => {
         response.json(result);
     }).catch( (err) => {
-        response.status(500).jason(err);
+        response.status(500).json(err);
     });
 });
 
