@@ -5,6 +5,7 @@ import { Box, Grid } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
 import UserTags from '../components/UserTags'
+import Tags from '../components/Tags'
 
 export default function UserHome(props) {
     console.log(props)
@@ -86,8 +87,8 @@ export default function UserHome(props) {
                 areas={[
                     ['blank3', 'blank3', 'blank3'],
                     ['blank1', 'main', 'blank2'],
-                    ['myTags', 'question', 'blank2'],
-                    ['myTags', 'question', 'blank2']
+                    ['myTags', 'question', 'services'],
+                    ['myTags', 'question', 'services']
                 ]}
                 columns={['1/4', 'flex', '1/4']}
                 rows={['50px']}
@@ -100,6 +101,9 @@ export default function UserHome(props) {
 
                 <Box gridAreah="myTags">
                     <UserTags/>
+                    <Box direction="row">
+                    {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
+                    </Box>
                 </Box>
 
                 <Box gridArea="main" height="flex">
@@ -108,6 +112,10 @@ export default function UserHome(props) {
 
                 <Box gridArea="question" pad="5px">
                     {questions.map(question=><Question props={question}/>)}
+                </Box>
+
+                <Box gridArea="services">
+                    <UserTags/>
                 </Box>
 
             </Grid>
