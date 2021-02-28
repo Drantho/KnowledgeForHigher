@@ -5,24 +5,24 @@ const authenticate = require("../utils/authenticate");
 
 const { Op } = require('sequelize');
 
-router.get('/', (request, response) => {
+router.get('/', authenticate, (request, response) => {
     db.Thread.findAll({
         where: {
             [ Op.or ]: [
-                { user1Id: request.query.user },
-                { user2Id: request.query.user }
+                { user1Id: request.userId },
+                { user2Id: request.userId }
             ]
         },
         include: [{
             model: db.User,
             as: 'user2',
-            where: { id: { [Op.ne]: request.query.user } },
+            where: { id: { [Op.ne]: request.userId } },
             required: false,
             attributes: ['id', 'userName', 'firstName', 'lastName']
         }, {
             model: db.User,
             as: 'user1',
-            where: { id: { [Op.ne] : request.query.user } },
+                where: { id: { [Op.ne]: request.userId } },
             required: false,
             attributes: ['id', 'userName', 'firstName', 'lastName']
         }],

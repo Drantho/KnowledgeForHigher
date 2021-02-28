@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
 
-router.get('/', (request, response) => {
+router.get('/', authenticate, (request, response) => {
     // Get all messages in a thread
     db.Message.findAll({
         include: {
