@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const authenticate = require("../utils/authenticate");
-const profanityCheck = require ("../utils/profanityFilter")
+const profanityCheck = require('../utils/profanityFilter');
+
+
 const { Op } = require('sequelize');
 
 router.get('/', (request, response) => {
@@ -14,6 +16,8 @@ router.get('/', (request, response) => {
     }, {
         model: db.User,
         attributes: ['userName', 'id']
+    },{
+        model: db.Rating
     }];
 
     if (request.query.id) {
@@ -95,28 +99,33 @@ router.post('/', authenticate, (request, response) => {
 // Also conditionally show/hide tags based on "show" property
 router.post("/uniqueServicesByTags", (req, res) => {
 
-    const arr = req.body.tags;
-    orArr = [];
-    
-    arr.forEach(tag => {
-        if(tag.show){
-            orArr.push({name: tag.name})
-        }        
-    });
-
     db.Service.findAll({
+        attributes: ["id"],
         include: [{
             model: db.Tag,
             where: {
-                [Op.or]: orArr
+                [Op.or]: req.body.tags.map(tag => {return{name: tag.name}})
             },
             through: { attributes: [] }
-        },{
-            model: db.User,
-            attributes: ["id", "userName"]
         }]
     }).then(data => {
-        res.json(data);
+        db.Service.findAll({
+            where: {
+                [Op.or]: data.map(service => {return{id: service.id}})
+            },
+            include: [{
+                model: db.Tag,
+                through: { attributes: [] }
+            },{
+                model: db.User,
+                attributes: ["id", "userName"]
+            },
+            {
+                model: db.Rating
+        }]
+        }).then(data => {
+            res.json(data);
+        })
     }).catch(err => {
         console.log(err);
         res.status(500).json(err)

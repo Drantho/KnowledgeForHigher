@@ -3,9 +3,10 @@ const router = express.Router();
 const db = require('../models');
 const jwt = require("jsonwebtoken")
 const authenticate = require("../utils/authenticate");
-const profanityCheck = require ("../utils/profanityFilter")
-const { Op } = require('sequelize');
+const profanityCheck = require('../utils/profanityFilter');
 
+const { Op } = require('sequelize');
+const { Sequelize } = require('../models');
 
 router.get('/', (request, response) => {
 
@@ -67,7 +68,7 @@ router.get('/', (request, response) => {
                 ]
             };
         }
-        
+
         db.Question.findAll(queryParams)
             .then((result) => {
                 response.json(result);
@@ -82,27 +83,39 @@ router.get('/', (request, response) => {
 // Also conditionally show/hide tags based on "show" property
 router.post("/uniqueQuestionsByTags", (request, response) => {
 
-    const arr = request.body.tags;
-    orArr = [];
-    
-    arr.forEach(tag => {
-        if(tag.show){
-            orArr.push({name: tag.name})
-        }        
-    });
-
     db.Question.findAll({
-        include: [{
-            model: db.Tag,
-            where: {
-                [Op.or]: orArr
-            },
-            through: { attributes: [] }
-        },{
-            model: db.Answer
-        }]
+        attributes: ["id"],
+        include: [
+            {
+                model: db.Tag,
+                where: {
+                    [Op.or]: request.body.tags.map(tag => tag.show ? {name: tag.name} : null)
+                },
+                through: { attributes: [] }
+            }
+        ]
     }).then(data => {
-        response.json(data);
+        questionsArr = [];
+        data.forEach(question => questionsArr.push({ id: question.id }));
+
+        db.Question.findAll({
+            where: {
+                [Op.or]: data.map(question => {return {id: question.id}})
+            },
+            include: [
+                {
+                    model: db.Tag,
+                    through: { attributes: [] }
+                },
+                {
+                    model: db.Answer
+                },
+                {
+                    model: db.Rating
+                }]
+        }).then(data => {
+            response.json(data);
+        });
     }).catch(err => {
         console.log(err);
         response.status(500).json(err)
@@ -129,7 +142,7 @@ router.post('/', authenticate, (request, response) => {
         });
         return;
     }
-    
+
     db.Question.create({
         title: request.body.title,
         text: request.body.text,
@@ -144,8 +157,8 @@ router.post('/', authenticate, (request, response) => {
 // Deactivate a question
 router.put('/deactivate/:id', authenticate, (request, response) => {
     db.Question.update({ isActive: false }, {
-        where: [{ 
-            id: request.params.id 
+        where: [{
+            id: request.params.id
         },
         {
             UserId: request.userId

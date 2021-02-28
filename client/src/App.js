@@ -134,7 +134,7 @@ function App() {
           <Ask userState={userState}/>
         </ProtectedRoute>
         <Route path="/service/:id">
-          <Service />
+          <Service userState={userState}/>
         </Route>
         <Route exact path="/signin">
           <Signin

@@ -9,14 +9,8 @@ import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 
 export default function UserHome(props) {
-    console.log(props)
-    const [tags, setTags] = useState([
-        {
-            id: "",
-            name: "",
-            show: true
-        }
-    ]);
+
+    const [tags, setTags] = useState([]);
 
     const [filter, setFilter] = useState(false);
 
@@ -25,10 +19,10 @@ export default function UserHome(props) {
     const [questions, setQuestions] = useState([]);
 
     const fillFeeds = async tagsToFeed => {
-        const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token);
+        const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
         setQuestions(questionsToFeed.data);
 
-        const servicesToFeed = await API.getTagServiceFeed({ tags: tagsToFeed }, props.userState.token);
+        const servicesToFeed = await API.getTagServiceFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
         setServices(servicesToFeed.data);
     }
 
@@ -68,7 +62,10 @@ export default function UserHome(props) {
             <ul>
                 {questions.map(question => {
                     return <li key={question.id}>
-                        <Link to={`/question/${question.id}`}>{question.title}</Link><br />
+                        <Link to={`/question/${question.id}`}>{question.title}</Link> - 
+                        up: {question.Ratings.filter(rating => rating.isPositive).length} - 
+                        down: {question.Ratings.filter(rating => !rating.isPositive).length}
+                        <br />
                         {question.Tags.map(tag => <span key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                     </li>
                 })}
@@ -77,7 +74,11 @@ export default function UserHome(props) {
             <ul>
                 {services.map(service => {
                     return <li key={service.id}>
-                        <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
+                        <Link to={`/service/${service.id}`}>{service.name}</Link> -  
+                        up: {service.Ratings.filter(service => service.isPositive).length} - 
+                        down: {service.Ratings.filter(service => service.isPositive).length}
+                        <br/>
+                         - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
                         {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                     </li>
                 }
