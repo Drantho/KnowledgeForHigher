@@ -27,11 +27,11 @@ export default {
         });
     },
 
-    sendMessage: (threadID, data, token) => {
+    sendMessage: (data, token) => {
         return axios.post(`${url}/api/message`, data, {
             headers: {
                 authorization: `Bearer: ${token}`
             }
-        })
+        });
     }
 }
