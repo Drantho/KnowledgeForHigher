@@ -20,6 +20,10 @@ export default function Profile(props) {
         user: props.userState.id
     });
 
+    const [portraitSrc, setPortraitSrc] = useState("");
+
+    const [portraitData, setPortraitData] = useState({});
+
     const getServices = () => {
         API.getServicesByUser(props.userState.id).then(response => {
             setServices(response.data);
@@ -29,18 +33,18 @@ export default function Profile(props) {
 
     useEffect(() => {
 
-            API.getQuestionByUser(props.userState.id).then(response => {
-                console.log(`getQuestions: `, response);
-                setQuestions(response.data);
-            }).catch(err => {
-                console.log(err);
-            });
+        API.getQuestionByUser(props.userState.id).then(response => {
+            console.log(`getQuestions: `, response);
+            setQuestions(response.data);
+        }).catch(err => {
+            console.log(err);
+        });
 
-            API.getServicesByUser(props.userState.id).then(response => {
-                setServices(response.data);
-                console.log(`services: `, response.data);
-            });
-            
+        API.getServicesByUser(props.userState.id).then(response => {
+            setServices(response.data);
+            console.log(`services: `, response.data);
+        });
+
     }, []);
 
     const handleInputChange = event => {
@@ -91,6 +95,34 @@ export default function Profile(props) {
         })
     }
 
+    const handleGetPhoto = (event) => {
+        event.preventDefault();
+        const file = event.target.files[0];        
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setPortraitSrc(reader.result);
+            setPortraitData(reader.result)
+        }
+
+        console.log(event.target.files);
+    }
+
+    const handleAddPhoto = async () => {
+
+        console.log(`portraitData: `, portraitData);
+
+        if(portraitData){
+            const photoResult = await API.uploadPhoto(portraitData, props.userState.token).catch(err => console.log(err));
+            console.log(photoResult);
+        }
+
+        
+
+        
+    }
+
     return (
         <div>
             <pre>
@@ -139,6 +171,15 @@ export default function Profile(props) {
             <ul>
                 {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
             </ul>
+            <h2>Change My Portrait</h2>
+            <input id="photoInput" type="file" name="image" onChange={handleGetPhoto}/>
+
+                
+            <div>
+                <h3>Preview</h3>
+                <img id="preview" alt="preview" src={portraitSrc}  style={{display: portraitSrc ? "block" : "none", width: "400px" }}/>
+                <button onClick={handleAddPhoto}>upload</button>
+            </div>
         </div>
     )
 }
