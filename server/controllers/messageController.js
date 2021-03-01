@@ -21,11 +21,11 @@ router.get('/', authenticate, (request, response) => {
     });
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
     db.Message.create({
-        senderId: request.body.senderId,
+        senderId: request.userId,
         recipientId: request.body.recipientId,
-        ThreadId: request.body.thread,
+        ThreadId: request.body.ThreadId,
         body: request.body.body
     }).then( (result) => {
         response.json(result);
