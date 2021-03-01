@@ -3,8 +3,8 @@ import axios from "axios";
 const url = "http://localhost:3001";
 
 export default {
-    createThread: (data, token) => {
-        return axios.post(`${url}/api/thread`, data, {
+    createThread: (otherUser, token) => {
+        return axios.post(`${url}/api/thread`, otherUser, {
             headers: {
                 authorization: `Bearer: ${token}`
             }
