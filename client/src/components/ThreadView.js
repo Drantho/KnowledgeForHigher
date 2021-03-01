@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { TextInput, TextArea, Form, FormField, Button, Box, Heading } from 'grommet';
+import { Text, TextArea, Form, FormField, Button, Box, Heading } from 'grommet';
 
 import MessageBubble from './MessageBubble';
 
@@ -40,7 +40,9 @@ export default function ThreadView(props) {
     }, [props.selectedThread]);
 
     return (
-            <Box pad='small' width='100%'>
+            <Box pad='small' background={{color: '#939393', opacity:'weak'}} width='100%'>
+                {props.selectedThread !== -1 ? 
+                <>
                 <Heading textAlign='center' level={2}>Messages with {props.toUser.firstName + ' ' + props.toUser.lastName}</Heading>
                 <Box 
                     margin={{bottom: 'small'}} 
@@ -75,7 +77,13 @@ export default function ThreadView(props) {
                             </Box>
                         </Box>
                     </Form>
-                </Box>
+                    </Box>
+                    </> : 
+                    <>
+                    <Box justify='center' align='center'>
+                        <Heading color='#5A6489'>Select a thread</Heading>
+                    </Box>
+                    </>}
             </Box>
     )
 }
