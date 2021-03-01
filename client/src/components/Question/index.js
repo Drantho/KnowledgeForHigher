@@ -3,7 +3,7 @@ import { Box, Anchor, Avatar, Button, Grid, Text, Paragraph } from 'grommet';
 import { Link } from 'react-router-dom'
 import Tags from '../Tags'
 import './style.css';
-
+import { Down, Up } from 'grommet-icons';
 
 export default function Question(props) {
     console.log("test")
@@ -24,7 +24,8 @@ export default function Question(props) {
 
                 <Grid
                     areas={[
-                        ['side','search', 'search', 'search'],
+                        // ['blank','name', 'name', 'name'],
+                        ['votes','profile', 'title', 'title'],
                         ['side','border', 'border', 'border'],
                         ['side','description', 'description', 'description'],
                         ['side','ratings','ratings','ratings'],
@@ -34,17 +35,28 @@ export default function Question(props) {
                     rows={['flex']}
                     responsive="true"
                 >
-                    <Box gridArea="side"  background="#DFDFE5">
-
+                    <Box gridArea="votes"  background="#DFDFE5">
+                        <Box margin={{"left":"7px"}}>
+                            <Up/>
+                            <Text margin={{"left":"7px", "top":"-11px"}}>{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                          
+                            <Box border margin={{"right":"15px","left":"7px","top":"5px","bottom":"5px"}}/>
+                            <Text margin={{"left":"7px","bottom":"-11px"}}>{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Down/>
+                        </Box>
                     </Box>
-
-                    <Box gridArea="search">
+                    <Box gridArea="side" background="#DFDFE5"/>
+                    <Box gridArea="blank" background="#DFDFE5"/>
+                    <Box gridArea="name" height="15px" margin={{"left":"-245px"}}>
+                        
+                    </Box>
+                    <Box gridArea="profile"  margin={{"top":"14px"}}>
                         <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="50px" /></Link>
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
                         </Anchor>
                     </Box>
 
-                    <Box gridArea="search" width="1000px" >
+                    <Box gridArea="title" width="1000px" margin={{"left":"-315px","top":"0px"}}>
                         <Text size="40px" wordBreak="break-word" id="questionTitle">{props.props.title}</Text>
                     </Box>
 
@@ -57,7 +69,7 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="ratings">
-                        
+                    
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start"  direction="row" margin={{"top": "15px"}} >
