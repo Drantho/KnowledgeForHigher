@@ -4,7 +4,8 @@ const db = require('../models');
 const authenticate = require("../utils/authenticate");
 const profanityCheck = require('../utils/profanityFilter');
 
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
+const { request, response } = require('express');
 
 router.get('/', (request, response) => {
 
@@ -116,6 +117,26 @@ router.get('/', (request, response) => {
     }
 
 });
+
+router.get("/popular", (request, response) => {
+    db.Tag.findAll({
+        limit: 5,
+        subQuery: false,
+        group: ["Tag.id"],
+        includeIgnoreAttributes:false,
+        include: [{
+            model: db.Question
+        }],
+        attributes: [
+            "id",
+            "name",
+            [db.sequelize.fn("COUNT", db.sequelize.col("questions.id")), "QuestionCount"],
+        ],
+        order: [[db.sequelize.fn("COUNT", db.sequelize.col("questions.id")), "DESC"]]
+    }).then(data => {
+        response.json(data)
+    })
+})
 
 router.post('/', authenticate, (request, response) => {
 

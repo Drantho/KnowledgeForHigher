@@ -54,6 +54,10 @@ export default {
     console.log((`${url}/api/tag/`));
     return axios.get(`${url}/api/tag/`)
   },
+  getPopularTags: () =>{
+    console.log((`${url}/api/tag/popular`));
+    return axios.get(`${url}/api/tag/popular`)
+  },
   getTagById: id => {
     console.log(`${url}/api/tag?id=${id}`);
     return axios.get(`${url}/api/tag?id=${id}`);
