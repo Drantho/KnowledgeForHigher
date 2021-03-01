@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import API from "../utils/API";
-import { Box, Grid } from 'grommet';
+import { Box, Grid, Button } from 'grommet';
+import { FormView } from 'grommet-icons';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
 import UserTags from '../components/UserTags'
@@ -87,7 +88,7 @@ export default function UserHome(props) {
 
             <Grid
                 areas={[
-                    ['blank3', 'blank3', 'blank3'],
+                    ['blank3', 'search', 'blank4'],
                     ['blank1', 'main', 'blank2'],
                     ['myTags', 'question', 'services'],
                     ['myTags', 'question', 'services']
@@ -99,20 +100,22 @@ export default function UserHome(props) {
             >
                 <Box gridArea="blank1" />
                 <Box gridArea="blank2" />
-                <Box gridArea="blank3" height="500px" />
+                <Box gridArea="blank3" />
+                <Box gridArea="blank4" />
+                <Box gridArea="search" margin={{"top":"-60px"}} ><QuestionBox/></Box>
 
                 <Box gridAreah="myTags">
                     <UserTags />
-                    <Box direction="row">
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name} </Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></Tags>)}
+                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><Button plain icon={<FormView />} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
                 </Box>
 
                 <Box gridArea="main" height="flex">
-                    
+
                 </Box>
 
-                <Box gridArea="question" pad="5px">
+                <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
                     {questions.map(question => <Question props={question} />)}
                 </Box>
 

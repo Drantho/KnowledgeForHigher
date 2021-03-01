@@ -1,6 +1,13 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
+import { Box, Grid, Button } from 'grommet';
+import { FormView } from 'grommet-icons';
+import ProfileBox from '../components/ProfileBox'
+import Question from '../components/Question'
+import UserTags from '../components/UserTags'
+import FollowedServices from '../components/FollowedServices'
+import Tags from '../components/Tags'
 
 export default function Profile(props) {
     const history = useHistory();
@@ -91,6 +98,7 @@ export default function Profile(props) {
         })
     }
 
+
     return (
         <div>
             <pre>
@@ -139,6 +147,50 @@ export default function Profile(props) {
             <ul>
                 {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
             </ul>
+
+
+            <Grid
+                areas={[
+                    ['blank3', 'search', 'blank4'],
+                    ['profile', 'main', 'blank2'],
+                    ['myTags', 'question', 'services'],
+                    ['myTags', 'question', 'services']
+                ]}
+                columns={['1/4', 'flex', '1/4']}
+                rows={['50px']}
+                gap="small"
+                responsive="true"
+            >
+                <Box gridArea="profile" />
+                <Box gridArea="blank2" />
+                <Box gridArea="blank3" />
+                <Box gridArea="blank4" />
+                <Box gridArea="search" margin={{"top":"-60px"}} ><ProfileBox/></Box>
+
+                <Box gridAreah="myTags">
+                    <UserTags />
+                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                        
+                    </Box>
+                </Box>
+
+                <Box gridArea="main" height="flex">
+                   
+                </Box>
+               
+                    <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
+                        {questions.map(question => <Question props={question} />)}
+                    </Box>
+    
+                <Box gridArea="services">
+                    <FollowedServices />
+                    <Box>
+                    </Box>
+                </Box>
+
+            </Grid>
         </div>
+
+
     )
 }

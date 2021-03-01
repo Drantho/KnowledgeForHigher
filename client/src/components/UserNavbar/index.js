@@ -14,9 +14,9 @@ export default function UserNavbar() {
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
                     </Anchor>
                 </Box>
-                <Box margin={{"left":"160px"}}>
+                {/* <Box margin={{"left":"160px"}}>
                 <QuestionBox/>
-                </Box>
+                </Box> */}
                 <Nav direction="row">
 
                     <Box direction="row" align="center" gap="small" pad="small">
