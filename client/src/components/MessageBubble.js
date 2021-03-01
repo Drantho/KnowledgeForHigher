@@ -6,8 +6,8 @@ export default function MessageBubble(props) {
 
     return (
         <Grommet>
-        <Box margin={{'vertical': 'small'}}
-            align={props.sentOrRecieved === 'sent' ? 'end' : 'start'}>
+        <Box margin={{'vertical': 'xsmall'}}
+            align={props.sentOrRecieved === 'sent' ? 'end' : 'start'} gap='xsmall'>
             <Tip
                 content={<Box><Text size='xsmall'>{props.date}</Text></Box>} 
                 dropProps={{
@@ -16,12 +16,11 @@ export default function MessageBubble(props) {
                 }}>
 
             <Card width='medium'
-                pad='medium' 
+                pad={{vertical: 'xsmall', horizontal:'medium'}} 
                 background={props.sentOrRecieved === 'sent' ? 'dark-4' : 'dark-1'} 
-                gap='medium'
+                gap='xsmall'
                 round='medium'>
-                <CardBody>{props.body}</CardBody>
-                <CardFooter><Text size='xsmall' color='#5B5B5B'>{props.date}</Text></CardFooter>
+                <CardBody><Text size='small'>{props.body}</Text></CardBody>
             </Card>
             </Tip>
         </Box>

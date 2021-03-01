@@ -13,13 +13,11 @@ export default function ThreadView(props) {
 
     const handleSend = async (event) => {
         event.preventDefault();
-        console.log(newMsg.newMsg);
         if (newMsg.newMsg === '' || newMsg.newMsg === null) {
             console.log('empty message');
             return;
         }
 
-        
         const data = {
             recipientId: props.toUser.id,
             ThreadId: props.selectedThread,
@@ -36,21 +34,25 @@ export default function ThreadView(props) {
     }
 
     useEffect( async () => {
-        const messages = (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data;
-        console.log(messages);
-        setMessagesList(messages);
+        const messages 
+            = (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data;
+        setMessagesList(messages.reverse());
     }, [props.selectedThread]);
 
     return (
             <Box pad='small' width='100%'>
                 <Heading textAlign='center' level={2}>Messages with {props.toUser.firstName + ' ' + props.toUser.lastName}</Heading>
-
-                {messagesList.map( (e) => {
-                    return props.selectedThread ? <MessageBubble 
-                                sentOrRecieved={e.senderId === props.userState.id ? 'sent' : 'received'}
-                                body={e.body} 
-                                date={e.createdAt}/> : <></>
-                })}
+                <Box 
+                    margin={{bottom: 'small'}} 
+                    height={{max: '500px'}} 
+                    overflow={{vertical: 'scroll'}}>
+                    {messagesList.map( (e) => {
+                        return props.selectedThread ? <MessageBubble 
+                        sentOrRecieved={e.senderId === props.userState.id ? 'sent' : 'received'}
+                        body={e.body} 
+                        date={e.createdAt}/> : <></>
+                    })}
+                </Box>
 
                 <Box>
                     <Form value={newMsg.newMsg}
