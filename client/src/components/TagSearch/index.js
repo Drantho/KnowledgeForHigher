@@ -11,7 +11,7 @@ const Tag = ({ children, onRemove, ...rest }) => {
     <Box
       direction="row"
       align="center"
-      background="brand"
+      background="white"
       pad={{ horizontal: 'xsmall', vertical: 'xxsmall' }}
       margin={{ vertical: 'xxsmall' }}
       round="medium"

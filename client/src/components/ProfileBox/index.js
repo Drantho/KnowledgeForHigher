@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Box, TextInput, Button, Grid } from 'grommet';
-import { Search } from 'grommet-icons';
-import './style.css';
-import WithTags from '../TagSearch/index'
+import { Box, Button, Grid, Text} from 'grommet';
 
-export default function QuestionBox() {
+
+export default function ProfileBox() {
 
     return (
         <Box
@@ -26,19 +24,14 @@ export default function QuestionBox() {
                 responsive="true"
             >
                 <Box gridArea="add" pad="small" >
-                    <Button id="addButton" color="#FCE181"> Question </Button>
+                    <Button id="addButton" color="#FCE181"> <Text>Questions</Text></Button>
                 </Box>
 
-                <Box gridArea="search"  round="5px">
-                    <Box fill align="center" justify="start">
-                        <Box width="medium" gap="medium" >
-                            <TextInput style={{background: "white"}} icon={<Search color="black"/>} reverse placeholder="search ..."  />
-                        </Box>
-                    </Box>
+                <Box gridArea="search" pad="small">
                 </Box>
 
                 <Box gridArea="filter" pad="small">
-                    <Button id="filterButton" color="#FCE181"> Filter </Button>
+                    <Button id="filterButton" color="#FCE181"><Text>Answers</Text></Button>
                 </Box>
             </Grid>
         </Box>
