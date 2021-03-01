@@ -58,7 +58,7 @@ export default function ThreadView(props) {
                         return props.selectedThread ? <MessageBubble 
                         sentOrRecieved={e.senderId === props.userState.id ? 'sent' : 'received'}
                         body={e.body} 
-                        date={e.createdAt}/> : <></>
+                        date={e.formattedDate}/> : <></>
                     })}
                 </Box>
 

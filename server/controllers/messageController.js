@@ -15,6 +15,16 @@ router.get('/', authenticate, (request, response) => {
         },
         order: [ ['createdAt', 'DESC'] ]
     }).then( (result) => {
+        result.forEach( (e) => {
+            const newDate = new Date(Date.parse(e.createdAt));
+            let minute = newDate.getMinutes();
+            if (minute < 10) {
+                minute = '0' + minute;
+            } 
+
+            e.dataValues.formattedDate 
+                = `${newDate.getMonth()+1}-${newDate.getDate()} at ${newDate.getHours()}:${minute}`
+        });
         response.json(result);
     }).catch( (err) => {
         response.status(500).json(err);
