@@ -10,10 +10,13 @@ import messageAPI from '../utils/messageAPI';
 export default function MessageView(props) {
 
     const [threadsList, setThreadsList] = useState([]);
-    const [selectedThread, setSelectedThread] = useState({});
+    const [selectedThread, setSelectedThread] = useState({
+        id: -1,
+        toUser: -1
+    });
 
-    const handleThreadSelect = (id) => {
-        setSelectedThread({selectedThread: id});
+    const handleThreadSelect = (id, toUser) => {
+        setSelectedThread({ id, toUser });
     }
 
     useEffect( async () => {
@@ -43,7 +46,10 @@ export default function MessageView(props) {
                         />
             })}
             
-            <ThreadView userState={props.userState} selectedThread={selectedThread.selectedThread}/>
+            <ThreadView 
+                userState={props.userState} 
+                toUser={selectedThread.toUser} 
+                selectedThread={selectedThread.id}/>
         </div>
     )
 }
