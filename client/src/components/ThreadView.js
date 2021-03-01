@@ -40,7 +40,7 @@ export default function ThreadView(props) {
     }, [props.selectedThread]);
 
     return (
-            <Box background={{color: '#939393', opacity:'weak'}} width='100%'>
+        <Box background={{color: '#939393', opacity:'weak'}} width='100%'>
                 {props.selectedThread !== -1 ? 
                 <>
                 <Box elevation='none' align='end' background={{ color: 'rgba(137,162,178,0.6)' }}>
@@ -52,7 +52,7 @@ export default function ThreadView(props) {
                 </Box>
                 <Box 
                     margin={{horizontal: 'small', bottom: 'small'}} 
-                    height={{max: '500px'}} 
+                    height={{max: '500px', min: '500px'}} 
                     overflow={{vertical: 'scroll'}}>
                     {messagesList.map( (e) => {
                         return props.selectedThread ? <MessageBubble 
@@ -83,13 +83,13 @@ export default function ThreadView(props) {
                             </Box>
                         </Box>
                     </Form>
-                    </Box>
-                    </> : 
-                    <>
-                    <Box justify='center' align='center'>
-                        <Heading color='#5A6489'>Select a thread</Heading>
-                    </Box>
-                    </>}
+                </Box>
+                </> : 
+                <>
+                <Box justify='center' align='center'>
+                    <Heading color='#5A6489'>Select a thread</Heading>
+                </Box>
+                </>}
             </Box>
     )
 }

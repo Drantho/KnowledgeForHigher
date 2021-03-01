@@ -8,11 +8,13 @@ export default function MessageBubble(props) {
         <Grommet>
         <Box margin={{'vertical': 'xsmall'}}
             align={props.sentOrRecieved === 'sent' ? 'end' : 'start'} gap='xsmall'>
-            <Tip
+            <Tip 
                 content={<Box><Text size='xsmall'>{props.date}</Text></Box>} 
                 dropProps={{
-                    align:  (props.sentOrRecieved === 'sent' ? {right: 'left'} : {left: 'right'}), 
-                    width: 'small'
+                    stretch: false,
+                    align:  (props.sentOrRecieved === 'sent' ? {right: 'left'} : {left: 'right'}),
+                    justify: 'end', 
+                    width: {max: '150px'},
                 }}>
 
             <Card width='medium'
