@@ -1,6 +1,11 @@
 import { React, useState, useEffect }  from 'react';
-import { useParams } from 'react-router-dom';
-import {Box, Text, List, Nav, Button, Grommet, Heading, Form, TextInput} from 'grommet';
+import {Box,
+        Nav, 
+        Button, 
+        Grommet, 
+        Heading, 
+        Form, 
+        TextInput } from 'grommet';
 import {Add} from 'grommet-icons';
 
 import ThreadListItem from '../components/ThreadListItem';
@@ -25,9 +30,9 @@ export default function MessageView(props) {
     const handleNewThread = (event) => {
         event.preventDefault();
         console.log(event.value);
-        const newThread = messageAPI.createThread();
+        // const newThread = messageAPI.createThread();
         setNewThreadState({username: ''});
-        setThreadsList([...threadsList]);
+        // setThreadsList([...threadsList]);
     }
 
     const handleNewThreadChange = (event) => {
@@ -35,34 +40,40 @@ export default function MessageView(props) {
     }
 
     useEffect( async () => {
-        setNewThreadState({username: ''})
-        console.log(props.userState.id);
+        setNewThreadState({username: ''});
         const loadThreadsList = (await messageAPI.getThreads(props.userState.token)).data;
         setThreadsList(loadThreadsList);
-        console.log(loadThreadsList);
     }, []);
 
     return (
         <Grommet>
-        <Box fill direction='row'>
-            <Nav gap='none' pad='small' width='25%' background='#222E42'>
-                <Heading level={3} color='#FCE181'>Messages</Heading>
+        <Box fill direction='row' height={{ min: '60vh' }}>
+            <Nav gap='none' width='25%' background='#222E42'>
+                <Heading 
+                    level={3} 
+                    color='#FCE181' 
+                    margin={{'horizontal': 'small'}}>
+                        Messages
+                    </Heading>
                 <Form onSubmit={handleNewThread} value={newThreadState.username}>
-                    <Box direction='row'>
+                    <Box direction='row' pad='small' margin={{'bottom': 'small'}}>
                         <TextInput 
                             placeholder='Create thread' 
                             onChange={handleNewThreadChange}
-                            value={newThreadState.username}>
+                            value={newThreadState.username}
+                            pad={{'horizontal': 'xsmall'}}>
                         </TextInput>
                         <Button margin='small' type='submit'><Add></Add></Button>
                     </Box>
                 </Form>
+
                 {threadsList.map( (e) => {
                     return <ThreadListItem
                             userState={props.userState}
                             toUser={e.user1 ? e.user1 : e.user2} 
                             key={e.id} 
-                            threadId={e.id} 
+                            threadId={e.id}
+                            active={selectedThread.id === e.id ? true : false}
                             onClick={handleThreadSelect}
                         />
                 })}
