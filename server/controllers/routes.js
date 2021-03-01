@@ -9,7 +9,7 @@ const serviceRoutes = require("./serviceController");
 const userRoutes = require("./userController");
 const answerRoutes = require("./answerController");
 const commentRoutes = require("./commentController");
-const messageRoutes = require('./messageController');
+const ratingRoutes = require("./ratingController");
 
 require('dotenv').config()
 
@@ -19,7 +19,8 @@ router.use("/api/service", serviceRoutes);
 router.use("/api/user", userRoutes);
 router.use("/api/answer", answerRoutes);
 router.use("/api/comment", commentRoutes);
-router.use("/api/message", messageRoutes);
+router.use("/api/rating", ratingRoutes);
+router.use("/api/message", require('./messageController'));
 router.use("/api/thread", require('./threadController'));
 
 router.get("/", (req, res) => {
