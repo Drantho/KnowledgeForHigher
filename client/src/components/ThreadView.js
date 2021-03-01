@@ -43,7 +43,7 @@ export default function ThreadView(props) {
             <Box background={{color: '#939393', opacity:'weak'}} width='100%'>
                 {props.selectedThread !== -1 ? 
                 <>
-                <Box elevation='none' background={{ color: 'rgba(137,162,178,0.6)' }}>
+                <Box elevation='none' align='end' background={{ color: 'rgba(137,162,178,0.6)' }}>
                 <Heading textAlign='end' 
                     level={2} 
                     margin={{vertical:'small', right: 'small'}}>
