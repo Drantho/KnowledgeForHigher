@@ -4,7 +4,7 @@ const url = "http://localhost:3001";
 
 export default {
     createThread: (otherUser, token) => {
-        return axios.post(`${url}/api/thread`, otherUser, {
+        return axios.post(`${url}/api/thread`, {user2: otherUser}, {
             headers: {
                 authorization: `Bearer: ${token}`
             }

@@ -34,7 +34,11 @@ router.get('/', authenticate, (request, response) => {
     });
 });
 
-router.post('/', authenticate, (request, response) => {
+router.post('/', authenticate, async (request, response) => {
+
+    const user2 = await db.User.findOne({
+        where: { userName: request.body.user2 }
+    });
 
     db.Thread.findOne({ // Check if thread already exists b/w users
         where: {
@@ -44,20 +48,21 @@ router.post('/', authenticate, (request, response) => {
                     { user2Id: request.userId }
                 ]},
                 {[ Op.or ]: [
-                    { user1Id: request.body.user2 },
-                    { user2Id: request.body.user2 }
+                    { user1Id: user2.id },
+                    { user2Id: user2.id }
                 ]}
             ]
         }
     }).then( (result) => {
         if (result) {
-            response.json(result);
+            response.json('Thread already exists');
         } else { // If thread doesn't exist, create it
+            console.log(`Creating thread b/w user ${request.userId} and user ${user2.id}`)
             db.Thread.create({
                 user1Id: request.userId,
-                user2Id: request.body.user2
+                user2Id: user2.id
             }).then( (result) => {
-                response.json(result);
+                response.json({thread: result, user: user2});
             }).catch( (err) => {
                 response.status(500).json(err);
             });

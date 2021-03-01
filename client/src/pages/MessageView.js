@@ -27,12 +27,18 @@ export default function MessageView(props) {
         setSelectedThread({ id, toUser });
     }
 
-    const handleNewThread = (event) => {
+    const handleNewThread = async (event) => {
         event.preventDefault();
-        console.log(event.value);
-        // const newThread = messageAPI.createThread();
+        const newThread = await messageAPI.createThread(event.value, props.userState.token);
+
         setNewThreadState({username: ''});
-        // setThreadsList([...threadsList]);
+        console.log(newThread);
+        const threadData = {...(newThread.data.thread), user1: null, user2: newThread.data.user}
+        if (newThread.data.thread.id) {
+            setThreadsList([...threadsList, threadData]);
+        } else {
+            console.log(newThread);
+        }
     }
 
     const handleNewThreadChange = (event) => {
@@ -42,6 +48,7 @@ export default function MessageView(props) {
     useEffect( async () => {
         setNewThreadState({username: ''});
         const loadThreadsList = (await messageAPI.getThreads(props.userState.token)).data;
+        console.log(loadThreadsList);
         setThreadsList(loadThreadsList);
     }, []);
 
