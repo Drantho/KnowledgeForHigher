@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
-
+import { Box, FormField, Grid, TextArea, Button} from 'grommet';
+import AddQuestion from '../components/AddQuestion'
 export default function Ask(props) {
     const history = useHistory();
 
@@ -69,7 +70,7 @@ export default function Ask(props) {
 
     return (
         <div>
-            <h1>Ask Page</h1>
+            {/* <h1>Ask Page</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">
                     Question:
@@ -84,7 +85,82 @@ export default function Ask(props) {
                     </label>
                 <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas." /><br />
                 <button type="submit" onClick={handleSubmit}>Ask Question</button>
-            </form>
+            </form> */}
+
+            <Grid
+                areas={[
+                    ['blank', 'blank3', 'blank2'],
+                    ['blank', 'main', 'blank2'],
+                    ['blank', 'question', 'blank2'],
+                    ['blank', 'question', 'blank2']
+                ]}
+                columns={['1/4', 'flex', '1/4']}
+                rows={['50px']}
+                gap="small"
+                responsive="true"
+            >
+
+
+                <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
+                    <AddQuestion/>
+                </Box>
+
+                <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                    <Box>
+                        <Box
+                            justify="center"
+                            align="center"
+                            pad="10px"
+                            background="#F3F3F3"
+                            round="5px"
+                        >
+
+                            <Grid
+                                areas={[
+                                    ['title', 'title', 'title'],
+                                    ['details', 'details', 'details'],
+                                    ['tags', 'tags', 'tags'],
+                                    ['blank', 'blank', 'button'],
+                                ]}
+                                columns={['flex', 'flex', 'flex']}
+                                rows={['flex']}
+                                responsive="true"
+                            >
+                                <form onSubmit={handleSubmit}>
+                                <Box gridArea="title">
+                                    <FormField  htmlFor="text-area" border>
+                                        <TextArea id="text-area" placeholder="Question Title" name="title" value={formObj.title} onChange={handleInputChanged} />
+                                    </FormField>
+                                </Box>
+
+                                <Box gridArea="details" width="900px" height="400px">
+                                    
+                                    <TextArea id="text-area" placeholder="Description"  focusIndicator="true" fill name="text" value={formObj.text} onChange={handleInputChanged}/>
+                                   
+                                </Box>
+
+                                <Box gridArea="tags" >
+                                    <FormField  htmlFor="text-area" border>
+                                        <TextArea id="text-area" placeholder="Enter topics separated by commas" name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} />
+                                    </FormField>
+                                </Box>
+
+                                {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
+                                
+                                <Box gridArea="button" >
+                                    <Button type="submit" onClick={handleSubmit}>Ask Question</Button>
+                                </Box>
+                                </form>
+                            </Grid>
+
+                        </Box>
+                    </Box>
+
+                </Box>
+
+            </Grid>
+
+
         </div>
     )
 }
