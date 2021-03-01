@@ -55,7 +55,7 @@ export default function MessageView(props) {
     return (
         <Grommet>
         <Box fill direction='row' height={{ min: '60vh' }}>
-            <Nav gap='none' width='25%' background='#222E42'>
+            <Nav elevation='large' gap='none' width='25%' background='#222E42'>
                 <Heading 
                     level={3} 
                     color='#FCE181' 

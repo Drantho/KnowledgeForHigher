@@ -40,12 +40,18 @@ export default function ThreadView(props) {
     }, [props.selectedThread]);
 
     return (
-            <Box pad='small' background={{color: '#939393', opacity:'weak'}} width='100%'>
+            <Box background={{color: '#939393', opacity:'weak'}} width='100%'>
                 {props.selectedThread !== -1 ? 
                 <>
-                <Heading textAlign='center' level={2}>Messages with {props.toUser.firstName + ' ' + props.toUser.lastName}</Heading>
+                <Box elevation='none' background={{ color: 'rgba(137,162,178,0.6)' }}>
+                <Heading textAlign='end' 
+                    level={2} 
+                    margin={{vertical:'small', right: 'small'}}>
+                    Conversation with {props.toUser.firstName + ' ' + props.toUser.lastName}
+                </Heading>
+                </Box>
                 <Box 
-                    margin={{bottom: 'small'}} 
+                    margin={{horizontal: 'small', bottom: 'small'}} 
                     height={{max: '500px'}} 
                     overflow={{vertical: 'scroll'}}>
                     {messagesList.map( (e) => {
