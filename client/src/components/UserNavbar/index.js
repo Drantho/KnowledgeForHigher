@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Box, Nav, Anchor, Header, Avatar } from 'grommet';
 import { Link } from 'react-router-dom'
-import QuestionBox from '../QuestionBox'
+
 
 const Icon = '/bookicon.png';
 const ProfileIcon = '/profilesample.png';
@@ -14,14 +14,11 @@ export default function UserNavbar() {
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
                     </Anchor>
                 </Box>
-                {/* <Box margin={{"left":"160px"}}>
-                <QuestionBox/>
-                </Box> */}
                 <Nav direction="row">
 
                     <Box direction="row" align="center" gap="small" pad="small">
                         <Anchor color="#FCE181">
-                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Question</Link>
+                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Ask</Link>
                         </Anchor>
                     </Box>
 

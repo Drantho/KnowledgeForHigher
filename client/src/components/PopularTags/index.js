@@ -21,7 +21,7 @@ export default function UserTags() {
                 }}
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px">Followed Tags</Text>
+                    <Text size="25px">Popular Tags</Text>
                 </Box>
 
             </Box>
@@ -29,5 +29,3 @@ export default function UserTags() {
 
     )
 }
-
-

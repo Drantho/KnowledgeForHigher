@@ -96,10 +96,11 @@ export default function Profile(props) {
         })
     }
 
+
     var Icon="/profilesample.png"
     return (
         <div>
-            {/* <pre>
+            <pre>
                 {JSON.stringify(props, null, 4)}
             </pre>
             <h1>
@@ -144,7 +145,7 @@ export default function Profile(props) {
             <h2>My Answers</h2>
             <ul>
                 {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
-            </ul> */}
+            </ul>
 
 
             <Grid
@@ -181,7 +182,7 @@ export default function Profile(props) {
                 </Box>
                
                     <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
-                        {questions.map(question => <Question props={question} />)}
+                        {/* {questions.map(question => <Question props={question} />)} */}
                 
                     </Box>
     

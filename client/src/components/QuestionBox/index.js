@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Box, TextInput, Button, Grid } from 'grommet';
 import { Search } from 'grommet-icons';
 import './style.css';
-import WithTags from '../TagSearch/index'
+
 
 export default function QuestionBox() {
 
