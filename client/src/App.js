@@ -107,7 +107,7 @@ function App() {
     <Router>
       <UserNavbar />
       {/* <LoginNavbar/> */}
-      <NavbarTest />
+      {/* <NavbarTest /> */}
       <Switch>
         <Route exact path="/">
           <Home />
@@ -158,6 +158,7 @@ function App() {
         <Route path="*">
           <NotFound />
         </Route>
+        
       </Switch>
     </Router>
   );
