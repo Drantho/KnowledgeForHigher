@@ -104,7 +104,7 @@ router.post("/uniqueServicesByTags", (req, res) => {
         include: [{
             model: db.Tag,
             where: {
-                [Op.or]: req.body.tags.map(tag => {return{name: tag.name}})
+                [Op.or]: req.body.tags.map(tag => tag.show ? {name: tag.name} : null)
             },
             through: { attributes: [] }
         }]
