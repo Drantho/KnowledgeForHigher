@@ -6,41 +6,37 @@ import './style.css';
 
 
 export default function Question(props) {
-
-    const Icon = '/bookicon.png';
+    console.log("test")
+    
+    const Icon = '/profilesample.png';
     return (
         <Box>
             <Box
                 justify="center"
                 align="center"
-                pad="10px"
+                
                 background="#F3F3F3"
                 round="5px"
                 gridArea="questionbox"
                 id="questionBox"
+                border={{"size":"3px"}}
             >
 
                 <Grid
                     areas={[
-                        ['search', 'search', 'search'],
-                        ['border', 'border', 'border'],
-                        ['description', 'description', 'description'],
-                        ['tags', 'tags', 'tags']
+                        ['side','search', 'search', 'search'],
+                        ['side','border', 'border', 'border'],
+                        ['side','description', 'description', 'description'],
+                        ['side','ratings','ratings','ratings'],
+                        ['side','tags', 'tags', 'tags']
                     ]}
-                    columns={['flex', 'flex', 'flex']}
+                    columns={['40px','flex', 'flex', 'flex']}
                     rows={['flex']}
                     responsive="true"
                 >
-                    {/* <Box gridArea="add"  id="avatarIcon">
-                        <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon} size="50px"/></Link>
-                        </Anchor>
-                    </Box> */}
+                    <Box gridArea="side"  background="#DFDFE5">
 
-                    {/* <Box gridArea="search" border id="questionTitleBox" >
-                        
-                         <Text id="questionTitle" size="40px" >{props.props.title}</Text>
-                    </Box> */}
+                    </Box>
 
                     <Box gridArea="search">
                         <Anchor color="white" >
@@ -60,9 +56,11 @@ export default function Question(props) {
                         </Box>
                     </Box>
 
-                    {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
+                    <Box gridArea="ratings">
+                        
+                    </Box>
 
-                    <Box gridArea="tags" alignSelf="start"  direction="row" >
+                    <Box gridArea="tags" alignSelf="start"  direction="row" margin={{"top": "15px"}} >
                         {props.props.Tags.map(tag => <Tags key={tag.id}>{tag.name}</Tags>)}
                     </Box>
                 </Grid>

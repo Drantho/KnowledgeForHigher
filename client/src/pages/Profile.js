@@ -1,13 +1,11 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Button } from 'grommet';
-import { FormView } from 'grommet-icons';
+import { Box, Grid, Anchor, Avatar } from 'grommet';
 import ProfileBox from '../components/ProfileBox'
-import Question from '../components/Question'
 import UserTags from '../components/UserTags'
 import FollowedServices from '../components/FollowedServices'
-import Tags from '../components/Tags'
+import Question from '../components/Question'
 
 export default function Profile(props) {
     const history = useHistory();
@@ -98,10 +96,10 @@ export default function Profile(props) {
         })
     }
 
-
+    var Icon="/profilesample.png"
     return (
         <div>
-            <pre>
+            {/* <pre>
                 {JSON.stringify(props, null, 4)}
             </pre>
             <h1>
@@ -146,12 +144,12 @@ export default function Profile(props) {
             <h2>My Answers</h2>
             <ul>
                 {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
-            </ul>
+            </ul> */}
 
 
             <Grid
                 areas={[
-                    ['blank3', 'search', 'blank4'],
+                    ['blank3', 'blank3', 'blank3'],
                     ['profile', 'main', 'blank2'],
                     ['myTags', 'question', 'services'],
                     ['myTags', 'question', 'services']
@@ -161,11 +159,15 @@ export default function Profile(props) {
                 gap="small"
                 responsive="true"
             >
-                <Box gridArea="profile" />
+               
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
-                <Box gridArea="blank4" />
-                <Box gridArea="search" margin={{"top":"-60px"}} ><ProfileBox/></Box>
+               
+                <Box gridArea="profile"  margin={{"left":"20px"}}>
+                    <Anchor color="white">
+                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="125px" src={Icon}/></Link>
+                    </Anchor>
+                </Box>
 
                 <Box gridAreah="myTags">
                     <UserTags />
@@ -174,18 +176,18 @@ export default function Profile(props) {
                     </Box>
                 </Box>
 
-                <Box gridArea="main" height="flex">
-                   
+                <Box gridArea="main" height="flex" margin={{"bottom":"50px"}}>
+                    <ProfileBox/>
                 </Box>
                
                     <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
                         {questions.map(question => <Question props={question} />)}
+                
                     </Box>
     
                 <Box gridArea="services">
-                    <FollowedServices />
-                    <Box>
-                    </Box>
+                    {/* <FollowedServices /> */}
+    
                 </Box>
 
             </Grid>

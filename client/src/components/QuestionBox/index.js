@@ -29,10 +29,10 @@ export default function QuestionBox() {
                     <Button id="addButton" color="#FCE181"> Question </Button>
                 </Box>
 
-                <Box gridArea="search" background="white" round="5px">
+                <Box gridArea="search"  round="5px">
                     <Box fill align="center" justify="start">
                         <Box width="medium" gap="medium" >
-                            <TextInput icon={<Search />} reverse placeholder="search ..."  />
+                            <TextInput style={{background: "white"}} icon={<Search color="black"/>} reverse placeholder="search ..."  />
                         </Box>
                     </Box>
                 </Box>

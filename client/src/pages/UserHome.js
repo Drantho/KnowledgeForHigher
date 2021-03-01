@@ -102,7 +102,7 @@ export default function UserHome(props) {
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
                 <Box gridArea="blank4" />
-                <Box gridArea="search" margin={{"top":"-60px"}} ><QuestionBox/></Box>
+                <Box gridArea="search" margin={{"top":"-70px"}} ><QuestionBox/></Box>
 
                 <Box gridAreah="myTags">
                     <UserTags />

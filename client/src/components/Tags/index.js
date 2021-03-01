@@ -21,7 +21,7 @@ export default function Tags(props) {
                 gridArea="tag"
                 elevation="small" 
             >
-                <Text>{props.children}</Text>
+                <Text color="blue">{props.children}</Text>
                 {/* <Add size="15px"/> */}
             </Box>
         </Box>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import QuestionBox from '../QuestionBox'
 
 const Icon = '/bookicon.png';
-
+const ProfileIcon = '/profilesample.png';
 export default function UserNavbar() {
     
         return (
@@ -21,13 +21,19 @@ export default function UserNavbar() {
 
                     <Box direction="row" align="center" gap="small" pad="small">
                         <Anchor color="#FCE181">
+                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Question</Link>
+                        </Anchor>
+                    </Box>
+
+                    <Box direction="row" align="center" gap="small" pad="small">
+                        <Anchor color="#FCE181">
                             <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
                         </Anchor>
                     </Box>
 
                     <Box direction="row" align="center" gap="small" pad="small" className="navText">
                         <Anchor color="#FCE181">
-                            <Link to='/profile' style={{ color: 'inherit', textDecoration: 'inherit'}}>Profile</Link>
+                            <Link to='/profile' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="40px" src={ProfileIcon}/></Link>
                         </Anchor>
                     </Box>
 
