@@ -6,6 +6,8 @@ export default function UserHome(props) {
 
     const [tags, setTags] = useState([]);
 
+    const [popularTags, setPopularTags] = useState([]);
+
     const [filter, setFilter] = useState(false);
 
     const [services, setServices] = useState([]);
@@ -21,17 +23,28 @@ export default function UserHome(props) {
     }
 
     useEffect(async () => {
-        const tagsToFeed = await API.getTagsByUser(props.userState.id);        
-        setTags(tagsToFeed.data.map(tag => {
+        let tagsToFeed = await API.getTagsByUser(props.userState.id);   
+        tagsToFeed = tagsToFeed.data.map(tag => {
             tag.show = true;
             return tag;
-        }));
+        })   
+        setTags(tagsToFeed);
 
-        fillFeeds(tagsToFeed.data);
+        let popularTagFeed = await API.getPopularTags();
+        popularTagFeed = popularTagFeed.data;        
+
+        popularTagFeed.map(popularTag => {
+            popularTag.show = tagsToFeed.find(tag => tag.name === popularTag.name)            
+        });
+
+        setPopularTags(popularTagFeed);
+
+        fillFeeds(tagsToFeed.concat(popularTagFeed));
 
     }, [filter]);
 
     const handleHideTag = tagToHide => {
+
         const temp = tags.map(tag => {
             if (tag.name === tagToHide) {
                 tag.show = !tag.show;
@@ -41,16 +54,29 @@ export default function UserHome(props) {
 
         setTags(temp);
 
-        fillFeeds(tags);
+        const tempPopular = popularTags.map(tag => {
+            if (tag.name === tagToHide) {
+                tag.show = !tag.show;
+            }
+            return tag;
+        })
+
+        setPopularTags(tempPopular)
+
+        fillFeeds(tags.concat(tempPopular));
     }
 
     return (
         <div>
             <h1>User Home</h1>
             <h2>My feed</h2>
-            <h3>Tags</h3>
+            <h3>My Tags</h3>
             <ul>
-                {tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><button onClick={() => handleHideTag(tag.name)}>Hide Tag</button></li>)}
+                {tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></li>)}
+            </ul>
+            <h3>Popular Tags</h3>
+            <ul>
+                {popularTags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></li>)}
             </ul>
             <h3>Questions</h3>
             <ul>
