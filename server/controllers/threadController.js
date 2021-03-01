@@ -34,14 +34,14 @@ router.get('/', authenticate, (request, response) => {
     });
 });
 
-router.post('/', (request, response) => {
+router.post('/', authenticate, (request, response) => {
 
     db.Thread.findOne({ // Check if thread already exists b/w users
         where: {
             [Op.and]: [
                 {[ Op.or ]: [
-                    { user1Id: request.body.user1 },
-                    { user2Id: request.body.user1 }
+                    { user1Id: request.userId },
+                    { user2Id: request.userId }
                 ]},
                 {[ Op.or ]: [
                     { user1Id: request.body.user2 },
@@ -54,7 +54,7 @@ router.post('/', (request, response) => {
             response.json(result);
         } else { // If thread doesn't exist, create it
             db.Thread.create({
-                user1Id: request.body.user1,
+                user1Id: request.userId,
                 user2Id: request.body.user2
             }).then( (result) => {
                 response.json(result);
