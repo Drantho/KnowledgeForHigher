@@ -15,8 +15,10 @@ require('dotenv').config();
 router.get('/', (request, response) => {
     if (request.query.id) {
         db.User.findOne({
-            where: { id: request.query.id }
+            where: { id: request.query.id },
+            attributes: ["id", "userName", "portrait", "createdAt"]
         }).then((result) => {
+            console.log(`findUserById: `, result);
             return response.json(result);
         }).catch((err) => {
             return response.status(500).json(err);
@@ -113,7 +115,7 @@ router.post("/signup", (req, res) => {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            userName: user.userName,
+            userName: user.userName,            
             isProfessional: user.isProfessional,
             id: user.id
         }, process.env.JWT_SECRET);
@@ -136,6 +138,7 @@ router.post("/signin", (req, res) => {
                     lastName: user.lastName,
                     userName: user.userName,
                     isProfessional: user.isProfessional,
+                    portrait: user.portrait,
                     id: user.id
                 }, process.env.JWT_SECRET)
                 res.json({ token, user })

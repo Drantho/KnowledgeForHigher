@@ -7,6 +7,7 @@ import UserTags from '../components/UserTags'
 import FollowedServices from '../components/FollowedServices'
 import Question from '../components/Question'
 
+
 export default function Profile(props) {
     const history = useHistory();
 
@@ -186,6 +187,10 @@ export default function Profile(props) {
                 <button onClick={handleAddPhoto}>upload</button>
             </div>
 
+            <pre>
+                {JSON.stringify(props.userState, null, 4)}
+            </pre>
+
 
             <Grid
                 areas={[
@@ -205,7 +210,7 @@ export default function Profile(props) {
                
                 <Box gridArea="profile"  margin={{"left":"20px"}}>
                     <Anchor color="white">
-                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="125px" src={Icon}/></Link>
+                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`}/></Link>
                     </Anchor>
                 </Box>
 

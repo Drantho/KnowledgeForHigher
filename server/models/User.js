@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         portrait:{
             type: Sequelize.STRING,
-            defaultValue: "TODO"
+            defaultValue: "/assets/images/profilesample.png"
         }
     });
 
