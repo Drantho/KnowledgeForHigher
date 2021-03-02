@@ -25,6 +25,26 @@ export default function UserHome(props) {
 
     const [showAllPopularTags, setShowAllPopularTags] = useState(false);
 
+    const [searchQuestions, setSearchQuestions] = useState([{
+        id:"1",
+        title: "",
+        text: "",
+        Tags: []
+    }]);
+
+    const [searchTags, setSearchTags] = useState([
+        {
+            id: "",
+            name: "",
+            text: ""
+        }
+    ]);
+
+    const [questionSearchString, setQuestionSearchString] = useState("");
+
+    const [tagSearchString, setTagSearchString] = useState("");
+
+
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
         console.log(`questionsToFeed: `, questionsToFeed);
@@ -175,7 +195,7 @@ export default function UserHome(props) {
                 <Box gridArea="blank4" />
                 <Box gridArea="search" margin={{"top":"-70px"}} ><QuestionBox/></Box>
 
-                <Box gridAreah="myTags">
+                <Box gridArea="myTags">
                     <div onClick={handleShowMyTags}>
                     <UserTags/>
                     </div>
@@ -216,7 +236,5 @@ export default function UserHome(props) {
 
             </Grid>
         </div>
-
-
     )
 }

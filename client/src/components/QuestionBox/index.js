@@ -32,7 +32,7 @@ export default function QuestionBox() {
                 <Box gridArea="search"  round="5px">
                     <Box fill align="center" justify="start">
                         <Box width="medium" gap="medium" >
-                            <TextInput style={{background: "white"}} icon={<Search color="black"/>} reverse placeholder="search ..."  />
+                            <TextInput name="search" style={{background: "white"}} icon={<Search color="black"/>} reverse placeholder="search ..."  />
                         </Box>
                     </Box>
                 </Box>

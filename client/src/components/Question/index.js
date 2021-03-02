@@ -70,7 +70,7 @@ export default function Question(props) {
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
-                            {props.props.title} {props.props.title} 
+                            {props.props.title}
                         </Text>
                         </Box>
                         </Link>
