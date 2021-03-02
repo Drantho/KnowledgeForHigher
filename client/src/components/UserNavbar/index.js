@@ -3,12 +3,13 @@ import { Box, Nav, Anchor, Header, Avatar } from 'grommet';
 import { Link } from 'react-router-dom'
 
 
-const Icon = '/bookicon.png';
-const ProfileIcon = '/profilesample.png';
-export default function UserNavbar() {
+export default function UserNavbar(props) {
     
+    const Icon = '/assets/images/bookicon.png';
+    const ProfileIcon = "https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/" + props.userState.portrait + ".png";
+
         return (
-            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">
+            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">                
                 <Box direction="row" align="center" gap="small">
                     <Anchor color="white">
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>

@@ -27,7 +27,7 @@ export default function UserHome(props) {
 
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
-        
+        console.log(`questionsToFeed: `, questionsToFeed);
         setQuestions(questionsToFeed.data);
 
         const servicesToFeed = await API.getTagServiceFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));

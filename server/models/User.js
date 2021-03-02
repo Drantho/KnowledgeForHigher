@@ -39,6 +39,10 @@ module.exports = (sequelize, Sequelize) => {
         status: {
             type: Sequelize.ENUM('active', 'inactive'),
             defaultValue: 'active'
+        },
+        portrait:{
+            type: Sequelize.STRING,
+            defaultValue: "/assets/images/profilesample.png"
         }
     });
 
