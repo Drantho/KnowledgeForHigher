@@ -35,7 +35,8 @@ function App() {
     lastName: "",
     email: "",
     isSignedIn: false,
-    token: ""
+    token: "",
+    portrait: "mziei8xfs9okenktbabp"
   });
 
   const handleInputChanged = event => {
@@ -72,6 +73,7 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
+        portrait: response.data.user.portrait,
         isSignedIn: true,
         token: response.data.token
       });
@@ -93,6 +95,7 @@ function App() {
           firstName: response.data.user.firstName,
           lastName: response.data.user.lastName,
           email: response.data.user.email,
+          portrait: response.data.user.portrait,
           isSignedIn: true,
           token: response.data.token
         });
@@ -105,7 +108,7 @@ function App() {
 
   return (
     <Router>
-      <UserNavbar />
+      <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
       {/* <NavbarTest /> */}
       <Switch>
