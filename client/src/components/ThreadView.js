@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import { Text, TextArea, Form, FormField, Button, Box, Heading } from 'grommet';
 
 import MessageBubble from './MessageBubble';
@@ -25,6 +25,7 @@ export default function ThreadView(props) {
         }
 
         setMessagesList([...messagesList, {...data, senderId: props.userState.id}]);
+        scrollToBottom();
         await messageAPI.sendMessage(data, props.userState.token);
         setNewMsg({newMsg: ''});
     }
@@ -33,10 +34,17 @@ export default function ThreadView(props) {
         setNewMsg({newMsg: event.target.value});
     }
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current.scrollIntoView({behavior: 'smooth'});
+    }
+
     useEffect( async () => {
         const messages 
             = (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data;
         setMessagesList(messages.reverse());
+        scrollToBottom();
     }, [props.selectedThread]);
 
     return (
@@ -60,6 +68,7 @@ export default function ThreadView(props) {
                         body={e.body} 
                         date={e.formattedDate}/> : <></>
                     })}
+                    <div ref={messagesEndRef}></div>
                 </Box>
 
                 <Box>
