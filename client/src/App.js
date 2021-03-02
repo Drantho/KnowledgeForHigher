@@ -13,7 +13,8 @@ import NavbarTest from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
-import UserNavbar from './components/UserNavbar/index'
+import MessageView from './pages/MessageView';
+import UserNavbar from './components/UserNavbar/index';
 import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -99,6 +100,7 @@ function App() {
           isSignedIn: true,
           token: response.data.token
         });
+        console.log(userState.id);
       }).catch(err => {
         console.log(err);
         localStorage.clear("token")
@@ -158,6 +160,9 @@ function App() {
             setUserState={setUserState} 
           />
         </Route>
+        <ProtectedRoute exact path="/messages" isSignedIn={userState.isSignedIn}>
+          <MessageView userState={userState} />
+        </ProtectedRoute>
         <Route path="*">
           <NotFound />
         </Route>
