@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Box, Nav, Anchor, Header, Avatar, Grommet } from 'grommet';
+import React from 'react';
+import { Box, Nav, Anchor, Header, Avatar } from 'grommet';
 import { Link } from 'react-router-dom'
 
 
-const Icon = '/bookicon.png';
+const Icon = '/assets/images/bookicon.png';
 
 export default function LoginNavbar() {
     

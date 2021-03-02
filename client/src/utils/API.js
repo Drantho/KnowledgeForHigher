@@ -191,5 +191,14 @@ export default {
   getRating: (id, type) => {
     console.log((`${url}/api/rating?ref=${id}&type=${type}`));
     return axios.get(`${url}/api/rating?ref=${id}&type=${type}`)
+  },
+  uploadPhoto: (data, token) => {
+    console.log((`${url}/api/user/portrait`));
+    console.log(data);
+    return axios.post(`${url}/api/user/portrait`, {data: data}, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
   }
 };

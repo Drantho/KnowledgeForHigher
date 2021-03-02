@@ -27,7 +27,7 @@ export default function UserHome(props) {
 
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
-        
+        console.log(`questionsToFeed: `, questionsToFeed);
         setQuestions(questionsToFeed.data);
 
         const servicesToFeed = await API.getTagServiceFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
@@ -179,14 +179,14 @@ export default function UserHome(props) {
                     <div onClick={handleShowMyTags}>
                     <UserTags/>
                     </div>
-                    <Box style={{flexWrap:"wrap"}}direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
                     </Box>
 
                     <div onClick={handleShowPopularTags}>
                     <PopularTags/>
                     </div>
-                    <Box style={{flexWrap:"wrap"}}direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
                         {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
                     </Box>
                 </Box>
@@ -210,7 +210,7 @@ export default function UserHome(props) {
                             </li>
                         }
                         )} */}
-                    <Service/>
+                    
                     </Box>
                 </Box>
 

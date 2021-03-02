@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Box, Text, Grid } from 'grommet';
-import { Add } from 'grommet-icons';
+import React from 'react';
+import { Box, Text} from 'grommet';
+
 
 
 export default function Tags(props) {
@@ -22,7 +22,6 @@ export default function Tags(props) {
                 elevation="small" 
             >
                 <Text color="blue">{props.children}</Text>
-                {/* <Add size="15px"/> */}
             </Box>
         </Box>
     )

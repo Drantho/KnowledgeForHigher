@@ -13,9 +13,11 @@ export default function UserTags() {
                 background="#2B3952"
                 round="5px"
                 height="flex"
+                width="400px"
                 margin={{
                     "left": "25px",
-                    "right": "25px"
+                    "right": "150px",
+                    "bottom": "10px"
                 }}
             >
                 <Box height="35px" width="400px" align="center">

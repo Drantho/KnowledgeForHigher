@@ -16,7 +16,7 @@ router.get('/', (request, response) => {
     }, {
         model: db.User,
         attributes: ['userName', 'id']
-    },{
+    }, {
         model: db.Rating
     }];
 
@@ -104,25 +104,29 @@ router.post("/uniqueServicesByTags", (req, res) => {
         include: [{
             model: db.Tag,
             where: {
-                [Op.or]: req.body.tags.map(tag => tag.show ? {name: tag.name} : null)
+                [Op.or]: req.body.tags.map(tag => tag.show ? { name: tag.name } : null)
             },
             through: { attributes: [] }
         }]
     }).then(data => {
         db.Service.findAll({
             where: {
-                [Op.or]: data.map(service => {return{id: service.id}})
+                [Op.or]: data.map(service => { return { id: service.id } })
             },
             include: [{
                 model: db.Tag,
                 through: { attributes: [] }
-            },{
+            }, {
                 model: db.User,
                 attributes: ["id", "userName"]
             },
             {
                 model: db.Rating
-        }]
+            },
+            {
+                model: db.User,
+                attributes: ["id", "userName", "portrait"]
+            }]
         }).then(data => {
             res.json(data);
         })

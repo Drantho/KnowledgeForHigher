@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Box, Nav, Anchor, Header, Avatar } from 'grommet';
 import { Link } from 'react-router-dom'
-import QuestionBox from '../QuestionBox'
 
-const Icon = '/bookicon.png';
-const ProfileIcon = '/profilesample.png';
-export default function UserNavbar() {
+
+export default function UserNavbar(props) {
     
+    const Icon = '/assets/images/bookicon.png';
+    const ProfileIcon = "https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/" + props.userState.portrait + ".png";
+
         return (
-            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">
+            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">                
                 <Box direction="row" align="center" gap="small">
                     <Anchor color="white">
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
                     </Anchor>
                 </Box>
-                {/* <Box margin={{"left":"160px"}}>
-                <QuestionBox/>
-                </Box> */}
                 <Nav direction="row">
 
                     <Box direction="row" align="center" gap="small" pad="small">
                         <Anchor color="#FCE181">
-                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Question</Link>
+                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Ask</Link>
                         </Anchor>
                     </Box>
 

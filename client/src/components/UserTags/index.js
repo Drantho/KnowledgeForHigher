@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Box, Text } from 'grommet';
-import Tags from '../Tags'
+
 
 
 export default function UserTags() {

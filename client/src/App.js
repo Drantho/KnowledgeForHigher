@@ -13,7 +13,8 @@ import NavbarTest from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
-import UserNavbar from './components/UserNavbar/index'
+import MessageView from './pages/MessageView';
+import UserNavbar from './components/UserNavbar/index';
 import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -35,7 +36,8 @@ function App() {
     lastName: "",
     email: "",
     isSignedIn: false,
-    token: ""
+    token: "",
+    portrait: "mziei8xfs9okenktbabp"
   });
 
   const handleInputChanged = event => {
@@ -72,6 +74,7 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
+        portrait: response.data.user.portrait,
         isSignedIn: true,
         token: response.data.token
       });
@@ -93,9 +96,11 @@ function App() {
           firstName: response.data.user.firstName,
           lastName: response.data.user.lastName,
           email: response.data.user.email,
+          portrait: response.data.user.portrait,
           isSignedIn: true,
           token: response.data.token
         });
+        console.log(userState.id);
       }).catch(err => {
         console.log(err);
         localStorage.clear("token")
@@ -105,7 +110,7 @@ function App() {
 
   return (
     <Router>
-      <UserNavbar />
+      <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
       {/* <NavbarTest /> */}
       <Switch>
@@ -155,6 +160,9 @@ function App() {
             setUserState={setUserState} 
           />
         </Route>
+        <ProtectedRoute exact path="/messages" isSignedIn={userState.isSignedIn}>
+          <MessageView userState={userState} />
+        </ProtectedRoute>
         <Route path="*">
           <NotFound />
         </Route>

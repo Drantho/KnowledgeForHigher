@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../utils/authenticate");
 const profanityCheck = require('../utils/profanityFilter');
-
+const cloudinary = require("cloudinary");
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
@@ -15,8 +15,10 @@ require('dotenv').config();
 router.get('/', (request, response) => {
     if (request.query.id) {
         db.User.findOne({
-            where: { id: request.query.id }
+            where: { id: request.query.id },
+            attributes: ["id", "userName", "portrait", "createdAt"]
         }).then((result) => {
+            console.log(`findUserById: `, result);
             return response.json(result);
         }).catch((err) => {
             return response.status(500).json(err);
@@ -113,7 +115,7 @@ router.post("/signup", (req, res) => {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            userName: user.userName,
+            userName: user.userName,            
             isProfessional: user.isProfessional,
             id: user.id
         }, process.env.JWT_SECRET);
@@ -136,6 +138,7 @@ router.post("/signin", (req, res) => {
                     lastName: user.lastName,
                     userName: user.userName,
                     isProfessional: user.isProfessional,
+                    portrait: user.portrait,
                     id: user.id
                 }, process.env.JWT_SECRET)
                 res.json({ token, user })
@@ -148,34 +151,41 @@ router.post("/signin", (req, res) => {
     })
 });
 
-router.get("/secret", (req, res) => {
-    let token = false;
-    if (!req.headers) {
-        token = false;
-    } else if (!req.headers.authorization) {
-        token = false;
-    } else {
-        token = req.headers.authorization.split(" ")[1]
-        console.log(token);
-    }
+router.post("/portrait", authenticate, async (request, response) => {
+    try {
+        console.log(`upload photo endpoint reached`);
 
-    if (token) {
-        const data = jwt.verify(token, "SECRETSTRINGGOESHERE!", (err, data) => {
-            if (err)
-                return false;
+        const file = request.body.data;
 
-            return data;
+        cloudinary.config({
+            cloud_name: "drantho",
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET
         });
 
-        if (data) {
-            res.json({ msg: 'auth' })
-        } else {
-            res.status(403).json({ msg: "you are not authorized to view this page" })
-        }
-    } else {
-        res.status(403).json({ msg: "you are not authorized to view this page" })
+        const {portrait} = await db.User.findOne({
+            where: {
+                id: request.userId
+            },
+            attributes: ["portrait"]
+        });
+
+        cloudinary.uploader.destroy(portrait, function(result) { console.log(result) });
+
+        const uploadedResponse = await cloudinary.uploader.upload(file);
+
+        db.User.update({portrait: uploadedResponse.public_id}, {where:{id: request.userId}}).then(data => {
+            response.json(data)
+        }).catch(err => {
+            console.log(err);
+            response.status(500).json(err);
+        });
+
+    } catch (err) {
+        console.log(err);
+        return response.status(500).json(err)
     }
-});
+})
 
 router.get("/authenticate", (req, res) => {
     console.log(`authenticate route reached`);

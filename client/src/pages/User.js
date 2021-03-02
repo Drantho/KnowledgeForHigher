@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from 'react'
 import {useParams, Link} from 'react-router-dom';
 import API from "../utils/API";
+import Thumbnail from "../components/Thumbnail/Index";
 
 export default function User() {
 
@@ -9,6 +10,7 @@ export default function User() {
     const [user, setUser] = useState({
         userName: "",
         createdAt: "",
+        portrait: "",
         Services: [{
             Tags: []
         }],
@@ -30,13 +32,17 @@ export default function User() {
 
         const joined = new Date(userFromAPI.data.createdAt);
 
-        setUser({userName: userFromAPI.data.userName, createdAt: (joined.getMonth()+1)+"/"+joined.getDate()+"/"+joined.getFullYear(), Services: services.data, Questions: questions.data, Answers: answers.data})
+        setUser({userName: userFromAPI.data.userName, portrait: userFromAPI.data.portrait, createdAt: (joined.getMonth()+1)+"/"+joined.getDate()+"/"+joined.getFullYear(), Services: services.data, Questions: questions.data, Answers: answers.data})
     }, [])
 
     return (
         <div>
-            <h1>User Page: {id}</h1>
-            <h2>{user.userName}</h2>
+            <h1><Thumbnail portrait={user.portrait}/><br/>{user.userName}</h1>
+
+            {/* <pre>
+                {JSON.stringify(user, null, 4)}
+            </pre> */}
+
             <p>
                 <strong>Member since: </strong>
                 {user.createdAt}

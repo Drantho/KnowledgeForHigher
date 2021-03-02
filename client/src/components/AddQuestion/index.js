@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Box, Button, Grid, Text} from 'grommet';
+import React from 'react';
+import { Box, Grid, Text} from 'grommet';
 
 
 export default function AddQuestion() {
