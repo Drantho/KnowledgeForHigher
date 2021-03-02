@@ -9,7 +9,10 @@ export default function UserNavbar(props) {
     const ProfileIcon = "https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/" + props.userState.portrait + ".png";
 
         return (
-            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">                
+            <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">  
+                {/* <pre>
+                    {JSON.stringify(props, null, 4)}
+                </pre>               */}
                 <Box direction="row" align="center" gap="small">
                     <Anchor color="white">
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>

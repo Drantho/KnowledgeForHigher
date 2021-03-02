@@ -112,7 +112,6 @@ export default function Profile(props) {
             setPortraitData(reader.result)
         }
 
-        console.log(event.target.files);
     }
 
     const handleAddPhoto = async () => {
@@ -121,12 +120,11 @@ export default function Profile(props) {
 
         if(portraitData){
             const photoResult = await API.uploadPhoto(portraitData, props.userState.token).catch(err => console.log(err));
-            console.log(photoResult);
+            console.log(`photoResult`, photoResult);
+            localStorage.setItem("portrait", photoResult.data.id)
+            props.setUserState({...props.userState, portrait: photoResult.data.id})
         }
 
-        
-
-        
     }
 
     return (
