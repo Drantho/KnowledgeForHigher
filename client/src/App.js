@@ -14,6 +14,7 @@ import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
 import MessageView from './pages/MessageView';
+import Splash from './pages/Splash';
 import UserNavbar from './components/UserNavbar/index';
 import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
@@ -115,7 +116,10 @@ function App() {
       <NavbarTest />
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Splash setUserState={setUserState} />
+        </Route>
+        <Route exact path="/splash">
+          <Splash setUserState={setUserState} />
         </Route>
         <Route exact path="/browse">
           <Browse userState={userState}/>
