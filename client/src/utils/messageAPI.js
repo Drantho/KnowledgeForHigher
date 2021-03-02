@@ -33,5 +33,13 @@ export default {
                 authorization: `Bearer: ${token}`
             }
         });
+    },
+
+    searchUsers: (searchTerm, token) => {
+        return axios.get(`${url}/api/user/?search=${searchTerm}`, {
+            headers: {
+                authorization: `Bearer: ${token}`
+            }
+        });
     }
 }
