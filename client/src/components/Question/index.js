@@ -4,17 +4,19 @@ import { Link } from 'react-router-dom'
 import Tags from '../Tags'
 import './style.css';
 import { Down, Up } from 'grommet-icons';
+import QuestionTags from '../QuestionTags'
 
 export default function Question(props) {
     console.log("test")
-
+    console.log(props)
     const Icon = '/profilesample.png';
     return (
+     
         <Box>
             <Box
                 justify="center"
                 align="center"
-
+                margin={{"top":"-30px"}}
                 background="#F3F3F3"
                 round="5px"
                 gridArea="questionbox"
@@ -54,20 +56,23 @@ export default function Question(props) {
                         </Anchor>
                     </Box> */}
 
-
                     <Box margin="15px" alignSelf="start">
                         <Anchor color="white">
                             <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
                         </Anchor>
                     </Box>
 
-
-
+                   
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
+                        <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Box>
                         <Text size="40px" wordBreak="break-word" id="questionTitle" >
                             {props.props.title} {props.props.title} 
                         </Text>
+                        </Box>
+                        </Link>
                     </Box>
+                    
 
                     <Box gridArea="border" border="bottom" />
 
@@ -82,7 +87,8 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {props.props.Tags.map(tag => <Tags key={tag.id}>{tag.name}</Tags>)}
+                        {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
+
                     </Box>
                 </Grid>
 
