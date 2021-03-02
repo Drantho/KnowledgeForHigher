@@ -1,12 +1,13 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text } from 'grommet';
 import ProfileBox from '../components/ProfileBox'
 import UserTags from '../components/UserTags'
 import FollowedServices from '../components/FollowedServices'
 import Question from '../components/Question'
-
+import UserAnswers from '../components/UserAnswers'
+import UserServices from '../components/UserServices'
 
 export default function Profile(props) {
     const history = useHistory();
@@ -103,7 +104,7 @@ export default function Profile(props) {
 
     const handleGetPhoto = (event) => {
         event.preventDefault();
-        const file = event.target.files[0];        
+        const file = event.target.files[0];
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -119,19 +120,49 @@ export default function Profile(props) {
 
         console.log(`portraitData: `, portraitData);
 
-        if(portraitData){
+        if (portraitData) {
             const photoResult = await API.uploadPhoto(portraitData, props.userState.token).catch(err => console.log(err));
             console.log(photoResult);
         }
 
-        
 
-        
+
+
+    }
+
+    const [showQuestion, setShowQuestion] = useState(true);
+
+    const [showAnswer, setShowAnswer] = useState(false);
+
+    const [showService, setShowService] = useState(false);
+
+    const questionButton = () => {
+        if(!showQuestion){
+            setShowQuestion(true)
+            setShowAnswer(false)
+            setShowService(false)
+        } 
+    }
+
+    const answerButton = () => {
+        if (!showAnswer){
+            setShowAnswer(true)
+            setShowQuestion(false)
+            setShowService(false)
+        } 
+    }
+
+    const serviceButton = () => {
+        if (!showService){
+            setShowService(true)
+            setShowAnswer(false)
+            setShowQuestion(false)
+        } 
     }
 
     return (
         <div>
-            <pre>
+            {/* <pre>
                 {JSON.stringify(props, null, 4)}
             </pre>
             <h1>
@@ -141,7 +172,7 @@ export default function Profile(props) {
             <p>TODO: user id hard coded - change to logged in user</p>
             <ul>
                 {questions.map(question => <li key={question.id}><Link to={`/question/${question.id}`}><strong>{question.title}</strong></Link><p>{question.text}</p></li>)}
-            </ul>
+            </ul> */}
             <h2>Add Service</h2>
             <label htmlFor="name">
                 Service:
@@ -178,12 +209,12 @@ export default function Profile(props) {
                 {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
             </ul>
             <h2>Change My Portrait</h2>
-            <input id="photoInput" type="file" name="image" onChange={handleGetPhoto}/>
+            <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
 
-                
+
             <div>
                 <h3>Preview</h3>
-                <img id="preview" alt="preview" src={portraitSrc}  style={{display: portraitSrc ? "block" : "none", width: "400px" }}/>
+                <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
                 <button onClick={handleAddPhoto}>upload</button>
             </div>
 
@@ -204,35 +235,83 @@ export default function Profile(props) {
                 gap="small"
                 responsive="true"
             >
-               
+
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
-               
-                <Box gridArea="profile"  margin={{"left":"20px"}}>
+
+                <Box gridArea="profile" margin={{ "left": "20px" }}>
                     <Anchor color="white">
-                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`}/></Link>
+                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`} /></Link>
                     </Anchor>
                 </Box>
 
                 <Box gridAreah="myTags">
                     <UserTags />
-                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
-                        
+                    <Box direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+
                     </Box>
                 </Box>
 
-                <Box gridArea="main" height="flex" margin={{"bottom":"50px"}}>
-                    <ProfileBox/>
-                </Box>
-               
-                    <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
-                        {/* {questions.map(question => <Question props={question} />)} */}
-                
+                <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
+                    <Box
+                        justify="center"
+                        align="center"
+                        pad="5px"
+                        background="#222E42"
+                        round="5px"
+                        height="60px"
+                    >
+
+                        <Grid
+                            areas={[
+                                ['question', 'answer', 'service'],
+                            ]}
+                            columns={['flex', 'flex', 'flex']}
+                            rows={['45px']}
+                            gap="15px"
+                            responsive="true"
+                        >
+                        <Box gridArea="question">
+                            <Button onClick={questionButton}><Text>Questions</Text></Button>
+                        </Box>
+                        <Box gridArea="answer">
+                            <Button onClick={answerButton}><Text>Answers</Text></Button>
+                        </Box>
+                        <Box gridArea="service">
+                            <Button onClick={serviceButton}><Text>Service</Text></Button>
+                        </Box>
+                        </Grid>
                     </Box>
-    
+
+                </Box>
+                {showQuestion ? 
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                        {questions.map(question => <Question props={question} />)}
+                    </Box>
+                    :
+                    <div/>
+                }
+
+                {showAnswer ?
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                    {/* {answers.map(answer => <Answers props={answer} />)} */}
+                    <UserAnswers/>
+                    </Box>
+                    :
+                    <div/>
+                }
+
+                {showService ?
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                        {services.map(service => <UserServices props={service} />)}
+                    </Box>
+                    :
+                    <div/>
+                }
+
                 <Box gridArea="services">
                     {/* <FollowedServices /> */}
-    
+                    
                 </Box>
 
             </Grid>

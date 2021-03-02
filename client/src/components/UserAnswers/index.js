@@ -1,18 +1,14 @@
 import React from 'react';
 import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-
-import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
-export default function Question(props) {
-    console.log("test");
+export default function Answers() {
 
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
 
+    // const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
     return (
-     
         <Box>
             <Box
                 justify="center"
@@ -59,30 +55,30 @@ export default function Question(props) {
 
 
                     <Box margin="15px" alignSelf="start">                    
-                        <Anchor color="white">
+                        {/* <Anchor color="white">
                             
                             <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link>
-                        </Anchor>
+                        </Anchor> */}
                     </Box>
 
                    
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
-                        <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        {/* <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
-                            {props.props.title}
+                            {props.props.title} {props.props.title} 
                         </Text>
                         </Box>
-                        </Link>
+                        </Link> */}
                     </Box>
                     
 
                     <Box gridArea="border" border="bottom" />
 
                     <Box gridArea="description" id="questionSizeBox" >
-                        <Box id="questionSize" wordBreak="break-word" pad="5px">
+                        {/* <Box id="questionSize" wordBreak="break-word" pad="5px">
                             <Text size="medium">{props.props.text}</Text>
-                        </Box>
+                        </Box> */}
                     </Box>
 
                     <Box gridArea="ratings">
@@ -90,7 +86,7 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
+                        {/* {props.props.Tags.map(tag => <QuestionTags props={tag}/>)} */}
 
                     </Box>
                 </Grid>
@@ -99,5 +95,3 @@ export default function Question(props) {
         </Box>
     )
 }
-
-

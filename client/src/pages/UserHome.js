@@ -175,7 +175,7 @@ export default function UserHome(props) {
                 <Box gridArea="blank4" />
                 <Box gridArea="search" margin={{"top":"-70px"}} ><QuestionBox/></Box>
 
-                <Box gridAreah="myTags">
+                <Box gridArea="myTags">
                     <div onClick={handleShowMyTags}>
                     <UserTags/>
                     </div>
