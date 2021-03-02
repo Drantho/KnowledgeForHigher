@@ -53,9 +53,10 @@ export default function SignUpForm(props) {
                 firstName: response.data.user.firstName,
                 lastName: response.data.user.lastName,
                 email: response.data.user.email,
-                isSignedIn: true,
+                isSignedIn: false,
                 token: response.data.token
             });
+            props.goToSignInTab();
         }).catch( (err) => {
             setErrorState(err);
         });

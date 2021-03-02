@@ -1,10 +1,9 @@
 import { React, useState } from 'react';
 
-import { Grommet, Box, Button, Tabs, Tab, Form, FormField, TextInput } from 'grommet';
+import { Grommet, Box, Tabs, Tab } from 'grommet';
 
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
-import { keyframes } from 'styled-components';
 
 export default function Splash(props) {
 
@@ -51,16 +50,24 @@ export default function Splash(props) {
         }
     }
 
+    const [index, setActiveIndex] = useState(0);
+    const onActive = (nextIndex) => setActiveIndex(nextIndex);
+
+    const goToSignInTab = () => {
+        setActiveIndex(0);
+    }
+
     return (
         <Grommet theme={customTheme}>
         <Box>
             <Box alignSelf='center' width='80%' margin='large' justify='center'>
-                <Tabs>
+                <Tabs activeIndex={index} onActive={onActive}>
                     <Tab title='Sign In'>
                         <SignInForm setUserState={props.setUserState} />
                     </Tab>
                     <Tab title='Sign Up'>
-                        <SignUpForm setUserState={props.setUserState} />
+                        <SignUpForm setUserState={props.setUserState}
+                            goToSignInTab={goToSignInTab} />
                     </Tab>
                 </Tabs>
             </Box>

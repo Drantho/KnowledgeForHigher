@@ -1,5 +1,5 @@
 import  { React, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -116,10 +116,12 @@ function App() {
       <NavbarTest />
       <Switch>
         <Route exact path="/">
-          <Splash setUserState={setUserState} />
+          {userState.isSignedIn ?
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
         <Route exact path="/splash">
-          <Splash setUserState={setUserState} />
+          {userState.isSignedIn ? 
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
         <Route exact path="/browse">
           <Browse userState={userState}/>

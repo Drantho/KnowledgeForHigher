@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 
-import { Grommet, Box, Text, Button, Form, FormField, TextInput, MaskedInput } from 'grommet';
+import { Grommet, Box, Text, Button, Form, FormField, TextInput } from 'grommet';
 
 import API from "../utils/API";
 
