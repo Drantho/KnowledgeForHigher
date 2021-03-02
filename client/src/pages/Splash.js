@@ -5,7 +5,6 @@ import { Grommet, Box, Button, Tabs, Tab, Form, FormField, TextInput } from 'gro
 import SignInForm from '../components/SignInForm';
 import SignUpForm from '../components/SignUpForm';
 
-
 export default function Splash(props) {
 
     const customTheme = {
@@ -24,22 +23,6 @@ export default function Splash(props) {
                 }
             }
         }
-    }
-
-    const [ signInFormState, setSignInFormState ] = useState({
-        username: '',
-        password: ''
-    });
-    const handleSignin = (event) => {
-
-    }
-    const handleUsernameInput = (event) => {
-        console.log(event);
-        setSignInFormState({...signInFormState, username: event.target.value});
-    }
-    const handlePasswordInput = (event) => {
-        console.log(event);
-        setSignInFormState({...signInFormState, password: event.target.value});
     }
 
     return (
