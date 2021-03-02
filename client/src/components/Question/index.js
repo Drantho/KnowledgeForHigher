@@ -69,7 +69,7 @@ export default function Question(props) {
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
-                        <Text size="40px" wordBreak="break-word" id="questionTitle" >
+                        <Text size="2em" wordBreak="break-word" id="questionTitle" >
                             {props.props.title} {props.props.title} 
                         </Text>
                         </Box>
@@ -90,7 +90,7 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {/* {props.props.Tags.map(tag => <QuestionTags props={tag}/>)} */}
+                        {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
 
                     </Box>
                 </Grid>

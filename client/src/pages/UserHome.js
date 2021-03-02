@@ -210,7 +210,7 @@ export default function UserHome(props) {
                             </li>
                         }
                         )} */}
-                    
+                    {services.map(service=> <Service props={service}/>)}
                     </Box>
                 </Box>
 
