@@ -55,13 +55,17 @@ function App() {
         lastName: response.data.user.lastName,
         email: response.data.user.email,
         isSignedIn: true,
-        token: response.data.token
+        token: response.data.token,
+        portrait: response.data.user.portrait        
       });
       localStorage.setItem("token", response.data.token);  
+      localStorage.setItem("portrait", response.data.portrait);  
+      
       cb();    
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
+      localStorage.clear("portrait")
     });
   }
 
@@ -74,15 +78,17 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
-        portrait: response.data.user.portrait,
+        portrait: localStorage.getItem("portrait") || response.data.user.portrait,
         isSignedIn: true,
         token: response.data.token
       });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("portrait", response.data.user.portrait);
       cb();
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
+      localStorage.clear("portrait")
     });
   }
 
@@ -96,7 +102,7 @@ function App() {
           firstName: response.data.user.firstName,
           lastName: response.data.user.lastName,
           email: response.data.user.email,
-          portrait: response.data.user.portrait,
+          portrait: localStorage.getItem("portrait") || response.data.user.portrait,
           isSignedIn: true,
           token: response.data.token
         });
@@ -104,6 +110,7 @@ function App() {
       }).catch(err => {
         console.log(err);
         localStorage.clear("token")
+        localStorage.clear("portrait")
       });
     }
   }, [])
@@ -120,7 +127,7 @@ function App() {
           <Browse userState={userState}/>
         </Route>
         <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
-          <Profile userState={userState}/>
+          <Profile userState={userState} setUserState={setUserState}/>
         </ProtectedRoute>
         <Route exact path="/tag/:id">
           <Tag />
