@@ -9,7 +9,7 @@ import QuestionTags from '../QuestionTags'
 export default function Question(props) {
     console.log("test");
 
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.props.User.portrait}.jpg`;
 
     return (
      
@@ -70,7 +70,7 @@ export default function Question(props) {
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
-                            {props.props.title} {props.props.title} 
+                            {props.props.title}
                         </Text>
                         </Box>
                         </Link>
