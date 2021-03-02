@@ -4,7 +4,7 @@ import { Search } from 'grommet-icons';
 import './style.css';
 
 
-export default function QuestionBox() {
+export default function QuestionBox(props) {
 
     return (
         <Box
@@ -32,7 +32,8 @@ export default function QuestionBox() {
                 <Box gridArea="search"  round="5px">
                     <Box fill align="center" justify="start">
                         <Box width="medium" gap="medium" >
-                            <TextInput name="search" style={{background: "white"}} icon={<Search color="black"/>} reverse placeholder="search ..."  />
+                            <TextInput name="searchString" onChange={props.handleInputChanged} value={props.searchString} style={{background: "white", color: "black"}} icon={<Search color="black"/>} reverse placeholder="search ..."  /><br/>                        
+                            {props.searchString}
                         </Box>
                     </Box>
                 </Box>

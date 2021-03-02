@@ -34,9 +34,17 @@ router.get('/', (request, response) => {
 
 
         const includes = [{
-            model: db.Tag,
-            through: { attributes: [] }
-        }];
+                model: db.Tag,
+                through: { attributes: [] },            
+            },
+            {
+                model: db.User,
+                attributes: ["id", "userName", "portrait"]
+            },
+            {
+                model: db.Rating,             
+            }
+        ];
 
         // If a tag name is provided, include the Tags table and specify which tag
         if (request.query.tag) {

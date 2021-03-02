@@ -9,7 +9,7 @@ import QuestionTags from '../QuestionTags'
 export default function Question(props) {
     console.log("test");
 
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.props.User.portrait}.jpg`;
 
     return (
      
