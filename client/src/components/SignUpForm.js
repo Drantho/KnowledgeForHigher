@@ -7,18 +7,22 @@ import API from "../utils/API";
 export default function SignUpForm(props) {
 
     const customTheme = {
-        tab: {
-            extend: {
-                // width: '50%'
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
             }
         },
-        tabs: {
-            header: {
-                background: 'red'
-            },
-            panel: {
-                extend: {
-                    width: '50%'
+        formField: {
+            border: undefined
+        },
+        button: {
+            primary: {
+                background: {
+                    color: {
+                        dark: 'blue'
+                    }
                 }
             }
         }
@@ -135,7 +139,9 @@ export default function SignUpForm(props) {
                     <Text color="status-error">{errorState.response.statusText}</Text>
                 </Box>)
             }
-            <Button type='submit' label='Sign In' />
+            <Box align='center'>
+                <Button primary size='large' type='submit' label='Sign Up' />
+            </Box>
         </Form>
         </Grommet>
     )

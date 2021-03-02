@@ -5,6 +5,21 @@ import { Grommet, Box, Text, Button, Form, FormField, TextInput, MaskedInput } f
 import API from "../utils/API";
 
 export default function SignInForm(props) {
+    const customTheme = {
+        global: {
+            colors: {
+                focus: undefined
+            }
+        },
+        formField: {
+            focus: {
+                background: {
+                    color: 'white'
+                }
+            },
+            border: undefined
+        }
+    }
 
     const [signInFormState, setSignInFormState] = useState({
         userName: '',
@@ -46,7 +61,7 @@ export default function SignInForm(props) {
     }
 
     return (
-        <Grommet>
+        <Grommet theme={customTheme}>
             <Form errors={errorState} onSubmit={handleSubmit} value={signInFormState}>
                 <FormField name='userName' htmlFor='sign-up-username' label='Username' required>
                     <TextInput
