@@ -1,31 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Box, Nav, Anchor, Header, Avatar } from 'grommet';
 import { Link } from 'react-router-dom'
 
 
 const Icon = '/bookicon.png';
-
-class UserNavbar extends Component {
-    render() {
+const ProfileIcon = '/profilesample.png';
+export default function UserNavbar() {
+    
         return (
             <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall">
                 <Box direction="row" align="center" gap="small">
                     <Anchor color="white">
-                        <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
+                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar src={Icon}/></Link>
                     </Anchor>
                 </Box>
-            
                 <Nav direction="row">
 
                     <Box direction="row" align="center" gap="small" pad="small">
                         <Anchor color="#FCE181">
-                            <Link to='/' style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
+                            <Link to='/ask' style={{ color: 'inherit', textDecoration: 'inherit'}}>Ask</Link>
+                        </Anchor>
+                    </Box>
+
+                    <Box direction="row" align="center" gap="small" pad="small">
+                        <Anchor color="#FCE181">
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
                         </Anchor>
                     </Box>
 
                     <Box direction="row" align="center" gap="small" pad="small" className="navText">
                         <Anchor color="#FCE181">
-                            <Link to='/profile' style={{ color: 'inherit', textDecoration: 'inherit'}}>Profile</Link>
+                            <Link to='/profile' style={{ color: 'inherit', textDecoration: 'inherit'}}><Avatar size="40px" src={ProfileIcon}/></Link>
                         </Anchor>
                     </Box>
 
@@ -42,6 +47,5 @@ class UserNavbar extends Component {
 
         )
     }
-}
 
-export default UserNavbar;
+

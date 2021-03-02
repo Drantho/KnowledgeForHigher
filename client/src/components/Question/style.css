@@ -1,0 +1,21 @@
+#questionBox {
+    margin-bottom: 50px;
+}
+
+#avatarIcon {
+    margin-right: 250px;
+}
+
+#questionTitle {
+    margin-left: 75px;
+}
+
+
+#questionSize {
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+#questionSizeBox {
+    margin-right: -500px;
+}
