@@ -8,7 +8,7 @@ import UserTags from '../components/UserTags'
 import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
-
+import Service from '../components/Service'
 export default function UserHome(props) {
 
     const [tags, setTags] = useState([]);
@@ -179,36 +179,38 @@ export default function UserHome(props) {
                     <div onClick={handleShowMyTags}>
                     <UserTags/>
                     </div>
-                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                    <Box style={{flexWrap:"wrap"}}direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
                     </Box>
 
                     <div onClick={handleShowPopularTags}>
                     <PopularTags/>
                     </div>
-                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
+                    <Box style={{flexWrap:"wrap"}}direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
                         {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
                     </Box>
                 </Box>
 
-                <Box gridArea="main" height="flex">
+                <Box gridArea="main" height="flex" background="#f0f0f0">
 
                 </Box>
 
-                <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
+                <Box gridArea="question"  margin={{"top":"-10px",}} >
                     {questions.map(question => <Question props={question} />)}
+                    
                 </Box>
 
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {services.map(service => {
+                        {/* {services.map(service => {
                             return <li key={service.id}>
                                 <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
                                 {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                             </li>
                         }
-                        )}
+                        )} */}
+                    {services.map(service=> <Service props={service}/>)}
                     </Box>
                 </Box>
 

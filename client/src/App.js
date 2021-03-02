@@ -112,7 +112,7 @@ function App() {
     <Router>
       <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
-      {/* <NavbarTest /> */}
+      <NavbarTest />
       <Switch>
         <Route exact path="/">
           <Home />
