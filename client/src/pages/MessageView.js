@@ -20,6 +20,7 @@ export default function MessageView(props) {
         id: -1,
         toUser: -1
     });
+    const [usersList, setUsersList] = useState([]);
 
     const [newThreadState, setNewThreadState] = useState({username: ''});
 
@@ -29,7 +30,9 @@ export default function MessageView(props) {
 
     const handleNewThread = async (event) => {
         event.preventDefault();
-        const newThread = await messageAPI.createThread(event.value, props.userState.token);
+        const value = event.value ? event.value : event.suggestion.value;
+        console.log(value);
+        const newThread = await messageAPI.createThread(value, props.userState.token);
 
         setNewThreadState({username: ''});
         console.log(newThread);
@@ -41,19 +44,44 @@ export default function MessageView(props) {
         }
     }
 
-    const handleNewThreadChange = (event) => {
+    const handleNewThreadChange = async (event) => {
         setNewThreadState({username: event.target.value});
+        if (event.target.value !== '') {
+            const searchedUsers 
+                = await messageAPI.searchUsers(event.target.value, props.userState.token);
+            setUsersList(searchedUsers.data);
+            console.log(searchedUsers.data);
+        }
     }
 
     useEffect( async () => {
         setNewThreadState({username: ''});
         const loadThreadsList = (await messageAPI.getThreads(props.userState.token)).data;
-        console.log(loadThreadsList);
         setThreadsList(loadThreadsList);
     }, []);
 
+
+    // Override Grommet theming
+    const customTheme = {
+        global: {
+            drop: {
+                border: {
+                    radius: '10px'
+                },
+                extend: {
+                    backgroundColor: 'rgb(137,162,178)'
+                }
+            },
+            focus: {
+                border: {
+                    color: 'rgba(0,0,0,0)' // Hacky way to remove focus highlighting
+                }
+            }
+        }
+    }
+
     return (
-        <Grommet>
+        <Grommet theme={customTheme}>
         <Box fill direction='row' height={{ min: '60vh' }}>
             <Nav elevation='large' gap='none' width='25%' background='#222E42'>
                 <Heading 
@@ -62,18 +90,26 @@ export default function MessageView(props) {
                     margin={{'horizontal': 'small'}}>
                         Messages
                     </Heading>
+                <Box background='#FCE181' height='3px'></Box>
                 <Form onSubmit={handleNewThread} value={newThreadState.username}>
-                    <Box direction='row' pad='small' margin={{'bottom': 'small'}}>
-                        <TextInput 
-                            placeholder='Create thread' 
+                    <Box direction='row' align='center' pad='small'>
+                        <TextInput
+                            placeholder='New conversation' 
                             onChange={handleNewThreadChange}
                             value={newThreadState.username}
-                            pad={{'horizontal': 'xsmall'}}>
+                            pad={{'horizontal': 'xsmall'}}
+                            suggestions={usersList.map(e => ({ label: `${e.firstName} ${e.lastName} (${e.userName})`, value: e.userName}))}
+                            onSuggestionSelect={handleNewThread}
+                            dropProps={{
+                                stretch: false,
+                                background: '#222E42'
+                            }}>
+                            
                         </TextInput>
                         <Button margin='small' type='submit'><Add></Add></Button>
                     </Box>
                 </Form>
-
+                <Box background='#FCE181' height='3px' margin={{bottom: 'small'}}></Box>
                 {threadsList.map( (e) => {
                     return <ThreadListItem
                             userState={props.userState}
