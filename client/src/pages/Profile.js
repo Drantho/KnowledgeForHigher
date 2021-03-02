@@ -51,6 +51,11 @@ export default function Profile(props) {
             console.log(`services: `, response.data);
         });
 
+        API.getAnswersByUser(props.userState.id).then(response => {
+            setAnswers(response.data);
+            console.log(`answers: `, response.data);
+        })
+
     }, []);
 
     const handleInputChange = event => {
@@ -112,7 +117,6 @@ export default function Profile(props) {
             setPortraitData(reader.result)
         }
 
-        console.log(event.target.files);
     }
 
     const handleAddPhoto = async () => {
@@ -121,12 +125,11 @@ export default function Profile(props) {
 
         if(portraitData){
             const photoResult = await API.uploadPhoto(portraitData, props.userState.token).catch(err => console.log(err));
-            console.log(photoResult);
+            console.log(`photoResult`, photoResult);
+            localStorage.setItem("portrait", photoResult.data.id)
+            props.setUserState({...props.userState, portrait: photoResult.data.id})
         }
 
-        
-
-        
     }
 
     return (
@@ -175,22 +178,16 @@ export default function Profile(props) {
             </ul>
             <h2>My Answers</h2>
             <ul>
-                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
+                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>{answer.Question.title}</Link></li>)}
             </ul>
             <h2>Change My Portrait</h2>
             <input id="photoInput" type="file" name="image" onChange={handleGetPhoto}/>
-
                 
             <div>
                 <h3>Preview</h3>
                 <img id="preview" alt="preview" src={portraitSrc}  style={{display: portraitSrc ? "block" : "none", width: "400px" }}/>
                 <button onClick={handleAddPhoto}>upload</button>
             </div>
-
-            <pre>
-                {JSON.stringify(props.userState, null, 4)}
-            </pre>
-
 
             <Grid
                 areas={[

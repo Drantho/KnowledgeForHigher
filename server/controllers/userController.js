@@ -191,7 +191,7 @@ router.post("/portrait", authenticate, async (request, response) => {
         const uploadedResponse = await cloudinary.uploader.upload(file);
 
         db.User.update({portrait: uploadedResponse.public_id}, {where:{id: request.userId}}).then(data => {
-            response.json(data)
+            response.json({id: uploadedResponse.public_id})
         }).catch(err => {
             console.log(err);
             response.status(500).json(err);

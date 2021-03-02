@@ -14,11 +14,15 @@ router.get('/', (request, response) => {
             where: { id: request.query.id },
             include:[{ 
                 model: db.User,
-                attributes: ["userName", "id"]
+                attributes: ["userName", "id", "portrait"]
             },
-        {
-            model: db.Rating
-        }]
+            {
+                model: db.Rating
+            },
+            {
+                model: db.Question
+            }
+        ]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
@@ -50,11 +54,17 @@ router.get('/', (request, response) => {
     // Find all of a user's answers
     if (request.query.user) {
         db.Answer.findAll({
-            include: {
+            include: [{
                 model: db.User,
                 where: { id: request.query.user },
                 attributes: []
-            }
+            },
+            {
+                model: db.Question
+            },
+            {
+                model: db.Rating
+            }]
         }).then( (result) => {
             return response.json(result);
         }).catch( (err) => {
