@@ -88,7 +88,9 @@ export default function SignInForm(props) {
                         <Text color="status-error">Incorrect username or password.</Text>
                     </Box>)
                 }
-                <Button type='submit' label='Sign In' />
+                <Box align='center'>
+                    <Button primary size='large' type='submit' label='Sign In' />
+                </Box>
             </Form>
         </Grommet>
     )

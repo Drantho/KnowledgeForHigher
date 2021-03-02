@@ -82,7 +82,12 @@ export default function SignUpForm(props) {
     return (
         <Grommet theme={customTheme}>
         <Form onSubmit={handleSubmit} value={signUpFormState}>
-            <FormField name='userName' htmlFor='sign-up-username' label='Username' required>
+            <FormField required
+                margin={{horizontal: '5%'}} 
+                width='70%'
+                name='userName'
+                htmlFor='sign-up-username' 
+                label='Username' >
                 <TextInput
                     id='sign-up-username'
                     name='userName'
@@ -90,50 +95,68 @@ export default function SignUpForm(props) {
                     value={signUpFormState.userName}
                     placeholder='Username' />
             </FormField>
-            <FormField name='firstName' htmlFor='sign-up-firstname' label='First Name' required>
-                <TextInput
-                    id='sign-up-firstname'
+            <Box direction='row'>
+                <FormField required
+                    width='40%'  
+                    name='firstName' 
+                    htmlFor='sign-up-firstname' 
+                    label='First Name'
+                    margin={{horizontal: '5%'}} >
+                    <TextInput
+                        id='sign-up-firstname'
+                        name='firstName'
+                        placeholder="i.e., John"
+                        onChange={handleInput}
+                        value={signUpFormState.firstName} />
+                </FormField>
+                <FormField required
+                    width='40%'
                     name='firstName'
-                    placeholder="i.e., John"
-                    onChange={handleInput}
-                    value={signUpFormState.firstName} />
-            </FormField>
-            <FormField name='lastName' htmlFor='sign-up-lastname' label='Last Name' required>
-                <TextInput
-                    id='sign-up-lastname'
-                    name='lastName'
-                    placeholder="i.e., Doe"
-                    onChange={handleInput}
-                    value={signUpFormState.lastName} />
-            </FormField>
-            <FormField required validate={validateEmail} 
-                name='email' 
-                htmlFor='sign-up-email' 
-                label='Email'>
-                <MaskedInput 
+                    htmlFor='sign-up-firstname'
+                    label='Last Name'
+                    margin={{ horizontal: '5%' }} >                    
+                    <TextInput
+                        id='sign-up-lastname'
+                        name='lastName'
+                        placeholder="i.e., Doe"
+                        onChange={handleInput}
+                        value={signUpFormState.lastName} />
+                </FormField>
+            </Box>
+            <Box direction='row' margin={{bottom: '20px'}}>
+                <FormField required validate={validateEmail} 
+                    margin={{ horizontal: '5%' }}
+                    width='40%'
                     name='email' 
-                    onChange={handleInput} 
-                    value={signUpFormState.email} 
-                    mask={[
-                        { regexp: /^[\w\-_.]+$/, placeholder: 'example' },
-                        { fixed: '@' },
-                        { regexp: /^[\w]+$/, placeholder: 'my' },
-                        { fixed: '.' },
-                        { regexp: /^[\w]+$/, placeholder: 'com' },
-                    ]}/>
-            </FormField>
-            <FormField required validate={validatePassword} 
-                name='password' 
-                htmlFor='password' 
-                label='Password'>
-                <TextInput
-                    id='password'
-                    name='password'
-                    type='password'
-                    placeholder='Must be at least 8 characters long.'
-                    onChange={handleInput}
-                    value={signUpFormState.password} />
-            </FormField>
+                    htmlFor='sign-up-email' 
+                    label='Email'>
+                    <MaskedInput 
+                        name='email' 
+                        onChange={handleInput} 
+                        value={signUpFormState.email} 
+                        mask={[
+                            { regexp: /^[\w\-_.]+$/, placeholder: 'example' },
+                            { fixed: '@' },
+                            { regexp: /^[\w]+$/, placeholder: 'my' },
+                            { fixed: '.' },
+                            { regexp: /^[\w]+$/, placeholder: 'com' },
+                        ]}/>
+                </FormField>
+                <FormField required validate={validatePassword} 
+                    margin={{ horizontal: '5%' }}
+                    width='40%'
+                    name='password' 
+                    htmlFor='password' 
+                    label='Password'>
+                    <TextInput
+                        id='password'
+                        name='password'
+                        type='password'
+                        placeholder='Must be at least 8 characters long.'
+                        onChange={handleInput}
+                        value={signUpFormState.password} />
+                </FormField>
+            </Box>
             {errorState &&
                 (<Box pad='small' margin={{bottom: 'small'}}>
                     <Text color="status-error">{errorState.response.statusText}</Text>

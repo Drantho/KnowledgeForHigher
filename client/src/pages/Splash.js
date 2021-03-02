@@ -26,6 +26,7 @@ export default function Splash(props) {
             },
             pad: 'small',
             border: undefined,
+            size: 'large',
             extend: {
                 borderRadius: '5px'
             }
