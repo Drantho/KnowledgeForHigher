@@ -32,14 +32,21 @@ export default function UserHome(props) {
         Tags: []
     }]);
 
+    const [searchString, setSearchString] = useState("");
+
+
     const handleInputChanged = async event => {
         console.log('event.target.value', event.target.value);
         setSearchString(event.target.value);
 
+        search(event.target.value);
+    }
+
+    const search = async query => {
         let searchResults = {};
         searchResults.data = [];
-        if (event.target.value.length > 0) {
-            searchResults = await API.getQuestionsBySearch(event.target.value).catch(err => console.log(err));
+        if (query.length > 0) {
+            searchResults = await API.getQuestionsBySearch(query).catch(err => console.log(err));
         }
 
         console.log(`search results: `, searchResults);
@@ -50,8 +57,9 @@ export default function UserHome(props) {
         }
     }
 
-    const [searchString, setSearchString] = useState("");
-
+    const handleSearchClick = () => {
+        search(searchString)
+    }
 
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
@@ -204,7 +212,7 @@ export default function UserHome(props) {
 
                 {/* =========================================================== */}
 
-                <Box gridArea="search" margin={{ "top": "-70px" }} ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} /></Box>
+                <Box gridArea="search" margin={{ "top": "-70px" }} ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box>
 
                 {/* =========================================================== */}
 

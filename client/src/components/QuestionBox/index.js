@@ -39,7 +39,7 @@ export default function QuestionBox(props) {
                 </Box>
 
                 <Box gridArea="filter" pad="small">
-                    <Button id="filterButton" color="#FCE181"> Filter </Button>
+                    <Button id="filterButton"color="#FCE181"> Filter </Button>
                 </Box>
             </Grid>
         </Box>
