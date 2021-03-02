@@ -182,18 +182,12 @@ export default function Profile(props) {
             </ul>
             <h2>Change My Portrait</h2>
             <input id="photoInput" type="file" name="image" onChange={handleGetPhoto}/>
-
                 
             <div>
                 <h3>Preview</h3>
                 <img id="preview" alt="preview" src={portraitSrc}  style={{display: portraitSrc ? "block" : "none", width: "400px" }}/>
                 <button onClick={handleAddPhoto}>upload</button>
             </div>
-
-            <pre>
-                {JSON.stringify(props.userState, null, 4)}
-            </pre>
-
 
             <Grid
                 areas={[
