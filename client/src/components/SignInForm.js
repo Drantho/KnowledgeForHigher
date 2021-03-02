@@ -14,6 +14,7 @@ export default function SignInForm(props) {
     const [errorState, setErrorState] = useState();
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         API.signIn(signInFormState).then((response) => {
             localStorage.setItem("token", response.data.token);
             props.setUserState({

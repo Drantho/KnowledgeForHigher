@@ -13,12 +13,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         lastName: {
             type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
         userName: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         email: {
             type: Sequelize.STRING,

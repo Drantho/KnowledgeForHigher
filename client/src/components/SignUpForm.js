@@ -1,6 +1,8 @@
 import { React, useState } from 'react';
 
-import { Grommet, Box, Button, Form, FormField, TextInput, MaskedInput } from 'grommet';
+import { Grommet, Box, Text, Button, Form, FormField, TextInput, MaskedInput } from 'grommet';
+
+import API from "../utils/API";
 
 export default function SignUpForm(props) {
 
@@ -23,26 +25,35 @@ export default function SignUpForm(props) {
     }
 
     const [signUpFormState, setSignUpFormState] = useState({
-        username: '',
-        firstname: '',
-        lastname: '',
+        userName: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: ''
     });
 
+    const [errorState, setErrorState] = useState();
+
     const handleInput = (event) => {
+        setErrorState();
         setSignUpFormState({...signUpFormState, [event.target.name]: event.target.value});
     }
 
     const handleSubmit = (event) => {
-        console.log(event.value);
-        props.setUserState({...signUpFormState, isSignedIn: true});
-        setSignUpFormState({
-            username: '',
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: ''
+        event.preventDefault();
+
+        API.signUp(signUpFormState).then( (response) => {
+            props.setUserState({
+                id: response.data.user.id,
+                userName: response.data.user.userName,
+                firstName: response.data.user.firstName,
+                lastName: response.data.user.lastName,
+                email: response.data.user.email,
+                isSignedIn: true,
+                token: response.data.token
+            });
+        }).catch( (err) => {
+            setErrorState(err);
         });
     }
 
@@ -67,29 +78,29 @@ export default function SignUpForm(props) {
     return (
         <Grommet theme={customTheme}>
         <Form onSubmit={handleSubmit} value={signUpFormState}>
-            <FormField name='username' htmlFor='sign-up-username' label='Username' required>
+            <FormField name='userName' htmlFor='sign-up-username' label='Username' required>
                 <TextInput
                     id='sign-up-username'
-                    name='username'
+                    name='userName'
                     onChange={handleInput}
-                    value={signUpFormState.username}
+                    value={signUpFormState.userName}
                     placeholder='Username' />
             </FormField>
-                <FormField name='firstname' htmlFor='sign-up-firstname' label='First Name' required>
+            <FormField name='firstName' htmlFor='sign-up-firstname' label='First Name' required>
                 <TextInput
                     id='sign-up-firstname'
-                    name='firstname'
+                    name='firstName'
                     placeholder="i.e., John"
                     onChange={handleInput}
-                    value={signUpFormState.firstname} />
+                    value={signUpFormState.firstName} />
             </FormField>
-            <FormField name='lastname' htmlFor='sign-up-lastname' label='Last Name' required>
+            <FormField name='lastName' htmlFor='sign-up-lastname' label='Last Name' required>
                 <TextInput
                     id='sign-up-lastname'
-                    name='lastname'
+                    name='lastName'
                     placeholder="i.e., Doe"
                     onChange={handleInput}
-                    value={signUpFormState.lastname} />
+                    value={signUpFormState.lastName} />
             </FormField>
             <FormField required validate={validateEmail} 
                 name='email' 
@@ -119,6 +130,11 @@ export default function SignUpForm(props) {
                     onChange={handleInput}
                     value={signUpFormState.password} />
             </FormField>
+            {errorState &&
+                (<Box pad='small' margin={{bottom: 'small'}}>
+                    <Text color="status-error">{errorState.response.statusText}</Text>
+                </Box>)
+            }
             <Button type='submit' label='Sign In' />
         </Form>
         </Grommet>
