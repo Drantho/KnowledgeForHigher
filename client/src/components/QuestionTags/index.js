@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Text} from 'grommet';
-import { Link } from 'react-router-dom'
 
 
-export default function Tags(props) {
+
+export default function QuestionTags(props) {
     console.log(props)
     return (
         <Box alignSelf="start" margin={{"right":"10px"}}>
@@ -20,10 +20,9 @@ export default function Tags(props) {
                 }}
                 gridArea="tag"
                 elevation="small" 
+                margin="5px"
             >
-                <Link to={`/tag/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                 <Text color="blue">{props.props.name}</Text>
-                </Link>
             </Box>
         </Box>
     )

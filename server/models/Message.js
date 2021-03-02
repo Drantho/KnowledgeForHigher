@@ -11,6 +11,7 @@ module.exports = (sequelize, Sequelize) => {
     Message.associate = models => {
         Message.belongsTo(models.User, { as: 'sender' });
         Message.belongsTo(models.User, { as: 'recipient' });
+        Message.belongsTo(models.Thread);
     }
 
     return Message;

@@ -39,6 +39,10 @@ module.exports = (sequelize, Sequelize) => {
         status: {
             type: Sequelize.ENUM('active', 'inactive'),
             defaultValue: 'active'
+        },
+        portrait:{
+            type: Sequelize.STRING,
+            defaultValue: "/assets/images/profilesample.png"
         }
     });
 
@@ -49,6 +53,10 @@ module.exports = (sequelize, Sequelize) => {
         User.hasMany(models.Rating);
         User.hasMany(models.Service);
         User.hasMany(models.Purchase);
+        User.hasMany(models.Message, { as: 'user1' })
+        User.hasMany(models.Message, { as: 'user2' });
+        User.hasMany(models.Thread, {as: 'threadUser1'});
+        User.hasMany(models.Thread, {as: 'threadUser2'});
         User.belongsToMany(models.Tag, { through: 'following' });
     }
 

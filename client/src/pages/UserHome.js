@@ -27,7 +27,7 @@ export default function UserHome(props) {
 
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
-        
+        console.log(`questionsToFeed: `, questionsToFeed);
         setQuestions(questionsToFeed.data);
 
         const servicesToFeed = await API.getTagServiceFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
@@ -203,14 +203,14 @@ export default function UserHome(props) {
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {services.map(service => {
+                        {/* {services.map(service => {
                             return <li key={service.id}>
                                 <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
                                 {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                             </li>
                         }
-                        )}
-                    <Service/>
+                        )} */}
+                    
                     </Box>
                 </Box>
 

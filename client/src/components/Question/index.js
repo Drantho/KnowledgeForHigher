@@ -1,15 +1,16 @@
 import React from 'react';
 import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-import Tags from '../Tags'
+
 import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
 export default function Question(props) {
-    console.log("test")
-    console.log(props)
-    const Icon = '/profilesample.png';
+    console.log("test");
+
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
+
     return (
      
         <Box>
@@ -56,9 +57,11 @@ export default function Question(props) {
                         </Anchor>
                     </Box> */}
 
-                    <Box margin="15px" alignSelf="start">
+
+                    <Box margin="15px" alignSelf="start">                    
                         <Anchor color="white">
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
+                            
+                            <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link>
                         </Anchor>
                     </Box>
 
@@ -87,7 +90,7 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
+                        {/* {props.props.Tags.map(tag => <QuestionTags props={tag}/>)} */}
 
                     </Box>
                 </Grid>

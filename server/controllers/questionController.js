@@ -53,7 +53,7 @@ router.get('/', (request, response) => {
             includes.push({
                 model: db.User,
                 where: { id: request.query.user },
-                attributes: ["id", "userName"]
+                attributes: ["id", "userName", "portrait"]
             });
         }
 
@@ -112,7 +112,12 @@ router.post("/uniqueQuestionsByTags", (request, response) => {
                 },
                 {
                     model: db.Rating
-                }]
+                },
+                {
+                    model: db.User,
+                    attributes: ["id", "userName", "portrait"]
+                }
+            ]
         }).then(data => {
             response.json(data);
         });
