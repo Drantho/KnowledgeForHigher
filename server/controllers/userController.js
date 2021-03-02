@@ -104,20 +104,19 @@ router.delete('/:id', authenticate,  (request, response) => {
 // ===================================================
 
 router.post("/signup", async (req, res) => {
-    if (profanityCheck(req.body.firstName + ' ' + req.body.lastName + ' ' + req.body.username)) {
-        response.status(400).json({
-            err: 'User contains disallowed term/phrase.'
-        });
+    if (profanityCheck(req.body.username)) {
+        res.statusMessage = 'Username contains disallowed term/phrase.';
+        res.status(400).end();
         return;
     }
 
     const checkUsername = await db.User.findOne({ where: { userName: req.body.userName } });
     if (checkUsername) {
-        res.statusMessage ='Username already in use.';
+        res.statusMessage = 'Username already in use.';
         res.status(400).end();
         return;
     }
-    
+
     const checkEmail = await db.User.findOne({ where: { email: req.body.email } });
     if (checkEmail) {
         res.statusMessage ='Email already in use.';
