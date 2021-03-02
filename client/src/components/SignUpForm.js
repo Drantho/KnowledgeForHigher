@@ -16,15 +16,6 @@ export default function SignUpForm(props) {
         },
         formField: {
             border: undefined
-        },
-        button: {
-            primary: {
-                background: {
-                    color: {
-                        dark: 'blue'
-                    }
-                }
-            }
         }
     }
 
