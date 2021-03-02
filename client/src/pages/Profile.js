@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar, Button, Text } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
 import ProfileBox from '../components/ProfileBox'
 import UserTags from '../components/UserTags'
 import FollowedServices from '../components/FollowedServices'
@@ -173,7 +173,7 @@ export default function Profile(props) {
             <ul>
                 {questions.map(question => <li key={question.id}><Link to={`/question/${question.id}`}><strong>{question.title}</strong></Link><p>{question.text}</p></li>)}
             </ul> */}
-            <h2>Add Service</h2>
+            {/* <h2>Add Service</h2>
             <label htmlFor="name">
                 Service:
             </label>
@@ -220,7 +220,7 @@ export default function Profile(props) {
 
             <pre>
                 {JSON.stringify(props.userState, null, 4)}
-            </pre>
+            </pre> */}
 
 
             <Grid
@@ -239,10 +239,16 @@ export default function Profile(props) {
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
 
-                <Box gridArea="profile" margin={{ "left": "20px" }}>
+                <Box gridArea="profile" margin={{ "left": "20px" }} width="130px" direction="row">
+                    <Stack>
                     <Anchor color="white">
                         <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`} /></Link>
                     </Anchor>
+                    </Stack>
+                </Box>
+
+                <Box gridArea="profile" margin={{"left":"120px","top":"50px"}} border width="200px" background="white" height="40px" round="5px">
+                    <Text size="25px" margin={{"left":"35px"}}> Nolan Stucky </Text>
                 </Box>
 
                 <Box gridAreah="myTags">
@@ -272,13 +278,13 @@ export default function Profile(props) {
                             responsive="true"
                         >
                         <Box gridArea="question">
-                            <Button onClick={questionButton}><Text>Questions</Text></Button>
+                            <Button onClick={questionButton}><Text>My Questions</Text></Button>
                         </Box>
                         <Box gridArea="answer">
-                            <Button onClick={answerButton}><Text>Answers</Text></Button>
+                            <Button onClick={answerButton}><Text>My Answers</Text></Button>
                         </Box>
                         <Box gridArea="service">
-                            <Button onClick={serviceButton}><Text>Service</Text></Button>
+                            <Button onClick={serviceButton}><Text>My Services</Text></Button>
                         </Box>
                         </Grid>
                     </Box>
