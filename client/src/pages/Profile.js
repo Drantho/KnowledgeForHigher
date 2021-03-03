@@ -56,6 +56,10 @@ export default function Profile(props) {
             setTags(response.data);
             console.log(`tags: `, response.data);
         });
+        API.getAnswersByUser(props.userState.id).then(response => {
+            setAnswers(response.data);
+            console.log(`answers: `, response.data);
+        })
 
     }, []);
 
@@ -243,7 +247,7 @@ export default function Profile(props) {
             </ul>
             <h2>My Answers</h2>
             <ul>
-                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>question</Link></li>)}
+                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>{answer.Question.title}</Link></li>)}
             </ul>
             <h2>Change My Portrait</h2>
             <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
@@ -343,8 +347,7 @@ export default function Profile(props) {
 
                 {showAnswer ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
-                        {/* {answers.map(answer => <Answers props={answer} />)} */}
-                        <UserAnswers />
+                        {answers.map(answer => <UserAnswers props={answer} />)}
                     </Box>
                     :
                     <div />

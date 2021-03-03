@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom'
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
-export default function Answers() {
+export default function Answers(answer) {
 
 
+    console.log(answer)
     // const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
     return (
         <Box>
@@ -24,27 +25,28 @@ export default function Answers() {
                 <Grid
                     areas={[
                         // ['blank','name', 'name', 'name'],
-                        ['votes', 'title', 'title', 'title'],
+                        ['side', 'title', 'title', 'title'],
                         ['side', 'border', 'border', 'border'],
-                        ['side', 'description', 'description', 'description'],
-                        ['side', 'ratings', 'ratings', 'ratings'],
-                        ['side', 'tags', 'tags', 'tags']
+                        ['votes', 'description', 'description', 'description'],
+                        ['side2', 'ratings', 'ratings', 'ratings'],
+                        ['side2', 'tags', 'tags', 'tags']
                     ]}
                     columns={['40px', 'flex', 'flex', 'flex']}
                     rows={['flex']}
                     responsive="true"
                 >
                     <Box gridArea="votes" background="#DFDFE5">
-                        {/* <Box margin={{ "left": "7px" }}>
+                        <Box margin={{ "left": "7px" }}>
                             <Up />
-                            <Text margin={{ "left": "7px", "top": "-11px" }}>{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "top": "-11px" }}>{answer.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
-                            <Text margin={{ "left": "7px", "bottom": "-11px" }}>{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "bottom": "-11px" }}>{answer.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
                             <Down />
-                        </Box> */}
+                        </Box>
                     </Box>
                     <Box gridArea="side" background="#DFDFE5" />
+                    <Box gridArea="side2" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
                     {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
@@ -63,22 +65,22 @@ export default function Answers() {
 
                    
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
-                        {/* <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link to={`/question/${answer.props.Question.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
-                            {props.props.title} {props.props.title} 
+                            {answer.props.Question.title} 
                         </Text>
                         </Box>
-                        </Link> */}
+                        </Link>
                     </Box>
                     
 
                     <Box gridArea="border" border="bottom" />
 
                     <Box gridArea="description" id="questionSizeBox" >
-                        {/* <Box id="questionSize" wordBreak="break-word" pad="5px">
-                            <Text size="medium">{props.props.text}</Text>
-                        </Box> */}
+                        <Box wordBreak="break-word" pad="5px" margin={{top:"20px"}}>
+                            <Text size="medium" weight="bold">{answer.props.text}</Text>
+                        </Box>
                     </Box>
 
                     <Box gridArea="ratings">
@@ -86,7 +88,7 @@ export default function Answers() {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {/* {props.props.Tags.map(tag => <QuestionTags props={tag}/>)} */}
+                        {answer.props.Question.Tags.map(tag => <QuestionTags props={tag}/>)}
 
                     </Box>
                 </Grid>

@@ -69,7 +69,7 @@ export default function Service(services) {
                             </Box>
                         </Link>
                     </Box>
-                    <Box gridArea="tag">
+                    <Box gridArea="tag" direction="row">
                         {services.props.Tags.map(tag => <QuestionTags props={tag} />)}
                     </Box>
                 </Grid>
