@@ -30,7 +30,6 @@ export default function SignUpForm(props) {
     const [errorState, setErrorState] = useState();
 
     const handleInput = (event) => {
-        props.goToSignInTab();
         setErrorState();
         setSignUpFormState({...signUpFormState, [event.target.name]: event.target.value});
     }

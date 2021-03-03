@@ -1,14 +1,13 @@
 import React from 'react';
-import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
+import { Box, Anchor, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
-export default function Question(props) {
-    console.log("test");
-
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.props.User.portrait}.jpg`;
+export default function UserServices(service) {
+    console.log("user services")
+    console.log(service)
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${service.props.User.portrait}.jpg`;
 
     return (
      
@@ -26,6 +25,7 @@ export default function Question(props) {
 
                 <Grid
                     areas={[
+                        // ['blank','name', 'name', 'name'],
                         ['votes', 'title', 'title', 'title'],
                         ['side', 'border', 'border', 'border'],
                         ['side', 'description', 'description', 'description'],
@@ -38,39 +38,48 @@ export default function Question(props) {
                 >
                     <Box gridArea="votes" background="#DFDFE5">
                         <Box margin={{ "left": "7px" }}>
-                            <Up/>
-                            <Text margin={{ "left": "7px", "top": "-11px" }} color="green">{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                            <Up />
+                            <Text margin={{ "left": "7px", "top": "-11px" }}>{service.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
-                            <Text margin={{ "left": "7px", "bottom": "-11px" }} color="red">{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
-                            <Down/>
+                            <Text margin={{ "left": "7px", "bottom": "-11px" }}>{service.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Down />
                         </Box>
                     </Box>
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
+                    {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
+                        <Anchor color="white" >
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
+                        </Anchor>
+                    </Box> */}
+
+
                     <Box margin="15px" alignSelf="start">                    
-                        <Anchor color="white">
+                        <Anchor color="black">
                             
-                            <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link>
+                            <Box>${service.props.price}</Box>
                         </Anchor>
                     </Box>
 
+                   
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
-                        <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link to={`/users/${service.props.UserId}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <Box>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
-                            {props.props.title}
+                            {service.props.name}
                         </Text>
                         </Box>
                         </Link>
                     </Box>
                     
+
                     <Box gridArea="border" border="bottom" />
 
                     <Box gridArea="description" id="questionSizeBox" >
                         <Box id="questionSize" wordBreak="break-word" pad="5px">
-                            <Text size="medium">{props.props.text}</Text>
+                            <Text size="medium">{service.props.description}</Text>
                         </Box>
                     </Box>
 
@@ -79,7 +88,7 @@ export default function Question(props) {
                     </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
-                        {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
+                        {service.props.Tags.map(tag => <QuestionTags props={tag}/>)}
 
                     </Box>
                 </Grid>

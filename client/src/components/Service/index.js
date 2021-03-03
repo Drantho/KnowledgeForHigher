@@ -6,6 +6,7 @@ import { Down, Up } from 'grommet-icons';
 
 export default function Service(services) {
     const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${services.props.User.portrait}.jpg`;
+    console.log("testing services object")
     console.log(services)
     return (
         <Box alignSelf="start" margin={{ "right": "10px" }}>
@@ -36,10 +37,10 @@ export default function Service(services) {
                     <Box gridArea="votes" background="#DFDFE5">
                         <Box margin={{ "left": "7px" }}>
                             <Up />
-                            <Text margin={{ "left": "7px", "top": "-11px" }}>{services.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "top": "-11px" }} color="green">{services.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
-                            <Text margin={{ "left": "7px", "bottom": "-11px" }}>{services.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "bottom": "-11px" }} color="red">{services.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
                             <Down />
                         </Box>
                     </Box>
@@ -69,11 +70,11 @@ export default function Service(services) {
                             </Box>
                         </Link>
                     </Box>
-                    <Box gridArea="tag">
+                    <Box gridArea="tag" direction="row">
                         {services.props.Tags.map(tag => <QuestionTags props={tag} />)}
                     </Box>
                 </Grid>
-                {/* {services.props.discription} */}
+            
             </Box>
         </Box>
     )

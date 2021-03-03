@@ -15,7 +15,7 @@ router.get('/', (request, response) => {
         through: { attributes: [] }
     }, {
         model: db.User,
-        attributes: ['userName', 'id']
+        attributes: ['userName', 'id', 'portrait']
     }, {
         model: db.Rating
     }];
