@@ -155,14 +155,14 @@ export default function Question(props) {
                 <Heading fill level={2}>{question.title}</Heading>
                 
                 <Box fill width={{max: '180px', min: '180px'}}
-                    background='#FCE181' 
-                    border={{
-                        color: '#d6bf6d'
-                    }}
-                    round='small'
-                    pad={{vertical: 'small'}}
-                    align='center' 
-                    direction='row'>
+                  background='#FCE181' 
+                  border={{
+                    color: '#d6bf6d'
+                  }}
+                  round='small'
+                  pad={{vertical: 'small'}}
+                  align='center' 
+                  direction='row'>
                     <Box margin={{left: '20px'}} align='end'>
                         <Text size='small'>{question.User.userName}</Text>
                         <Text size='small'>{question.User.firstName + ' ' + question.User.lastName}</Text>
@@ -197,6 +197,7 @@ export default function Question(props) {
                                 text={e.text}/>
                 })}
 
+                {(props.userState.id !== question.User.id) && 
                 <Accordion margin={{top: '15px'}} width='85%'>
                     <AccordionPanel label='Leave a comment...'>
                         <Box>
@@ -211,7 +212,7 @@ export default function Question(props) {
                             </Form>
                         </Box>
                     </AccordionPanel>
-                </Accordion>
+                </Accordion>}
             </Box>
 
             <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
@@ -228,6 +229,7 @@ export default function Question(props) {
                 }
             </Box>
             
+            {(props.userState.id !== question.User.id) && 
             <Box>
                 <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
                 <Box height='3px' background='#222E42' />
@@ -239,7 +241,7 @@ export default function Question(props) {
                         value={answer.text} />
                     <Button type='submit' label='Submit' />
                 </Form>
-            </Box>
+            </Box>}
 
             </Box>
         </Box>
