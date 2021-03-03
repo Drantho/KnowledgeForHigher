@@ -97,6 +97,10 @@ export default {
       }
     })  
   },
+  getServicesByTag: id =>{
+    console.log((`${url}/api/service?tag=${id}`));
+    return axios.get(`${url}/api/service?tag=${id}`)
+  },
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)

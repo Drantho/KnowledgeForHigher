@@ -19,10 +19,10 @@ export default function Tags(props) {
                     "bottom": "3px"
                 }}
                 gridArea="tag"
-                elevation="small" 
+                elevation="small"
                 margin="5px"
             >
-                <Text color="blue">{props.children}</Text>
+                <Text color="black"  >{props.children}</Text>
             </Box>
         </Box>
     )

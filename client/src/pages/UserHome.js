@@ -9,6 +9,7 @@ import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 import Service from '../components/Service'
+
 export default function UserHome(props) {
 
     const [tags, setTags] = useState([]);
@@ -153,7 +154,7 @@ export default function UserHome(props) {
     }
 
     return (
-        <div>
+        <Box margin={{top:"75px"}}>
             {/* <h1>User Home</h1>
             <h2>My feed</h2>
             <h3>My Tags</h3>
@@ -212,11 +213,11 @@ export default function UserHome(props) {
 
                 {/* =========================================================== */}
 
-                <Box gridArea="search" margin={{ "top": "-70px" }} ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box>
+                <Box gridArea="search" margin={{ "top": "-70px", "left":"750px" }} style={{position:"fixed"}}><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box>
 
                 {/* =========================================================== */}
 
-                <Box gridArea="myTags">
+                <Box gridArea="myTags" >
                     <div onClick={handleShowMyTags}>
                         <UserTags />
                     </div>
@@ -256,6 +257,6 @@ export default function UserHome(props) {
                 </Box>
 
             </Grid>
-        </div>
+        </Box>
     )
 }

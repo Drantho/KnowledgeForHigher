@@ -1,17 +1,16 @@
 import React from 'react';
 import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
-export default function Question(props) {
-    console.log("test");
+export default function TagQuestion(props) {
+    console.log("test for tag question")
+    console.log(props);
 
     const thumbnail = `https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.props.User.portrait}.jpg`;
 
     return (
-     
         <Box>
             <Box
                 justify="center"
@@ -38,12 +37,12 @@ export default function Question(props) {
                 >
                     <Box gridArea="votes" background="#DFDFE5">
                         <Box margin={{ "left": "7px" }}>
-                            <Up/>
-                            <Text margin={{ "left": "7px", "top": "-11px" }} color="green">{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                            <Up />
+                            <Text margin={{ "left": "7px", "top": "-11px" }}>{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
-                            <Text margin={{ "left": "7px", "bottom": "-11px" }} color="red">{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
-                            <Down/>
+                            <Text margin={{ "left": "7px", "bottom": "-11px" }}>{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Down />
                         </Box>
                     </Box>
                     <Box gridArea="side" background="#DFDFE5" />
@@ -56,6 +55,7 @@ export default function Question(props) {
                         </Anchor>
                     </Box>
 
+                   
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
@@ -66,6 +66,7 @@ export default function Question(props) {
                         </Link>
                     </Box>
                     
+
                     <Box gridArea="border" border="bottom" />
 
                     <Box gridArea="description" id="questionSizeBox" >
@@ -88,5 +89,3 @@ export default function Question(props) {
         </Box>
     )
 }
-
-
