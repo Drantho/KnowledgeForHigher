@@ -66,7 +66,7 @@ router.post('/', ({ body }, response) => {
 
 router.put('/', authenticate, (request, response) => {
 
-    if (profanityCheck(body.firstName + ' ' + body.lastName + ' ' + body.username)) {
+    if (profanityCheck(request.body.firstName + ' ' + request.body.lastName + ' ' + request.body.username)) {
         response.status(400).json({
             err: 'User contains disallowed term/phrase.'
         });
