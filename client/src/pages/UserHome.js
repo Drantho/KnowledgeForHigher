@@ -9,6 +9,7 @@ import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 import Service from '../components/Service'
+
 export default function UserHome(props) {
 
     const [tags, setTags] = useState([]);

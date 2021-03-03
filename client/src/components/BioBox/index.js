@@ -3,7 +3,7 @@ import { Box, Text } from 'grommet';
 
 
 
-export default function UserTags() {
+export default function BioBox() {
 
     return (
             <Box
@@ -13,13 +13,14 @@ export default function UserTags() {
                 background="#2B3952"
                 round="5px"
                 height="flex"
+
                 margin={{
                     "left": "25px",
                     "right": "25px"
                 }}
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px" color="#FCE181">Followed Tags</Text>
+                    <Text size="25px">Bio</Text>
                 </Box>
 
             </Box>
@@ -27,5 +28,4 @@ export default function UserTags() {
 
     )
 }
-
 

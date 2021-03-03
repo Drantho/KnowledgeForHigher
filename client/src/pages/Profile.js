@@ -2,13 +2,15 @@ import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
 import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
-import ProfileBox from '../components/ProfileBox'
+import ProfileBox from '../components/BioBox'
 import FollowedServices from '../components/FollowedServices'
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
 import UserTags from '../components/UserTags'
 import Tags from '../components/Tags'
+import BioBox from '../components/BioBox';
+
 export default function Profile(props) {
     const history = useHistory();
     const [tags, setTags] = useState([]);
@@ -297,6 +299,7 @@ export default function Profile(props) {
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
+                    <BioBox/>
                 </Box>
 
                 <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
