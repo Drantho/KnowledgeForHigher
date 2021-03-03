@@ -17,10 +17,12 @@ router.get('/', (request, response) => {
                 id: request.query.id
             },
             attributes: ['id', 'title', 'text', 'updatedAt'],
-            include: {
+            include: [{
                 model: db.Tag,
                 through: { attributes: [] }
-            }
+            }, {
+                model: db.User
+            }]
         }).then((result) => {
             return response.json(result);
 
@@ -34,9 +36,17 @@ router.get('/', (request, response) => {
 
 
         const includes = [{
-            model: db.Tag,
-            through: { attributes: [] }
-        }];
+                model: db.Tag,
+                through: { attributes: [] },            
+            },
+            {
+                model: db.User,
+                attributes: ["id", "userName", "portrait"]
+            },
+            {
+                model: db.Rating,             
+            }
+        ];
 
         // If a tag name is provided, include the Tags table and specify which tag
         if (request.query.tag) {

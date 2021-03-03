@@ -97,6 +97,10 @@ export default {
       }
     })  
   },
+  getServicesByTag: id =>{
+    console.log((`${url}/api/service?tag=${id}`));
+    return axios.get(`${url}/api/service?tag=${id}`)
+  },
   getServicesByUser: id =>{
     console.log((`${url}/api/service?user=${id}`));
     return axios.get(`${url}/api/service?user=${id}`)
@@ -200,5 +204,19 @@ export default {
           authorization: `Bearer: ${token}`
       }
     })
+  },
+  getAnswerComments: (ref, token) => {
+    return axios.get(`${url}/api/comment?answer=${ref}`, {
+      headers: {
+        authorization: `Bearer: ${token}`
+      }
+    });
+  },
+  createAnswerComment: (data, token) => {
+    return axios.post(`${url}/api/comment`, data, {
+      headers: {
+        authorization: `Bearer: ${token}`
+      }
+    });
   }
 };

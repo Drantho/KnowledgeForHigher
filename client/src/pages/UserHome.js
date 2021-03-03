@@ -1,13 +1,14 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import API from "../utils/API";
-import { Box, Grid} from 'grommet';
+import { Box, Grid } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
 import UserTags from '../components/UserTags'
 import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
+import Service from '../components/Service'
 
 export default function UserHome(props) {
 
@@ -25,6 +26,42 @@ export default function UserHome(props) {
 
     const [showAllPopularTags, setShowAllPopularTags] = useState(false);
 
+    const [searchQuestions, setSearchQuestions] = useState([{
+        id: "1",
+        title: "",
+        text: "",
+        Tags: []
+    }]);
+
+    const [searchString, setSearchString] = useState("");
+
+
+    const handleInputChanged = async event => {
+        console.log('event.target.value', event.target.value);
+        setSearchString(event.target.value);
+
+        search(event.target.value);
+    }
+
+    const search = async query => {
+        let searchResults = {};
+        searchResults.data = [];
+        if (query.length > 0) {
+            searchResults = await API.getQuestionsBySearch(query).catch(err => console.log(err));
+        }
+
+        console.log(`search results: `, searchResults);
+        if (searchResults.data.length > 0) {
+            setQuestions(searchResults.data);
+        } else {
+            setQuestions([])
+        }
+    }
+
+    const handleSearchClick = () => {
+        search(searchString)
+    }
+
     const fillFeeds = async tagsToFeed => {
         const questionsToFeed = await API.getTagQuestionFeed({ tags: tagsToFeed }, props.userState.token).catch(err => console.log(err));
         console.log(`questionsToFeed: `, questionsToFeed);
@@ -35,15 +72,15 @@ export default function UserHome(props) {
     }
 
     useEffect(async () => {
-        let tagsToFeed = await API.getTagsByUser(props.userState.id);   
+        let tagsToFeed = await API.getTagsByUser(props.userState.id);
         tagsToFeed = tagsToFeed.data.map(tag => {
             tag.show = true;
             return tag;
-        })   
+        })
         setTags(tagsToFeed);
 
         let popularTagFeed = await API.getPopularTags();
-        popularTagFeed = popularTagFeed.data;        
+        popularTagFeed = popularTagFeed.data;
 
         popularTagFeed.map(popularTag => {
             popularTag.show = tagsToFeed.find(tag => tag.name === popularTag.name);
@@ -78,7 +115,7 @@ export default function UserHome(props) {
         fillFeeds(tags.concat(tempPopular));
     }
 
-    const handleShowMyTags = () => {        
+    const handleShowMyTags = () => {
         setTags(tags.map(tag => {
             tag.show = !showAllMyTags;
             return tag;
@@ -86,10 +123,10 @@ export default function UserHome(props) {
 
         const tempPopular = popularTags.map(popularTag => {
             const foundTag = tags.find(tag => tag.name === popularTag.name)
-            if(foundTag){
+            if (foundTag) {
                 popularTag.show = foundTag.show
             }
-            return popularTag;          
+            return popularTag;
         });
 
         setPopularTags(tempPopular);
@@ -105,10 +142,10 @@ export default function UserHome(props) {
 
         const tempMy = tags.map(myTag => {
             const foundTag = popularTags.find(tag => tag.name === myTag.name)
-            if(foundTag){
+            if (foundTag) {
                 myTag.show = foundTag.show
             }
-            return myTag;          
+            return myTag;
         });
 
         setTags(tempMy);
@@ -117,7 +154,7 @@ export default function UserHome(props) {
     }
 
     return (
-        <div>
+        <Box margin={{top:"75px"}}>
             {/* <h1>User Home</h1>
             <h2>My feed</h2>
             <h3>My Tags</h3>
@@ -173,48 +210,53 @@ export default function UserHome(props) {
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
                 <Box gridArea="blank4" />
-                <Box gridArea="search" margin={{"top":"-70px"}} ><QuestionBox/></Box>
 
-                <Box gridAreah="myTags">
+                {/* =========================================================== */}
+
+                <Box gridArea="search" margin={{ "top": "-70px", "left":"750px" }} style={{position:"fixed"}}><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box>
+
+                {/* =========================================================== */}
+
+                <Box gridArea="myTags" >
                     <div onClick={handleShowMyTags}>
-                    <UserTags/>
+                        <UserTags />
                     </div>
-                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
+                    <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
 
                     <div onClick={handleShowPopularTags}>
-                    <PopularTags/>
+                        <PopularTags />
                     </div>
-                    <Box direction="row" width="400px" margin={{"left":"25px","right":"150px","bottom":"10px"}}>
-                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></Tags>)}
+                    <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
                 </Box>
 
-                <Box gridArea="main" height="flex">
+                <Box gridArea="main" height="flex" background="#f0f0f0">
 
                 </Box>
 
-                <Box gridArea="question" pad="5px" margin={{"top":"-50px"}}>
+                <Box gridArea="question" margin={{ "top": "-10px", }} >
                     {questions.map(question => <Question props={question} />)}
+
                 </Box>
 
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {services.map(service => {
+                        {/* {services.map(service => {
                             return <li key={service.id}>
                                 <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
                                 {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
                             </li>
                         }
-                        )}
+                        )} */}
+                        {services.map(service => <Service props={service} />)}
                     </Box>
                 </Box>
 
             </Grid>
-        </div>
-
-
+        </Box>
     )
 }

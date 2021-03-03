@@ -13,12 +13,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         lastName: {
             type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
+            allowNull: false
         },
         userName: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         email: {
             type: Sequelize.STRING,
@@ -42,7 +42,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         portrait:{
             type: Sequelize.STRING,
-            defaultValue: "/assets/images/profilesample.png"
+            defaultValue: "mziei8xfs9okenktbabp"
+        },
+        bio: {
+            type: Sequelize.STRING(1500)
         }
     });
 

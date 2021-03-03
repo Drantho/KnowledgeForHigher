@@ -1,5 +1,24 @@
 import { React, useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
+
+import Comment from '../components/Comment';
+import Rating from '../components/Rating';
+import Answer from '../components/Answer';
+
+import { Box,
+         Button, 
+         Heading, 
+         Accordion, 
+         AccordionPanel, 
+         Anchor, 
+         Avatar, 
+         Grid, 
+         Text,
+         TextArea,
+         Form,
+         FormField,
+         Grommet } from 'grommet';
+
 import API from '../utils/API';
 
 export default function Question(props) {
@@ -14,6 +33,7 @@ export default function Question(props) {
     const [question, setQuestion] = useState({
         title: "",
         text: "",
+        User: {},
         Tags: [{
             id: "1"
         }],
@@ -28,35 +48,11 @@ export default function Question(props) {
 
     const [questionComments, setQuestionComments] = useState([]);
 
-    const [answers, setAnswers] = useState([{
-        text: "",
-        userId: "",
-        questionId: id,
-        User: {
-            userName: "",
-            id: ""
-        },
-        Ratings: []
-    }]);
+    const [answers, setAnswers] = useState([]);
+
+    const [tags, setTags] = useState([]);
 
     const [ratings, setRatings] = useState({});
-
-    const handleInputChaged = event => {
-        const { name, value } = event.target;
-        switch (name) {
-            case "answer":
-                setAnswer({ ...answer, text: value });
-                break;
-            case "questionComment":
-                setQuestionComment({ ...questionComment, text: value });
-                break;
-            case "anwerComment":
-                break;
-            default:
-                break;
-        }
-
-    }
 
     const handleSubmit = async () => {
 
@@ -72,11 +68,12 @@ export default function Question(props) {
         }
     }
 
-    const handleAddQuestionComment = async () => {
+    const handleAddQuestionComment = async (event) => {
 
-        if(questionComment){
+        if (questionComment) {
             
-            await API.createQuestionComment(questionComment, props.userState.token).catch(err => console.log(err));
+            await API.createQuestionComment(questionComment, props.userState.token)
+                .catch(err => console.log(err));
             
             const newQuestionComments = await API.getAllQuestionComments(id).catch(err => console.log(err));
             setQuestionComments(newQuestionComments.data);
@@ -84,30 +81,6 @@ export default function Question(props) {
             setQuestionComment(emptyQuestionComment);
         }
 
-    }
-
-    const HandleRating = async (rating, target, type) => {
-
-        const newRating = {
-            isPositive: rating,
-            type: type,
-            ref: target
-        }
-
-        await API.createRating(newRating, props.userState.token).catch(err => console.log(err));
-
-        switch (type) {
-            case "answer":
-                const newAnswers = await API.getAnswersByQuestion(id);
-                setAnswers(newAnswers.data);
-                break;
-            case "question":
-                const newRatings = await API.getRating(id, "question");
-                setRatings(newRatings.data);
-                break;
-            default:
-                break;
-        }
     }
 
     useEffect(async () => {
@@ -123,55 +96,156 @@ export default function Question(props) {
         const ratingToShow = await API.getRating(id, "question").catch(err => console.log(err));;
         setRatings(ratingToShow.data);
 
-    }, [])
+    }, []);
 
+    const theme = {
+        global: {
+            colors: {
+                focus: undefined
+            }
+        },
+        accordion: {
+            border: undefined,
+            heading: {
+                margin: {
+                    vertical: '10px'
+                }
+            }
+        },
+        formField: {
+            border: undefined
+        },
+        textArea: {
+            extend: `
+                margin-top: 4px;
+                border: 1px solid #222E42;
+                border-radius: 3px
+            `
+        }
+        
+    }
+
+    const descriptionBoxTheme = {
+        box: {
+            extend: `
+                border: 1px solid #d6bf6d;
+                border-bottom: 4px solid #d6bf6b;
+                border-radius: 10px;`
+        }
+    }
+
+    const handleCommentInput = (event) => {
+        setQuestionComment({...questionComment, text: event.target.value});
+    }
+
+    const handleAnswerInput = (event) => {
+        setAnswer({...answer, text: event.target.value})
+    }
+    
     return (
-        <div>
-            <h1>Question Page: {id}</h1>
-            <h2>{question.title}</h2>
-            <p>{question.text}</p>
-            <p>
-                <strong>Rating</strong><br />
-                <button onClick={() => { HandleRating(true, id, "question") }}>Up</button><button onClick={() => { HandleRating(false, id, "question") }}>Down</button>
-            </p>
-            <p>
-                <strong>Up: {ratings.positive}</strong>
-            </p>
-            <p>
-                <strong>Down: {ratings.negative}</strong>
-            </p>
-            <strong>Tags</strong>
-            <ul>
-                {question.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
-            </ul>
-            <strong>Comments</strong>
-            <ul>
-                {questionComments.map(comment => <li key={comment.id}>{comment.text} - <Link to={`/users/${comment.UserId}`}>{comment.User.userName}</Link></li>)}
-            </ul>
-            <label htmlFor="questionComment">
-                Comment
-            </label><br />
-            <textarea name="questionComment" value={questionComment.text} onChange={handleInputChaged} placeholder="comments about the question itself" /><br />
-            <button onClick={handleAddQuestionComment}>Submit</button><br />
-            <strong>Answers</strong>
-            <ul>
-                {answers.map(answer => {
-                    return <li key={answer.id}>{answer.text}<br />
-                        Up: {answer.Ratings.filter(rating => rating.isPositive).length} -
-                        Down: {answer.Ratings.filter(rating => !rating.isPositive).length}<br />
-                        <button onClick={() => HandleRating(true, answer.id, "answer")}>Up</button>
-                        <button onClick={() => HandleRating(false, answer.id, "answer")}>Down</button><br />
-                        <Link to={`/users/${answer.User.id}`}>{answer.User.userName}
-                        </Link>
-                    </li>
+        <Grommet theme={theme}>
+        <Box margin={{vertical: '20px'}} align='center'>
+            <Box width='80%'>
+
+            <Box height='3px' background='#222E42' />
+
+            <Box justify='between' align='center' direction='row'>
+                <Rating setAnswers={setAnswers} userState={props.userState}
+                    type='question' reference={id}/>
+                <Heading fill level={2}>{question.title}</Heading>
+                
+                <Box fill width={{max: '180px', min: '180px'}}
+                  background='#FCE181' 
+                  border={{
+                    color: '#d6bf6d'
+                  }}
+                  round='small'
+                  align='center' 
+                  direction='row'>
+                    <Box margin={{left: '20px'}} align='end'>
+                        <Text size='small'>{question.User.userName}</Text>
+                        <Text size='small'>{question.User.firstName + ' ' + question.User.lastName}</Text>
+                    </Box>
+                    <Link to={`/users/${question.User.id}`}>
+                        <Avatar
+                            margin='small'
+                            size='40px'
+                            src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${question.User.portrait}.png`} />
+                    </Link>
+                </Box>
+                
+            </Box>
+            <Box height='3px' background='#222E42' />
+
+            <Grommet theme={descriptionBoxTheme}>
+            <Box pad={{vertical: '30px', horizontal: '15px'}}
+                background='rgba(252,225,129,0.8)'
+                round='small'
+                margin={{horizontal: 'large', top: '20px'}}>
+                <Text color='#222E42' size='large'>{question.text}</Text>
+            </Box>
+            </Grommet>
+
+
+            <Heading margin={{top: 'medium', bottom: 'xsmall'}} level={3}>Comments</Heading>
+            <Box height='3px' background='#222E42' />
+            <Box align='center'>
+                {questionComments.map( (e) => {
+                    return <Comment   
+                                user={e.User} 
+                                reference={e.id} 
+                                date={e.createdAt} 
+                                text={e.text}/>
                 })}
-            </ul>
-            <h2>Add your anwer</h2>
-            <textarea name="answer" value={answer.text} onChange={handleInputChaged} /><br />
-            <button onClick={handleSubmit}>Submit</button>
 
+                {(props.userState.id !== question.User.id) && 
+                <Accordion margin={{top: '15px'}} width='85%'>
+                    <AccordionPanel label='Leave a comment...'>
+                        <Box>
+                            <Form onSubmit={handleAddQuestionComment} 
+                                value={questionComment.text}>
+                                <FormField htmlFor='text-area' 
+                                    onChange={handleCommentInput} 
+                                    component={TextArea}
+                                    placeholder='Comment...'
+                                    value={questionComment.text} />
+                                <Button type='submit' label='Submit' />
+                            </Form>
+                        </Box>
+                    </AccordionPanel>
+                </Accordion>}
+            </Box>
+
+            <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
+            <Box height='3px' background='#222E42' />
+            <Box margin={{top: '10px'}}> 
+                {
+                    answers.map( (e) => {
+                        return <Answer
+                                    setRatings={setRatings}
+                                    setAnswers={setAnswers}
+                                    userState={props.userState} 
+                                    answer={e}/>
+                    })
+                }
+            </Box>
             
+            {(props.userState.id !== question.User.id) && 
+            <Box>
+                <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
+                <Box height='3px' background='#222E42' />
+                <Form onSubmit={handleSubmit} value={answer.text}>
+                    <FormField htmlFor='text-area'
+                        onChange={handleAnswerInput}
+                        component={TextArea}
+                        placeholder='Answer...'
+                        value={answer.text} />
+                    <Button type='submit' label='Submit' />
+                </Form>
+            </Box>}
 
-        </div>
+            </Box>
+        </Box>
+        </Grommet>
     )
 }

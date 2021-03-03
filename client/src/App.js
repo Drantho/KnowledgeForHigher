@@ -1,5 +1,6 @@
 import  { React, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Grommet } from 'grommet';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -14,6 +15,7 @@ import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
 import MessageView from './pages/MessageView';
+import Splash from './pages/Splash';
 import UserNavbar from './components/UserNavbar/index';
 import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
@@ -55,13 +57,17 @@ function App() {
         lastName: response.data.user.lastName,
         email: response.data.user.email,
         isSignedIn: true,
-        token: response.data.token
+        token: response.data.token,
+        portrait: response.data.user.portrait        
       });
       localStorage.setItem("token", response.data.token);  
+      localStorage.setItem("portrait", response.data.portrait);  
+      
       cb();    
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
+      localStorage.clear("portrait")
     });
   }
 
@@ -74,15 +80,17 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
-        portrait: response.data.user.portrait,
+        portrait: localStorage.getItem("portrait") || response.data.user.portrait,
         isSignedIn: true,
         token: response.data.token
       });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("portrait", response.data.user.portrait);
       cb();
     }).catch(err => {
       console.log(err);
       localStorage.clear("token")
+      localStorage.clear("portrait")
     });
   }
 
@@ -96,7 +104,7 @@ function App() {
           firstName: response.data.user.firstName,
           lastName: response.data.user.lastName,
           email: response.data.user.email,
-          portrait: response.data.user.portrait,
+          portrait: localStorage.getItem("portrait") || response.data.user.portrait,
           isSignedIn: true,
           token: response.data.token
         });
@@ -104,24 +112,30 @@ function App() {
       }).catch(err => {
         console.log(err);
         localStorage.clear("token")
+        localStorage.clear("portrait")
       });
     }
   }, [])
 
   return (
     <Router>
+      <Grommet theme={{global:{focus:{border:{color: 'rgba(0,0,0,0)'}}}}}>
       <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
-      {/* <NavbarTest /> */}
       <Switch>
         <Route exact path="/">
-          <Home />
+          {userState.isSignedIn ?
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
+        </Route>
+        <Route exact path="/splash">
+          {userState.isSignedIn ? 
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
         <Route exact path="/browse">
           <Browse userState={userState}/>
         </Route>
         <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
-          <Profile userState={userState}/>
+          <Profile userState={userState} setUserState={setUserState}/>
         </ProtectedRoute>
         <Route exact path="/tag/:id">
           <Tag />
@@ -166,8 +180,8 @@ function App() {
         <Route path="*">
           <NotFound />
         </Route>
-        
       </Switch>
+      </Grommet>
     </Router>
   );
 }
