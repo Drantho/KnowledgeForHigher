@@ -35,6 +35,7 @@ export default function Question(props) {
     const [question, setQuestion] = useState({
         title: "",
         text: "",
+        User: {},
         Tags: [{
             id: "1"
         }],
@@ -120,17 +121,8 @@ export default function Question(props) {
                 border: 1px solid #222E42;
                 border-radius: 3px
             `
-        },
-        anchor: {
-            extend: `
-                border: 1px solid #d6bf6d;
-                border-bottom: 3px solid #d6bf6b;
-                border-radius: 10px;
-                background-color: #FCE181;
-                padding: 10px;
-                color: #222E42
-            `
         }
+        
     }
 
     const descriptionBoxTheme = {
@@ -149,18 +141,11 @@ export default function Question(props) {
     const handleAnswerInput = (event) => {
         setAnswer({...answer, text: event.target.value})
     }
-
+    
     return (
         <Grommet theme={theme}>
         <Box margin={{vertical: '20px'}} align='center'>
             <Box width='80%'>
-
-            <Anchor
-                margin={{bottom: 'medium'}} 
-                alignSelf='start' 
-                icon={<Previous color='#222E42'/>} 
-                label='Back' 
-                href='#' />
 
             <Box height='3px' background='#222E42' />
 
@@ -168,7 +153,26 @@ export default function Question(props) {
                 <Rating setAnswers={setAnswers} userState={props.userState}
                     type='question' reference={id}/>
                 <Heading fill level={2}>{question.title}</Heading>
-                <Avatar margin='small' pad='medium' src={props.userState.portrait}></Avatar>
+                
+                <Box fill width={{max: '180px', min: '180px'}}
+                    background='#FCE181' 
+                    border={{
+                        color: '#d6bf6d'
+                    }}
+                    round='small'
+                    pad={{vertical: 'small'}}
+                    align='center' 
+                    direction='row'>
+                    <Box margin={{left: '20px'}} align='end'>
+                        <Text size='small'>{question.User.userName}</Text>
+                        <Text size='small'>{question.User.firstName + ' ' + question.User.lastName}</Text>
+                    </Box>
+                    <Link to={`/users/${question.User.id}`}>
+                        <Avatar
+                            src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125${question.User.portrait}`} />
+                    </Link>
+                </Box>
+                
             </Box>
             <Box height='3px' background='#222E42' />
 
