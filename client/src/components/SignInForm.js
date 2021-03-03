@@ -39,6 +39,7 @@ export default function SignInForm(props) {
                 lastName: response.data.user.lastName,
                 email: response.data.user.email,
                 portrait: response.data.user.portrait,
+                bio: response.data.user.bio,
                 isSignedIn: true,
                 token: response.data.token
             });
