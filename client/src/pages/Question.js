@@ -19,8 +19,6 @@ import { Box,
          FormField,
          Grommet } from 'grommet';
 
-import { Previous } from 'grommet-icons';
-
 import API from '../utils/API';
 
 export default function Question(props) {
@@ -51,6 +49,8 @@ export default function Question(props) {
     const [questionComments, setQuestionComments] = useState([]);
 
     const [answers, setAnswers] = useState([]);
+
+    const [tags, setTags] = useState([]);
 
     const [ratings, setRatings] = useState({});
 
@@ -160,7 +160,6 @@ export default function Question(props) {
                     color: '#d6bf6d'
                   }}
                   round='small'
-                  pad={{vertical: 'small'}}
                   align='center' 
                   direction='row'>
                     <Box margin={{left: '20px'}} align='end'>
@@ -169,7 +168,9 @@ export default function Question(props) {
                     </Box>
                     <Link to={`/users/${question.User.id}`}>
                         <Avatar
-                            src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125${question.User.portrait}`} />
+                            margin='small'
+                            size='40px'
+                            src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${question.User.portrait}.png`} />
                     </Link>
                 </Box>
                 
