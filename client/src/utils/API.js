@@ -218,5 +218,12 @@ export default {
         authorization: `Bearer: ${token}`
       }
     });
+  },
+  updateUserBio: (newBio, token) => {
+    return axios.put(`${url}/api/user`, {bio: newBio}, {
+      headers: {
+        authorization: `Bearer: ${token}`
+      }
+    });
   }
 };

@@ -9,7 +9,6 @@ const cloudinary = require("cloudinary");
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
-const { response } = require('express');
 
 require('dotenv').config();
 
@@ -65,7 +64,7 @@ router.post('/', ({ body }, response) => {
     });
 });
 
-router.put('/',authenticate, ({ body }, response) => {
+router.put('/', authenticate, (request, response) => {
 
     if (profanityCheck(body.firstName + ' ' + body.lastName + ' ' + body.username)) {
         response.status(400).json({
@@ -75,14 +74,14 @@ router.put('/',authenticate, ({ body }, response) => {
     }
 
     db.User.update({
-        username: body.username,
-        firstName: body.firstName,
-        lastName: body.lastName,
-        email: body.email,
-        password: body.password,
-        bio: body.bio
+        username: request.body.username,
+        firstName: request.body.firstName,
+        lastName: request.body.lastName,
+        email: request.body.email,
+        password: request.body.password,
+        bio: request.body.bio
     }, {
-        where: { id: body.userId }
+        where: { id: request.userId }
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
