@@ -112,11 +112,14 @@ export default function Question(props) {
             }
         },
         formField: {
-            focus: {
-                background: {
-                    color: 'white'
-                }
-            }
+            border: undefined
+        },
+        textArea: {
+            extend: `
+                margin-top: 4px;
+                border: 1px solid #222E42;
+                border-radius: 3px
+            `
         },
         anchor: {
             extend: `
