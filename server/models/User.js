@@ -45,7 +45,7 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: "mziei8xfs9okenktbabp"
         },
         bio: {
-            type: Sequelize.STRING(1500);
+            type: Sequelize.STRING(1500)
         }
     });
 
