@@ -38,8 +38,7 @@ router.get('/', (request, response) => {
                 where: { id: request.query.question },
                 attributes: []
             },{
-                model: db.User,
-                attributes: ["userName", "id"]
+                model: db.User
             },
             {
                 model: db.Rating

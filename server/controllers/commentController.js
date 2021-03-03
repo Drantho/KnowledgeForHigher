@@ -39,11 +39,13 @@ router.get('/', (request, response) => {
     // Get all comments attached to a specified answer
     if (request.query.answer) {
         db.Comment.findAll({
-            include: {
+            include: [{
                 model: db.Answer,
                 where: { id: request.query.answer },
                 attributes: []
-            }
+            }, {
+                model: db.User
+            }]
         }).then( (result) => {
             response.json(result);
         }).catch( (err) => {

@@ -1,5 +1,5 @@
 import  { React, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -14,6 +14,7 @@ import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
 import MessageView from './pages/MessageView';
+import Splash from './pages/Splash';
 import UserNavbar from './components/UserNavbar/index';
 import LoginNavbar from './components/LoginNavbar'
 import API from "./utils/API";
@@ -121,7 +122,12 @@ function App() {
       {/* <LoginNavbar/> */}
       <Switch>
         <Route exact path="/">
-          <Home />
+          {userState.isSignedIn ?
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
+        </Route>
+        <Route exact path="/splash">
+          {userState.isSignedIn ? 
+            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
         <Route exact path="/browse">
           <Browse userState={userState}/>
