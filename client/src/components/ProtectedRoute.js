@@ -11,7 +11,7 @@ export default function ProtectedRoute(props) {
               {props.children}
           </Route>
           :
-            <Redirect to={{pathname: "/signin", state: {from: props.location}}}/>
+            <Redirect to={{pathname: "/splash", state: {from: props.location}}}/>
           }  
           
         </>
