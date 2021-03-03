@@ -16,8 +16,7 @@ require('dotenv').config();
 router.get('/', (request, response) => {
     if (request.query.id) {
         db.User.findOne({
-            where: { id: request.query.id },
-            attributes: ["id", "userName", "portrait", "createdAt"]
+            where: { id: request.query.id }
         }).then((result) => {
             console.log(`findUserById: `, result);
             return response.json(result);
@@ -57,7 +56,8 @@ router.post('/', ({ body }, response) => {
         lastName: body.lastName,
         userName: body.username,
         email: body.email,
-        password: body.password
+        password: body.password,
+        bio: body.bio
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
@@ -79,7 +79,8 @@ router.put('/',authenticate, ({ body }, response) => {
         firstName: body.firstName,
         lastName: body.lastName,
         email: body.email,
-        password: body.password
+        password: body.password,
+        bio: body.bio
     }, {
         where: { id: body.userId }
     }).then((result) => {
@@ -131,6 +132,8 @@ router.post("/signup", async (req, res) => {
             lastName: user.lastName,
             userName: user.userName,            
             isProfessional: user.isProfessional,
+            portrait: user.portrait,
+            bio: user.bio,
             id: user.id
         }, process.env.JWT_SECRET);
         console.log(token);
@@ -155,6 +158,7 @@ router.post("/signin", (req, res) => {
                     userName: user.userName,
                     isProfessional: user.isProfessional,
                     portrait: user.portrait,
+                    bio: user.bio,
                     id: user.id
                 }, process.env.JWT_SECRET)
                 res.json({ token, user })
