@@ -1,18 +1,16 @@
 import React from 'react';
 import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-
-import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
-export default function Question(props) {
-    console.log("test");
+export default function TagQuestion(props) {
+    console.log("test for tag question")
+    console.log(props);
 
     const thumbnail = `https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.props.User.portrait}.jpg`;
 
     return (
-     
         <Box>
             <Box
                 justify="center"

@@ -3,7 +3,7 @@ import {useParams, Link} from 'react-router-dom';
 import API from '../utils/API';
 import { Box, Grid } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
-import Question from '../components/Question'
+import TagQuestion from '../components/TagQuestion'
 import UserTags from '../components/UserTags'
 import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
@@ -12,17 +12,19 @@ import Service from '../components/Service'
 
 export default function Tag() {
     const {id} = useParams();
-
+    const [questions, setQuestions] = useState([]);
+    const [services, setServices] = useState([]);
     const [tag, setTag] = useState({
         name: "",
         description: "",
         Questions: [{
-            title: ""
+            title: "",
+            Tags: []
         }],
         Services: [{
             name: "",
             User: {
-                userName: ""
+                userName: "",
             }
         }]
     });
@@ -35,11 +37,26 @@ export default function Tag() {
             console.log(`oops!`, err);
         });
 
+        API.getQuestionsByTagName(tag.name).then(response => {
+            console.log(`getQuestions: `, response);
+            setQuestions(response.data);
+        }).catch(err => {
+            console.log(err);
+        });
+
+        API.getServicesByTag(tag.name).then(response => {
+            console.log(`getServices: `, response);
+            setServices(response.data);
+        }).catch(err => {
+            console.log(err);
+        });
     },[])
+
+    console.log("this is to test tag service object")
 
     return (
         <div>
-            <h1>Tag Page: {id}</h1>
+            {/* <h1>Tag Page: {id}</h1>
             <h2>{tag.name}</h2>
             <h3>Questions:</h3>
             <ul>
@@ -48,7 +65,7 @@ export default function Tag() {
             <h3>Services:</h3>
             <ul>
                 {tag.Services.map(service => <li key={service.id}><Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.User.id}`}>{service.User.userName}</Link></li>)}
-            </ul>
+            </ul> */}
 
             <Grid
                 areas={[
@@ -79,21 +96,14 @@ export default function Tag() {
                 </Box>
 
                 <Box gridArea="question" margin={{ "top": "-10px", }} >
-                    {tag.Questions.map(question => <Question props={question} />)}
+                    {questions.map(question => <TagQuestion props={question} />)}
 
                 </Box>
 
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {/* {services.map(service => {
-                            return <li key={service.id}>
-                                <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
-                                {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
-                            </li>
-                        }
-                        )} */}
-                        {tag.Services.map(service => <Service props={service} />)}
+                        {services.map(service => <Service props={service} />)}
                     </Box>
                 </Box>
 

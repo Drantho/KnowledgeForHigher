@@ -1,5 +1,6 @@
 import  { React, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Grommet } from 'grommet';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
 import Profile from "./pages/Profile";
@@ -117,6 +118,7 @@ function App() {
 
   return (
     <Router>
+      <Grommet theme={{global:{focus:{border:{color: 'rgba(0,0,0,0)'}}}}}>
       <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
       <Switch>
@@ -172,8 +174,8 @@ function App() {
         <Route path="*">
           <NotFound />
         </Route>
-        
       </Switch>
+      </Grommet>
     </Router>
   );
 }
