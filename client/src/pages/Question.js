@@ -19,6 +19,8 @@ import { Box,
          FormField,
          Grommet } from 'grommet';
 
+import { Previous } from 'grommet-icons';
+
 import API from '../utils/API';
 
 export default function Question(props) {
@@ -115,6 +117,25 @@ export default function Question(props) {
                     color: 'white'
                 }
             }
+        },
+        anchor: {
+            extend: `
+                border: 1px solid #d6bf6d;
+                border-bottom: 3px solid #d6bf6b;
+                border-radius: 10px;
+                background-color: #FCE181;
+                padding: 10px;
+                color: #222E42
+            `
+        }
+    }
+
+    const descriptionBoxTheme = {
+        box: {
+            extend: `
+                border: 1px solid #d6bf6d;
+                border-bottom: 4px solid #d6bf6b;
+                border-radius: 10px;`
         }
     }
 
@@ -128,22 +149,34 @@ export default function Question(props) {
 
     return (
         <Grommet theme={theme}>
-        <Box margin={{bottom: '20px'}} align='center'>
+        <Box margin={{vertical: '20px'}} align='center'>
             <Box width='80%'>
-            <Box direction='row'>
+
+            <Anchor
+                margin={{bottom: 'medium'}} 
+                alignSelf='start' 
+                icon={<Previous color='#222E42'/>} 
+                label='Back' 
+                href='#' />
+
+            <Box height='3px' background='#222E42' />
+
+            <Box justify='between' align='center' direction='row'>
                 <Rating setAnswers={setAnswers} userState={props.userState}
                     type='question' reference={id}/>
                 <Heading fill level={2}>{question.title}</Heading>
+                <Avatar margin='small' pad='medium' src={props.userState.portrait}></Avatar>
             </Box>
             <Box height='3px' background='#222E42' />
-            <Box 
-                pad={{vertical: '30px', horizontal: '15px'}}
+
+            <Grommet theme={descriptionBoxTheme}>
+            <Box pad={{vertical: '30px', horizontal: '15px'}}
                 background='rgba(252,225,129,0.8)'
-                border={{style: 'outset'}}
                 round='small'
                 margin={{horizontal: 'large', top: '20px'}}>
                 <Text color='#222E42' size='large'>{question.text}</Text>
             </Box>
+            </Grommet>
 
 
             <Heading margin={{top: 'medium', bottom: 'xsmall'}} level={3}>Comments</Heading>
