@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
+import { Box, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'

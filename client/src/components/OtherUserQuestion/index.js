@@ -5,10 +5,10 @@ import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
 
 export default function OtherUserQuestion(props) {
-    console.log("test")
+    console.log("otheruserquestion props")
     console.log(props);
 
-    // const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
 
     return (
      
@@ -26,7 +26,6 @@ export default function OtherUserQuestion(props) {
 
                 <Grid
                     areas={[
-                        // ['blank','name', 'name', 'name'],
                         ['votes', 'title', 'title', 'title'],
                         ['side', 'border', 'border', 'border'],
                         ['side', 'description', 'description', 'description'],
@@ -38,28 +37,21 @@ export default function OtherUserQuestion(props) {
                     responsive="true"
                 >
                     <Box gridArea="votes" background="#DFDFE5">
-                        {/* <Box margin={{ "left": "7px" }}>
+                        <Box margin={{ "left": "7px" }}>
                             <Up />
                             <Text margin={{ "left": "7px", "top": "-11px" }}>{props.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
                             <Text margin={{ "left": "7px", "bottom": "-11px" }}>{props.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
                             <Down />
-                        </Box> */}
+                        </Box>
                     </Box>
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
-                    {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
-                        <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
-                        </Anchor>
-                    </Box> */}
-
-
                     <Box margin="15px" alignSelf="start">                    
                         <Anchor color="white">
-                            {/* <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link> */}
+                            <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link>
                         </Anchor>
                     </Box>
 

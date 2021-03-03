@@ -17,6 +17,7 @@ export default function UserTags() {
                     "left": "25px",
                     "right": "25px"
                 }}
+                
             >
                 <Box height="35px" width="400px" align="center">
                     <Text size="25px" color="#FCE181">Followed Tags</Text>

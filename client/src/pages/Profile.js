@@ -2,8 +2,6 @@ import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
 import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
-import ProfileBox from '../components/BioBox'
-import FollowedServices from '../components/FollowedServices'
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -153,6 +151,8 @@ export default function Profile(props) {
 
     const [addPhoto, setAddPhoto] = useState(false);
 
+    const [addBio, setAddBio] = useState(false);
+
     const questionButton = () => {
         if (!showQuestion) {
             setShowQuestion(true);
@@ -160,6 +160,7 @@ export default function Profile(props) {
             setShowService(false);
             setAddService(false);
             setAddPhoto(false);
+            setAddBio(false);
         }
     }
 
@@ -170,6 +171,7 @@ export default function Profile(props) {
             setShowService(false);
             setAddService(false);
             setAddPhoto(false);
+            setAddBio(false);
         }
     }
 
@@ -180,6 +182,7 @@ export default function Profile(props) {
             setShowQuestion(false);
             setAddService(false);
             setAddPhoto(false);
+            setAddBio(false);
         }
     }
 
@@ -190,6 +193,7 @@ export default function Profile(props) {
             setShowAnswer(false);
             setShowQuestion(false);
             setAddPhoto(false);
+            setAddBio(false);
         }
     }
 
@@ -200,11 +204,23 @@ export default function Profile(props) {
             setShowAnswer(false);
             setShowService(false);
             setAddService(false);
+            setAddBio(false);
+        }
+    }
+
+    const addBioButton = () => {
+        if (!addBio) {
+            setAddBio(true);
+            setAddPhoto(false);
+            setShowQuestion(false);
+            setShowAnswer(false);
+            setShowService(false);
+            setAddService(false);
         }
     }
     console.log(tags)
     return (
-        <div>
+        <Box margin={{ top: "75px" }}>
             {/* <pre>
                 {JSON.stringify(props, null, 4)}
             </pre>
@@ -299,7 +315,7 @@ export default function Profile(props) {
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
-                    <BioBox/>
+                    <BioBox />
                 </Box>
 
                 <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
@@ -314,13 +330,16 @@ export default function Profile(props) {
 
                         <Grid
                             areas={[
-                                ['addService', 'addPhoto', 'question', 'answer', 'service'],
+                                ['addBio','addService', 'addPhoto', 'question', 'answer', 'service'],
                             ]}
                             columns={['flex', 'flex', 'flex']}
                             rows={['45px']}
                             gap="15px"
                             responsive="true"
                         >
+                            <Box gridArea="addBio">
+                                <Button onClick={addBioButton}><Text>Add Bio</Text></Button>
+                            </Box>
                             <Box gridArea="addService">
                                 <Button onClick={addServiceButton}><Text>Add Service</Text></Button>
                             </Box>
@@ -401,13 +420,17 @@ export default function Profile(props) {
                     <div />
                 }
 
-                <Box gridArea="services">
-                    {/* <FollowedServices /> */}
 
-                </Box>
+                {addBio ?
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                        <Text>Add Bio</Text>
+                    </Box>
+                    :
+                    <div />
+                }
 
             </Grid>
-        </div>
+        </Box>
 
 
     )

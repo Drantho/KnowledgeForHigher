@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Grid} from 'grommet';
+import { Box, Text} from 'grommet';
 
 
 export default function FollowedServices() {
@@ -12,7 +12,6 @@ export default function FollowedServices() {
                 background="#2B3952"
                 round="5px"
                 height="flex"
-                // width="400px"
                 margin={{
                     "left": "25px",
                     "right": "25px"

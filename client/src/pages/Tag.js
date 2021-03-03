@@ -2,12 +2,8 @@ import {React, useState, useEffect} from 'react';
 import {useParams, Link} from 'react-router-dom';
 import API from '../utils/API';
 import { Box, Grid } from 'grommet';
-import QuestionBox from '../components/QuestionBox'
 import TagQuestion from '../components/TagQuestion'
-import UserTags from '../components/UserTags'
-import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
-import Tags from '../components/Tags'
 import Service from '../components/Service'
 
 export default function Tag() {
@@ -55,7 +51,7 @@ export default function Tag() {
     console.log("this is to test tag service object")
 
     return (
-        <div>
+        <Box margin={{top:"75px"}}>
             {/* <h1>Tag Page: {id}</h1>
             <h2>{tag.name}</h2>
             <h3>Questions:</h3>
@@ -108,6 +104,6 @@ export default function Tag() {
                 </Box>
 
             </Grid>
-        </div>
+        </Box>
     )
 }

@@ -25,7 +25,6 @@ export default function TagQuestion(props) {
 
                 <Grid
                     areas={[
-                        // ['blank','name', 'name', 'name'],
                         ['votes', 'title', 'title', 'title'],
                         ['side', 'border', 'border', 'border'],
                         ['side', 'description', 'description', 'description'],
@@ -48,13 +47,6 @@ export default function TagQuestion(props) {
                     </Box>
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
-
-                    {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
-                        <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
-                        </Anchor>
-                    </Box> */}
-
 
                     <Box margin="15px" alignSelf="start">                    
                         <Anchor color="white">

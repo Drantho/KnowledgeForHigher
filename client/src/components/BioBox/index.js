@@ -18,6 +18,7 @@ export default function BioBox() {
                     "left": "25px",
                     "right": "25px"
                 }}
+                
             >
                 <Box height="35px" width="400px" align="center">
                     <Text size="25px">Bio</Text>

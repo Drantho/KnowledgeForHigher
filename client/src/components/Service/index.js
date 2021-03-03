@@ -74,7 +74,7 @@ export default function Service(services) {
                         {services.props.Tags.map(tag => <QuestionTags props={tag} />)}
                     </Box>
                 </Grid>
-                {/* {services.props.discription} */}
+            
             </Box>
         </Box>
     )

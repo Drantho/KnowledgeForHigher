@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
 import { Link } from 'react-router-dom'
-
 import './style.css';
 import { Down, Up } from 'grommet-icons';
 import QuestionTags from '../QuestionTags'
@@ -27,7 +26,6 @@ export default function Question(props) {
 
                 <Grid
                     areas={[
-                        // ['blank','name', 'name', 'name'],
                         ['votes', 'title', 'title', 'title'],
                         ['side', 'border', 'border', 'border'],
                         ['side', 'description', 'description', 'description'],
@@ -51,13 +49,6 @@ export default function Question(props) {
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
-                    {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
-                        <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
-                        </Anchor>
-                    </Box> */}
-
-
                     <Box margin="15px" alignSelf="start">                    
                         <Anchor color="white">
                             
@@ -65,7 +56,6 @@ export default function Question(props) {
                         </Anchor>
                     </Box>
 
-                   
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
@@ -76,7 +66,6 @@ export default function Question(props) {
                         </Link>
                     </Box>
                     
-
                     <Box gridArea="border" border="bottom" />
 
                     <Box gridArea="description" id="questionSizeBox" >

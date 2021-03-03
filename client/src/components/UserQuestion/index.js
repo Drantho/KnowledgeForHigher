@@ -51,13 +51,6 @@ export default function Question(props) {
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
-                    {/* <Box gridArea="profile"  margin={{"top":"14px"}}>
-                        <Anchor color="white" >
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} size="35px" /></Link>
-                        </Anchor>
-                    </Box> */}
-
-
                     <Box margin="15px" alignSelf="start">                    
                         <Anchor color="white">
                             

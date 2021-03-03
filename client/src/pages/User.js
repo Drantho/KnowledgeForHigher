@@ -1,14 +1,10 @@
 import { React, useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import API from "../utils/API";
-import Thumbnail from "../components/Thumbnail/Index";
-import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
+import { Box, Grid, Avatar, Button, Text, Stack } from 'grommet';
 import OtherUserQuestion from '../components/OtherUserQuestion'
-import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
-import UserTags from '../components/UserTags'
-import Tags from '../components/Tags'
 import BioBox from '../components/BioBox'
 export default function User() {
 
@@ -22,7 +18,7 @@ export default function User() {
             Tags: []
         }],
         Questions: [{
-            Tags: []
+            Tags: [], User: {}, Ratings: []
         }],
         Answers: []
 
@@ -73,7 +69,7 @@ export default function User() {
     }
 
     return (
-        <div>
+        <Box margin={{top:"75px"}}>
             {/* <h1><Thumbnail portrait={user.portrait} /><br />{user.userName}</h1> */}
 
             {/* <pre>
@@ -126,9 +122,9 @@ export default function User() {
 
                 <Box gridArea="profile" margin={{ "left": "20px" }} width="130px" direction="row">
                     <Stack>
-                        <Anchor color="white">
-                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${user.portrait}.jpg`} /></Link>
-                        </Anchor>
+                       
+                            <Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${user.portrait}.jpg`} />
+                     
                     </Stack>
                 </Box>
 
@@ -200,6 +196,6 @@ export default function User() {
 
             </Grid>
 
-        </div>
+        </Box>
     )
 }
