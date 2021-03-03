@@ -3,15 +3,15 @@ import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
 import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
 import ProfileBox from '../components/ProfileBox'
-import UserTags from '../components/UserTags'
 import FollowedServices from '../components/FollowedServices'
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
-
+import UserTags from '../components/UserTags'
+import Tags from '../components/Tags'
 export default function Profile(props) {
     const history = useHistory();
-
+    const [tags, setTags] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [services, setServices] = useState([{
         Tags: []
@@ -50,6 +50,11 @@ export default function Profile(props) {
         API.getServicesByUser(props.userState.id).then(response => {
             setServices(response.data);
             console.log(`services: `, response.data);
+        });
+
+        API.getTagsByUser(props.userState.id).then(response => {
+            setTags(response.data);
+            console.log(`tags: `, response.data);
         });
 
     }, []);
@@ -124,7 +129,7 @@ export default function Profile(props) {
             const photoResult = await API.uploadPhoto(portraitData, props.userState.token).catch(err => console.log(err));
             console.log(`photoResult`, photoResult);
             localStorage.setItem("portrait", photoResult.data.id)
-            props.setUserState({...props.userState, portrait: photoResult.data.id})
+            props.setUserState({ ...props.userState, portrait: photoResult.data.id })
         }
 
 
@@ -138,32 +143,60 @@ export default function Profile(props) {
 
     const [showService, setShowService] = useState(false);
 
-    const [addService]
+    const [addService, setAddService] = useState(false);
+
+    const [addPhoto, setAddPhoto] = useState(false);
 
     const questionButton = () => {
-        if(!showQuestion){
-            setShowQuestion(true)
-            setShowAnswer(false)
-            setShowService(false)
-        } 
+        if (!showQuestion) {
+            setShowQuestion(true);
+            setShowAnswer(false);
+            setShowService(false);
+            setAddService(false);
+            setAddPhoto(false);
+        }
     }
 
     const answerButton = () => {
-        if (!showAnswer){
-            setShowAnswer(true)
-            setShowQuestion(false)
-            setShowService(false)
-        } 
+        if (!showAnswer) {
+            setShowAnswer(true);
+            setShowQuestion(false);
+            setShowService(false);
+            setAddService(false);
+            setAddPhoto(false);
+        }
     }
 
     const serviceButton = () => {
-        if (!showService){
-            setShowService(true)
-            setShowAnswer(false)
-            setShowQuestion(false)
-        } 
+        if (!showService) {
+            setShowService(true);
+            setShowAnswer(false);
+            setShowQuestion(false);
+            setAddService(false);
+            setAddPhoto(false);
+        }
     }
 
+    const addServiceButton = () => {
+        if (!addService) {
+            setAddService(true);
+            setShowService(false);
+            setShowAnswer(false);
+            setShowQuestion(false);
+            setAddPhoto(false);
+        }
+    }
+
+    const addPhotoButton = () => {
+        if (!addPhoto) {
+            setAddPhoto(true);
+            setShowQuestion(false);
+            setShowAnswer(false);
+            setShowService(false);
+            setAddService(false);
+        }
+    }
+    console.log(tags)
     return (
         <div>
             {/* <pre>
@@ -245,20 +278,20 @@ export default function Profile(props) {
 
                 <Box gridArea="profile" margin={{ "left": "20px" }} width="130px" direction="row">
                     <Stack>
-                    <Anchor color="white">
-                        <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`} /></Link>
-                    </Anchor>
+                        <Anchor color="white">
+                            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.userState.portrait}.jpg`} /></Link>
+                        </Anchor>
                     </Stack>
                 </Box>
 
-                <Box gridArea="profile" margin={{"left":"120px","top":"50px"}} border width="200px" background="white" height="40px" round="5px">
-                    <Text size="25px" margin={{"left":"35px"}}> Nolan Stucky </Text>
+                <Box gridArea="profile" margin={{ "left": "120px", "top": "50px" }} border width="200px" background="white" height="40px" round="5px">
+                    <Text size="25px" margin={{ "left": "35px" }}> Nolan Stucky </Text>
                 </Box>
 
-                <Box gridAreah="myTags">
+                <Box gridArea="myTags">
                     <UserTags />
-                    <Box direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-
+                    <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
                 </Box>
 
@@ -274,41 +307,47 @@ export default function Profile(props) {
 
                         <Grid
                             areas={[
-                                ['question', 'answer', 'service'],
+                                ['addService', 'addPhoto', 'question', 'answer', 'service'],
                             ]}
                             columns={['flex', 'flex', 'flex']}
                             rows={['45px']}
                             gap="15px"
                             responsive="true"
                         >
-                        <Box gridArea="question">
-                            <Button onClick={questionButton}><Text>My Questions</Text></Button>
-                        </Box>
-                        <Box gridArea="answer">
-                            <Button onClick={answerButton}><Text>My Answers</Text></Button>
-                        </Box>
-                        <Box gridArea="service">
-                            <Button onClick={serviceButton}><Text>My Services</Text></Button>
-                        </Box>
+                            <Box gridArea="addService">
+                                <Button onClick={addServiceButton}><Text>Add Service</Text></Button>
+                            </Box>
+                            <Box gridArea="addPhoto">
+                                <Button onClick={addPhotoButton}><Text>Add Photo</Text></Button>
+                            </Box>
+                            <Box gridArea="question">
+                                <Button onClick={questionButton}><Text>My Questions</Text></Button>
+                            </Box>
+                            <Box gridArea="answer">
+                                <Button onClick={answerButton}><Text>My Answers</Text></Button>
+                            </Box>
+                            <Box gridArea="service">
+                                <Button onClick={serviceButton}><Text>My Services</Text></Button>
+                            </Box>
                         </Grid>
                     </Box>
 
                 </Box>
-                {showQuestion ? 
+                {showQuestion ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
                         {questions.map(question => <Question props={question} />)}
                     </Box>
                     :
-                    <div/>
+                    <div />
                 }
 
                 {showAnswer ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
-                    {/* {answers.map(answer => <Answers props={answer} />)} */}
-                    <UserAnswers/>
+                        {/* {answers.map(answer => <Answers props={answer} />)} */}
+                        <UserAnswers />
                     </Box>
                     :
-                    <div/>
+                    <div />
                 }
 
                 {showService ?
@@ -316,12 +355,49 @@ export default function Profile(props) {
                         {services.map(service => <UserServices props={service} />)}
                     </Box>
                     :
-                    <div/>
+                    <div />
+                }
+
+                {addService ?
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                        <Text>Add Service</Text>
+                        <input name="name" value={formObj.name} onChange={handleInputChange} /><br />
+                        <br />
+                        <label htmlFor="description">
+                            Description:
+                        </label>
+                        <input name="description" value={formObj.description} onChange={handleInputChange} /><br />
+                        <br />
+                        <label htmlFor="price">
+                            Price
+                        </label>
+                        <input name="price" value={formObj.price} onChange={handleInputChange} /><br />
+                        <br />
+                        <label htmlFor="tags">
+                            Price
+                        </label>
+                        <textarea name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
+                        <br />
+                        <button onClick={handleSubmit}>Add Service</button>
+                    </Box>
+                    :
+                    <div />
+                }
+
+                {addPhoto ?
+                    <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
+                        <Text>Add Photo</Text>
+                        <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
+                        <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
+                        <button onClick={handleAddPhoto}>upload</button>
+                    </Box>
+                    :
+                    <div />
                 }
 
                 <Box gridArea="services">
                     {/* <FollowedServices /> */}
-                    
+
                 </Box>
 
             </Grid>
