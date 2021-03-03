@@ -20,7 +20,13 @@ router.get('/', (request, response) => {
                 model: db.Rating
             },
             {
-                model: db.Question
+                model: db.Question, 
+
+                include: 
+                {
+                    model:db.Tag,
+                    through: {attributes: []}
+                }
             }
         ]
         }).then( (result) => {
@@ -59,7 +65,13 @@ router.get('/', (request, response) => {
                 attributes: []
             },
             {
-                model: db.Question
+                model: db.Question, 
+
+                include: 
+                {
+                    model:db.Tag,
+                    through: {attributes: []}
+                }
             },
             {
                 model: db.Rating

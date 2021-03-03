@@ -69,23 +69,7 @@ export default function Ask(props) {
     }
 
     return (
-        <div>
-            {/* <h1>Ask Page</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="title">
-                    Question:
-                </label>
-                <input name="title" value={formObj.title} onChange={handleInputChanged} /><br />
-                <label htmlFor="text">
-                    Details:
-                </label>
-                <textarea name="text" value={formObj.text} onChange={handleInputChanged} /><br />
-                <label htmlFor="tags">
-                    Tags
-                    </label>
-                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas." /><br />
-                <button type="submit" onClick={handleSubmit}>Ask Question</button>
-            </form> */}
+        <Box margin={{top:"50px"}}>
 
             <Grid
                 areas={[
@@ -145,8 +129,6 @@ export default function Ask(props) {
                                     </FormField>
                                 </Box>
 
-                                {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
-                                
                                 <Box gridArea="button" >
                                     <Button type="submit" onClick={handleSubmit}>Ask Question</Button>
                                 </Box>
@@ -161,6 +143,6 @@ export default function Ask(props) {
             </Grid>
 
 
-        </div>
+        </Box>
     )
 }

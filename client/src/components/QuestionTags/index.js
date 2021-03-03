@@ -23,7 +23,7 @@ export default function QuestionTags(props) {
                 margin="5px"
             >
                 <Link to={`/tag/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                <Text color="blue">{props.props.name}</Text>
+                <Text color="black">{props.props.name}</Text>
                 </Link>
             </Box>
         </Box>
