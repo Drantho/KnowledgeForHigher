@@ -17,10 +17,12 @@ router.get('/', (request, response) => {
                 id: request.query.id
             },
             attributes: ['id', 'title', 'text', 'updatedAt'],
-            include: {
+            include: [{
                 model: db.Tag,
                 through: { attributes: [] }
-            }
+            }, {
+                model: db.User
+            }]
         }).then((result) => {
             return response.json(result);
 

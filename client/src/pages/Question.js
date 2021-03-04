@@ -33,6 +33,7 @@ export default function Question(props) {
     const [question, setQuestion] = useState({
         title: "",
         text: "",
+        User: {},
         Tags: [{
             id: "1"
         }],
@@ -48,6 +49,8 @@ export default function Question(props) {
     const [questionComments, setQuestionComments] = useState([]);
 
     const [answers, setAnswers] = useState([]);
+
+    const [tags, setTags] = useState([]);
 
     const [ratings, setRatings] = useState({});
 
@@ -110,11 +113,24 @@ export default function Question(props) {
             }
         },
         formField: {
-            focus: {
-                background: {
-                    color: 'white'
-                }
-            }
+            border: undefined
+        },
+        textArea: {
+            extend: `
+                margin-top: 4px;
+                border: 1px solid #222E42;
+                border-radius: 3px
+            `
+        }
+        
+    }
+
+    const descriptionBoxTheme = {
+        box: {
+            extend: `
+                border: 1px solid #d6bf6d;
+                border-bottom: 4px solid #d6bf6b;
+                border-radius: 10px;`
         }
     }
 
@@ -125,25 +141,50 @@ export default function Question(props) {
     const handleAnswerInput = (event) => {
         setAnswer({...answer, text: event.target.value})
     }
-
+    
     return (
         <Grommet theme={theme}>
-        <Box margin={{bottom: '20px'}} align='center'>
+        <Box margin={{top: '100px', bottom: '20px'}} align='center'>
             <Box width='80%'>
-            <Box direction='row'>
+
+            <Box height='3px' background='#222E42' />
+
+            <Box justify='between' align='center' direction='row'>
                 <Rating setAnswers={setAnswers} userState={props.userState}
                     type='question' reference={id}/>
                 <Heading fill level={2}>{question.title}</Heading>
+                
+                <Box fill width={{max: '180px', min: '180px'}}
+                  background='#FCE181' 
+                  border={{
+                    color: '#d6bf6d'
+                  }}
+                  round='small'
+                  align='center' 
+                  direction='row'>
+                    <Box margin={{left: '20px'}} align='end'>
+                        <Text size='small'>{question.User.userName}</Text>
+                        <Text size='small'>{question.User.firstName + ' ' + question.User.lastName}</Text>
+                    </Box>
+                    <Link to={`/users/${question.User.id}`}>
+                        <Avatar
+                            margin='small'
+                            size='40px'
+                            src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${question.User.portrait}.png`} />
+                    </Link>
+                </Box>
+                
             </Box>
             <Box height='3px' background='#222E42' />
-            <Box 
-                pad={{vertical: '30px', horizontal: '15px'}}
+
+            <Grommet theme={descriptionBoxTheme}>
+            <Box pad={{vertical: '30px', horizontal: '15px'}}
                 background='rgba(252,225,129,0.8)'
-                border={{style: 'outset'}}
                 round='small'
                 margin={{horizontal: 'large', top: '20px'}}>
                 <Text color='#222E42' size='large'>{question.text}</Text>
             </Box>
+            </Grommet>
 
 
             <Heading margin={{top: 'medium', bottom: 'xsmall'}} level={3}>Comments</Heading>
@@ -157,6 +198,7 @@ export default function Question(props) {
                                 text={e.text}/>
                 })}
 
+                {(props.userState.id !== question.User.id) && 
                 <Accordion margin={{top: '15px'}} width='85%'>
                     <AccordionPanel label='Leave a comment...'>
                         <Box>
@@ -171,7 +213,7 @@ export default function Question(props) {
                             </Form>
                         </Box>
                     </AccordionPanel>
-                </Accordion>
+                </Accordion>}
             </Box>
 
             <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
@@ -188,6 +230,7 @@ export default function Question(props) {
                 }
             </Box>
             
+            {(props.userState.id !== question.User.id) && 
             <Box>
                 <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
                 <Box height='3px' background='#222E42' />
@@ -199,7 +242,7 @@ export default function Question(props) {
                         value={answer.text} />
                     <Button type='submit' label='Submit' />
                 </Form>
-            </Box>
+            </Box>}
 
             </Box>
         </Box>
