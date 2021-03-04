@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea, Paragraph } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea, Paragraph, TextInput } from 'grommet';
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -136,6 +136,7 @@ export default function Profile(props) {
             console.log(`photoResult`, photoResult);
             localStorage.setItem("portrait", photoResult.data.id)
             props.setUserState({ ...props.userState, portrait: photoResult.data.id })
+            setPortraitSrc("");
         }
     }
 
@@ -337,24 +338,24 @@ export default function Profile(props) {
                 {addService ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
                         <Text>Add Service</Text>
-                        <input name="name" value={formObj.name} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="name" value={formObj.name} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="description">
                             Description:
                         </label>
-                        <input name="description" value={formObj.description} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="description" value={formObj.description} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="price">
                             Price
                         </label>
-                        <input name="price" value={formObj.price} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="price" value={formObj.price} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="tags">
                             Price
                         </label>
-                        <textarea name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
+                        <TextArea style={{backgroundColor: "white", color: "black"}} name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
                         <br />
-                        <button onClick={handleSubmit}>Add Service</button>
+                        <Button onClick={handleSubmit}>Add Service</Button>
                     </Box>
                     :
                     <div />
@@ -365,7 +366,11 @@ export default function Profile(props) {
                         <Text>Add Photo</Text>
                         <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
                         <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
-                        <button onClick={handleAddPhoto}>upload</button>
+                        {portraitSrc ?
+                            <Button onClick={handleAddPhoto} primary label="Upload"/>
+                        :
+                        <div/>
+                        }
                     </Box>
                     :
                     <div />
@@ -377,7 +382,7 @@ export default function Profile(props) {
                         <TextArea name="bio" fill="true" style={{backgroundColor: "white", color: "black"}} value={bio} onChange={handleBioChanged}>
 
                         </TextArea>
-                        <Button onClick={submitBio}>Add Bio</Button>
+                        <Button onClick={submitBio}  primary label="Submit"/>
                     </Box>
                     :
                     <div />
