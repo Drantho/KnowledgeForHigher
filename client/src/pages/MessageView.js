@@ -49,14 +49,19 @@ export default function MessageView(props) {
         if (event.target.value !== '') {
             const searchedUsers 
                 = await messageAPI.searchUsers(event.target.value, props.userState.token);
-            setUsersList(searchedUsers.data);
-            console.log(searchedUsers.data);
+            const data = searchedUsers.data;
+            const idx = searchedUsers.data.findIndex( e => e.id === props.userState.id);
+            if (idx !== -1) {
+                data.splice(idx, 1)
+            }
+            setUsersList(data);
         }
     }
 
     useEffect( async () => {
         setNewThreadState({username: ''});
         const loadThreadsList = (await messageAPI.getThreads(props.userState.token)).data;
+        console.log(loadThreadsList);
         setThreadsList(loadThreadsList);
     }, []);
 
@@ -82,7 +87,7 @@ export default function MessageView(props) {
 
     return (
         <Grommet theme={customTheme}>
-        <Box fill direction='row' height={{ min: '60vh' }}>
+        <Box fill pad={{top: '74px'}} direction='row' height={{ min: '100vh' }}>
             <Nav elevation='large' gap='none' width='25%' background='#222E42'>
                 <Heading 
                     level={3} 
