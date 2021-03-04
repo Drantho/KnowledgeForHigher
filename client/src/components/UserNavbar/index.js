@@ -26,7 +26,7 @@ export default function UserNavbar(props) {
 
     return (
         <Box style={{ position: "fixed", top: 0, width: "100%" }}>
-            <MediaQuery minDeviceWidth={1000}>
+            <MediaQuery minDeviceWidth={1200}>
                 <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed", top: 0, width: "100vw" }}>
                     {/* <pre>
                     {JSON.stringify(props, null, 4)}
@@ -70,7 +70,7 @@ export default function UserNavbar(props) {
                     </Nav>
                 </Header>
             </MediaQuery>
-            <MediaQuery maxDeviceWidth={999}>
+            <MediaQuery maxDeviceWidth={1200}>
                 <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed", top: 0, width: "100vw" }}>
                     {/* <pre>
                     {JSON.stringify(props, null, 4)}

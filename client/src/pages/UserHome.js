@@ -10,6 +10,7 @@ import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 import Service from '../components/Service'
 import MediaQuery from 'react-responsive'
+import MobileSearchBar from '../components/MobileSearchBar'
 
 export default function UserHome(props) {
 
@@ -158,7 +159,7 @@ export default function UserHome(props) {
 
     return (
         <Grommet>
-            <MediaQuery minDeviceWidth={1400}>
+            <MediaQuery minDeviceWidth={1000}>
                 <Box margin={{ top: "75px" }}>
                     <Grid
                         areas={[
@@ -217,7 +218,7 @@ export default function UserHome(props) {
                     </Grid>
                 </Box>
             </MediaQuery>
-            <MediaQuery maxDeviceWidth={1400}>
+            <MediaQuery maxDeviceWidth={1000}>
             <Box margin={{ top: "75px" }}>
                 <Grid
                     areas={[
@@ -236,13 +237,13 @@ export default function UserHome(props) {
                     <Box gridArea="blank3" />
                     <Box gridArea="blank4" />
 
-                    {/* <Box gridArea="search" ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box> */}
+                    <Box gridArea="search" ><MobileSearchBar searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box>
 
                     <Box gridArea="main" height="flex" background="#f0f0f0">
 
                     </Box>
 
-                    <Box gridArea="question" margin={{ "top": "-10px", "left":"20px"}} >
+                    <Box gridArea="question" margin={{ "top": "10px", "left":"20px"}} >
                         {questions.map(question => <Question props={question} />)}
 
                     </Box>
