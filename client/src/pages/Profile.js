@@ -348,7 +348,6 @@ export default function Profile(props) {
                             }
                         </Grid>
                     </Box>
-
                 </Box>
                 {showQuestion ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>

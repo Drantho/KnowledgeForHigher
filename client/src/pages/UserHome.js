@@ -11,6 +11,8 @@ import Tags from '../components/Tags'
 import Service from '../components/Service'
 import MediaQuery from 'react-responsive'
 import MobileSearchBar from '../components/MobileSearchBar'
+import MobileHomeBar from '../components/MobileHomeBar';
+import MobileNavbar from '../components/MobileNavbar'
 
 export default function UserHome(props) {
 
@@ -219,6 +221,7 @@ export default function UserHome(props) {
                 </Box>
             </MediaQuery>
             <MediaQuery maxDeviceWidth={1000}>
+            <MobileNavbar tags={tags} handleHideTag={handleHideTag}/>
             <Box margin={{ top: "75px" }}>
                 <Grid
                     areas={[
@@ -239,8 +242,8 @@ export default function UserHome(props) {
 
                     <Box gridArea="search" ><MobileSearchBar searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box>
 
-                    <Box gridArea="main" height="flex" background="#f0f0f0">
-
+                    <Box gridArea="main" height="flex" background="#f0f0f0" margin={{ "top": "10px", "left":"20px"}}>
+                        {/* <MobileHomeBar/> */}
                     </Box>
 
                     <Box gridArea="question" margin={{ "top": "10px", "left":"20px"}} >
