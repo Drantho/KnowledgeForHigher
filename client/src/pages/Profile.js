@@ -387,11 +387,11 @@ export default function Profile(props) {
                         <TextInput style={{backgroundColor: "white", color: "black"}} name="price" value={formObj.price} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="tags">
-                            Price
+                            Tags
                         </label>
                         <TextArea style={{backgroundColor: "white", color: "black"}} name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
                         <br />
-                        <Button onClick={handleSubmit}>Add Service</Button>
+                        <Button onClick={handleSubmit} default label="Add Service"/>
                     </Box>
                     :
                     <div />
@@ -403,7 +403,7 @@ export default function Profile(props) {
                         <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
                         <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
                         {portraitSrc ?
-                            <Button onClick={handleAddPhoto} primary label="Upload"/>
+                            <Button onClick={handleAddPhoto} default label="Upload"/>
                         :
                         <div/>
                         }
@@ -418,7 +418,7 @@ export default function Profile(props) {
                         <TextArea name="bio" fill="true" style={{backgroundColor: "white", color: "black"}} value={bio} onChange={handleBioChanged}>
 
                         </TextArea>
-                        <Button onClick={submitBio}  primary label="Submit"/>
+                        <Button onClick={submitBio}  default label="Submit"/>
                     </Box>
                     :
                     <div />

@@ -7,8 +7,7 @@ import QuestionTags from '../QuestionTags'
 export default function UserServices(service) {
     console.log("user services")
     console.log(service)
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${service.props.User.portrait}.jpg`;
-
+    
     return (
      
         <Box>
