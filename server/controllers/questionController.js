@@ -164,7 +164,42 @@ router.post('/', authenticate, (request, response) => {
         text: request.body.text,
         UserId: request.userId
     }).then((result) => {
-        response.json(result);
+
+        if (request.body.tags) {
+
+            db.Tag.findAll({
+                where: {
+                    name: { [Op.in] : request.body.tags }
+                }
+            }).then( (findResult) => {
+                const ids = findResult.map( e => e.dataValues.id);
+                const found = findResult.map(e => e.dataValues.name);
+                const toCreate = request.body.tags.filter( e => !found.includes(e));
+
+                db.Tag.bulkCreate(toCreate.map( e => ({name: e}))).then( (createResult) => {
+                    ids.push(...(createResult.map( e => e.dataValues.id )));
+                    db.sequelize.models.question_tags.bulkCreate(
+                        ids.map( e => ({ QuestionId: result.dataValues.id, TagId: e }) )
+                    ).then( (linkResult) => {
+                        const output = [];
+                        output.push(`These tags already existed: ${findResult.map( e => e.dataValues.name)}`);
+                        output.push(`These tags were created: ${createResult.map( e => e.dataValues.name)}`);
+                        output.push(`Linked tags ${linkResult.map( e => e.TagId)} to question`);
+
+                        response.json(output);
+                    }).catch( (err) => {
+                        response.status(500).json(err);
+                    })
+                }).catch( (err) => {
+                    response.status(500).json(err);
+                })
+            }).catch( (err) => {
+                response.status(500).json(err);
+            });
+
+        } else {
+            response.json(result);
+        }
     }).catch((err) => {
         response.status(500).json(err);
     });
