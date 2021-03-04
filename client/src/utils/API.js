@@ -131,6 +131,15 @@ export default {
     console.log((`${url}/api/comment?service=${id}`));
     return axios.get(`${url}/api/comment?service=${id}`)
   },
+  createServiceCommet: (data, token) => {
+    console.log((`${url}/api/comment`));
+    console.log(`data at API`, data);
+    return axios.post(`${url}/api/comment`, data, {
+      headers:{
+          authorization: `Bearer: ${token}`
+      }
+    })
+  },
   getAllQuestionComments: id => {
     console.log((`${url}/api/comment?question=${id}`));
     return axios.get(`${url}/api/comment?question=${id}`)
