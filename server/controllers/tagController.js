@@ -34,8 +34,10 @@ router.get('/', (request, response) => {
                 },
                 required: false,
                 include: [{
-                    model: db.User,
-                    attributes: ['userName', 'id']
+                    model: db.User
+                }, {
+                    model: db.Tag,
+                    through: { attributes: [] }
                 }]
             }]
         }).then((result) => {

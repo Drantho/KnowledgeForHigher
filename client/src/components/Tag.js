@@ -1,7 +1,7 @@
 import {React, useState, useEffect} from 'react'
 
 import {Box, Card, Button, Grommet, Tip} from 'grommet';
-import {Add} from 'grommet-icons';
+import {Add, Subtract} from 'grommet-icons';
 import {Link} from 'react-router-dom';
 
 import API from '../utils/API';
@@ -15,7 +15,7 @@ export default function Tag(props) {
         setFollowing(true);
     }
 
-    const [following, setFollowing] = useState();
+    const [following, setFollowing] = useState(false);
 
     useEffect(() => {
         API.getTagsByUser(props.userState.id).then( (result) => {
@@ -43,9 +43,10 @@ export default function Tag(props) {
                         {props.tag.name}
                     </Box>
                 </Link>
-                { !following && 
-                    <Tip content='Follow'>
-                        <Button onClick={handleFollowTag} icon={<Add size='16px' color='black' />} />
+                {props.userState.isSignedIn && 
+                    <Tip content={ following ? 'Unfollow' : 'Follow'}>
+                        <Button onClick={handleFollowTag} 
+                            icon={ following ? <Subtract size='16px' /> : <Add size='16px' />} />
                     </Tip>
                 }
                 
