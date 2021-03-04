@@ -8,6 +8,7 @@ export default function Tags(props) {
     return (
         <Box alignSelf="start" margin={{"right":"10px"}}>
             <Box
+                border={{color:"#FCE181",size:"2px"}}
                 direction="row"
                 align="center"
                 background="#F3F3F3"

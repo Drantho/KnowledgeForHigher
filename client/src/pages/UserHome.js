@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import API from "../utils/API";
-import { Box, Grid } from 'grommet';
+import { Box, Grid, Grommet } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
 import UserTags from '../components/UserTags'
@@ -9,6 +9,8 @@ import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
 import Tags from '../components/Tags'
 import Service from '../components/Service'
+import MediaQuery from 'react-responsive'
+import MobileSearchBar from '../components/MobileSearchBar'
 
 export default function UserHome(props) {
 
@@ -153,65 +155,102 @@ export default function UserHome(props) {
         fillFeeds(tags.concat(popularTags));
     }
 
+
+
     return (
-        <Box margin={{top:"75px"}}>
+        <Grommet>
+            <MediaQuery minDeviceWidth={1000}>
+                <Box margin={{ top: "75px" }}>
+                    <Grid
+                        areas={[
+                            ['blank3', 'search', 'blank4'],
+                            ['blank1', 'main', 'blank2'],
+                            ['myTags', 'question', 'services'],
+                            ['myTags', 'question', 'services']
+                        ]}
+                        columns={['1/4', 'flex', '1/4']}
+                        rows={['50px']}
+                        gap="small"
+                        responsive="true"
+                    >
+                        <Box gridArea="blank1" />
+                        <Box gridArea="blank2" />
+                        <Box gridArea="blank3" />
+                        <Box gridArea="blank4" />
 
-            <Grid
-                areas={[
-                    ['blank3', 'search', 'blank4'],
-                    ['blank1', 'main', 'blank2'],
-                    ['myTags', 'question', 'services'],
-                    ['myTags', 'question', 'services']
-                ]}
-                columns={['1/4', 'flex', '1/4']}
-                rows={['50px']}
-                gap="small"
-                responsive="true"
-            >
-                <Box gridArea="blank1" />
-                <Box gridArea="blank2" />
-                <Box gridArea="blank3" />
-                <Box gridArea="blank4" />
+                        {/* =========================================================== */}
 
-                {/* =========================================================== */}
+                        <Box gridArea="search" ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box>
 
-                <Box gridArea="search" margin={{ "top": "-70px", "left":"750px" }} style={{position:"fixed"}}><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box>
+                        {/* =========================================================== */}
 
-                {/* =========================================================== */}
+                        <Box gridArea="myTags" >
+                            <div onClick={handleShowMyTags}>
+                                <UserTags />
+                            </div>
+                            <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                                {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} style={{ cursor: "pointer", position: "relative", top: "3px", left: "8px" }} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                            </Box>
 
-                <Box gridArea="myTags" >
-                    <div onClick={handleShowMyTags}>
-                        <UserTags />
-                    </div>
-                    <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                            <div onClick={handleShowPopularTags}>
+                                <PopularTags />
+                            </div>
+                            <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                                {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} style={{ cursor: "pointer", position: "relative", top: "3px", left: "8px" }} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                            </Box>
+                        </Box>
+
+                        <Box gridArea="main" height="flex" background="#f0f0f0">
+
+                        </Box>
+
+                        <Box gridArea="question" margin={{ "top": "-10px", }} >
+                            {questions.map(question => <Question props={question} />)}
+
+                        </Box>
+
+                        <Box gridArea="services">
+                            <FollowedServices />
+                            <Box>
+                                {services.map(service => <Service props={service} />)}
+                            </Box>
+                        </Box>
+                    </Grid>
+                </Box>
+            </MediaQuery>
+            <MediaQuery maxDeviceWidth={1000}>
+            <Box margin={{ top: "75px" }}>
+                <Grid
+                    areas={[
+                        ['search'],
+                        ['main'],
+                        ['question'],
+                        ['question']
+                    ]}
+                    columns={['flex']}
+                    rows={['50px']}
+                    gap="small"
+                    responsive="true"
+                >
+                    <Box gridArea="blank1" />
+                    <Box gridArea="blank2" />
+                    <Box gridArea="blank3" />
+                    <Box gridArea="blank4" />
+
+                    <Box gridArea="search" ><MobileSearchBar searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box>
+
+                    <Box gridArea="main" height="flex" background="#f0f0f0">
+
                     </Box>
 
-                    <div onClick={handleShowPopularTags}>
-                        <PopularTags />
-                    </div>
-                    <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`}  style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                    <Box gridArea="question" margin={{ "top": "10px", "left":"20px"}} >
+                        {questions.map(question => <Question props={question} />)}
+
                     </Box>
-                </Box>
 
-                <Box gridArea="main" height="flex" background="#f0f0f0">
-
-                </Box>
-
-                <Box gridArea="question" margin={{ "top": "-10px", }} >
-                    {questions.map(question => <Question props={question} />)}
-
-                </Box>
-
-                <Box gridArea="services">
-                    <FollowedServices />
-                    <Box>
-                        {services.map(service => <Service props={service} />)}
-                    </Box>
-                </Box>
-
-            </Grid>
-        </Box>
+                </Grid>
+            </Box>
+            </MediaQuery>
+        </Grommet>
     )
 }

@@ -54,7 +54,7 @@ export default function Service(services) {
                             </Anchor>
                         </Box>
                     </Box>
-                    <Box gridArea="name" width="500px">
+                    <Box gridArea="name" >
                         <Box pad="10px" margin={{ "top": "-10px" }}>
                             <Link to={`/users/${services.props.UserId}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                                 <Box >
@@ -65,11 +65,11 @@ export default function Service(services) {
                     </Box>
                     <Box gridArea="title" margin={{"top":"-40px"}}>
                         <Link to={`/service/${services.props.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                            <Box style={{ flexWrap: "wrap" }} direction="row" width="250px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                            <Box style={{ flexWrap: "wrap" }} direction="row"  margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                             <Text size="25px">{services.props.name}</Text>
                             </Box>
                         </Link>
-                    <Box gridArea="tag" direction="row"  style={{ flexWrap: "wrap" }} direction="row" width="250px" margin={{ "left": "5px", "right": "150px", "bottom": "10px" }}>
+                    <Box gridArea="tag" direction="row"  style={{ flexWrap: "wrap" }} direction="row"  margin={{ "left": "5px", "right": "150px", "bottom": "10px" }}>
                         {services.props.Tags.map(tag => <QuestionTags props={tag} />)}
                     </Box>
                     </Box>

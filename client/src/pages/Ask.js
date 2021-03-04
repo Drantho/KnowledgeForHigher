@@ -84,17 +84,19 @@ export default function Ask(props) {
     }
 
     return ( 
+        
         <Box align='center' margin={{top: '74px'}}>
             <Box width='70%'>
                 <Grommet theme={theme}>
                 <Form onSubmit={handleSubmit} value={formValues}>
                     <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
-                        <Heading textAlign='center' color='#FCE181' level={2}>
+                        <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
                             Submit a question!
                         </Heading>
                     </Box>
-                    <FormField required label='Title' name='title' htmlFor='new-question-title'>
-                        <TextArea 
+                    <FormField required label='Title' name='title' htmlFor='new-question-title' >
+                        <TextArea
+                            style={{background:'white'}}
                             id='new-question-title'
                             name='title'
                             placeholder='Enter a descriptive question title.' 
@@ -105,6 +107,7 @@ export default function Ask(props) {
                         name='text' htmlFor='new-question-text'>
                         <Grommet theme={descrTheme}>
                         <TextArea
+                            style={{background:'white'}}
                             id='new-question-text'
                             name='text'
                             placeholder='Enter a detailed description of your question.' 
@@ -113,7 +116,8 @@ export default function Ask(props) {
                         </Grommet>
                     </FormField>
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                        <TextArea 
+                        <TextArea
+                            style={{background:'white'}}
                             id='new-question-tags'
                             name='tags'
                             placeholder='Enter a list of topics related to your question (separated by a comma).' 
@@ -126,7 +130,7 @@ export default function Ask(props) {
                 </Form>
                 </Grommet>
             </Box>
-
         </Box>
+    
     )
 }
