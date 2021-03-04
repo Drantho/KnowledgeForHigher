@@ -52,16 +52,6 @@ export default function Tag() {
 
     return (
         <Box margin={{top:"75px"}}>
-            {/* <h1>Tag Page: {id}</h1>
-            <h2>{tag.name}</h2>
-            <h3>Questions:</h3>
-            <ul>
-                {tag.Questions.map(question => <li key={question.id}><Link to={`/question/${question.id}`}>{question.title}</Link></li>)}
-            </ul>
-            <h3>Services:</h3>
-            <ul>
-                {tag.Services.map(service => <li key={service.id}><Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.User.id}`}>{service.User.userName}</Link></li>)}
-            </ul> */}
 
             <Grid
                 areas={[

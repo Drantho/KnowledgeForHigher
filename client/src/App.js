@@ -108,7 +108,6 @@ function App() {
           isSignedIn: true,
           token: response.data.token
         });
-        console.log(userState.id);
       }).catch(err => {
         console.log(err);
         localStorage.clear("token")

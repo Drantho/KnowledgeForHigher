@@ -70,39 +70,6 @@ export default function User() {
 
     return (
         <Box margin={{top:"75px"}}>
-            {/* <h1><Thumbnail portrait={user.portrait} /><br />{user.userName}</h1> */}
-
-            {/* <pre>
-                {JSON.stringify(user, null, 4)}
-            </pre> */}
-{/* 
-            <p>
-                <strong>Member since: </strong>
-                {user.createdAt}
-            </p>
-            <h3>Services</h3>
-            {user.Services.map(service => {
-                return <li key={service.id}>
-                    <Link to={`/service/${service.id}`}>{service.name}</Link><br />
-                    {service.Tags.map(tag => <span><Link to={`/tag/${tag.id}`} key={tag.id}>{tag.name}</Link> </span>)}
-                </li>
-            })}
-            <h3>Questions</h3>
-            {console.log(`user.Questions`, user.Questions)}
-            {user.Questions.map(question => {
-                return <li key={question.id}>
-                    <Link to={`/question/${question.id}`}>{question.title}</Link><br />
-                    {question.Tags.map(tag => <Link to={`/tag/${tag.id}`} key={tag.id}> {tag.name}</Link>)}
-                </li>
-            })}
-            <h3>Answers</h3>
-            {user.Answers.map(answer => {
-                return <li key={answer.id}>
-                    {answer.text} -
-                <Link to={`/question/${answer.QuestionId}`}>question</Link>
-                </li>
-            })} */}
-
 
             <Grid
                 areas={[
