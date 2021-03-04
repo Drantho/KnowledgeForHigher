@@ -1,166 +1,133 @@
 import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
-import { Box, FormField, Grid, TextArea, Button} from 'grommet';
-import AddQuestion from '../components/AddQuestion'
+import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
+
+
 export default function Ask(props) {
-    const history = useHistory();
 
-    const [formObj, setFormObj] = useState({
-        title: "",
-        text: "",
-        user: 1,
-        tagsString: "",
-        tagsArray: []
-    });
+    const [formValues, setFormValues] = useState({});
 
-    const handleInputChanged = event => {
-        const { name, value } = event.target;
-        if (name === "tagsString") {
-            const arr = value.split(",").map(element => element.trim());
-            setFormObj({
-                ...formObj,
-                tagsString: event.target.value,
-                tagsArray: arr
-            });
-        } else {
-            setFormObj({
-                ...formObj,
-                [name]: value
-            });
+    const handleInput = (event) => {
+        setFormValues({ ...formValues, [event.target.name]: event.target.value });
+    }
+
+    const handleSubmit = (event) => {
+        // Convert tags string to array
+        let tags;
+        if (formValues.tags) {
+            tags = formValues.tags.split(',').map(e => e.trim());
         }
 
-    }
-
-    const handleSubmit = async event => {
-        event.preventDefault();
-
-        API.createQuestion(formObj, props.userState.token).then(async response => {
+        API.createQuestion({
+             ...formValues,
+             tags: tags,
+             user: props.userState.id
+        }, props.userState.token).then( (response) => {
             console.log(response);
-            const id = response.data.id;
-
-            // TODO convert to async so we can redirect when complete
-            formObj.tagsArray.forEach(async element => {
-                API.createTag({ name: element }, props.userState.token).then(tagResponse => {
-                    API.linkTagToQuestion({
-                        tags: [element],
-                        question: response.data.id
-                    }, props.userState.token).catch(err => {
-                        console.log(err);
-                    });
-                });
-            });
-
-            for (const element of formObj.tagsArray) {
-                const id = await API.createTag({ name: element })
-            }
-
-            API.linkTagToQuestion({
-                tags: formObj.tagsArray,
-                question: response.data.id
-            }, props.userState.token).catch(err => {
-                console.log(err);
-                history.push("/profile")
-            });
-
-        }).catch(err => {
+        }).catch( (err) => {
             console.log(err);
-        })
+        });
+
+        setFormValues({
+            title: '',
+            text: '',
+            tags: ''
+        });
     }
 
-    return (
-        <div>
-            {/* <h1>Ask Page</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="title">
-                    Question:
-                </label>
-                <input name="title" value={formObj.title} onChange={handleInputChanged} /><br />
-                <label htmlFor="text">
-                    Details:
-                </label>
-                <textarea name="text" value={formObj.text} onChange={handleInputChanged} /><br />
-                <label htmlFor="tags">
-                    Tags
-                    </label>
-                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas." /><br />
-                <button type="submit" onClick={handleSubmit}>Ask Question</button>
-            </form> */}
+    const theme = {
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        button: {
+            border: {color: '#FCE181'},
+            primary: {
+                color: '#FCE181',
+                border: { color: '#FCE181' }
+            },
+            size: {
+                medium: {
+                    border: {
+                        radius: '8px'
+                    }
+                }
+            },
+            extend: `
+                width: 150px;
+                height: 60px
+            `
+        },
+        formField: {
+            border: false
+        }
+    }
 
-            <Grid
-                areas={[
-                    ['blank', 'blank3', 'blank2'],
-                    ['blank', 'main', 'blank2'],
-                    ['blank', 'question', 'blank2'],
-                    ['blank', 'question', 'blank2']
-                ]}
-                columns={['1/4', 'flex', '1/4']}
-                rows={['50px']}
-                gap="small"
-                responsive="true"
-            >
+    const descrTheme = {
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        textArea: {
+            extend: `
+                height: 200px
 
+            `
+        }
+    }
 
-                <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
-                    <AddQuestion/>
-                </Box>
-
-                <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
-                    <Box>
-                        <Box
-                            justify="center"
-                            align="center"
-                            pad="10px"
-                            background="#F3F3F3"
-                            round="5px"
-                        >
-
-                            <Grid
-                                areas={[
-                                    ['title', 'title', 'title'],
-                                    ['details', 'details', 'details'],
-                                    ['tags', 'tags', 'tags'],
-                                    ['blank', 'blank', 'button'],
-                                ]}
-                                columns={['flex', 'flex', 'flex']}
-                                rows={['flex']}
-                                responsive="true"
-                            >
-                                <form onSubmit={handleSubmit}>
-                                <Box gridArea="title">
-                                    <FormField  htmlFor="text-area" border>
-                                        <TextArea id="text-area" placeholder="Question Title" name="title" value={formObj.title} onChange={handleInputChanged} />
-                                    </FormField>
-                                </Box>
-
-                                <Box gridArea="details" width="900px" height="400px">
-                                    
-                                    <TextArea id="text-area" placeholder="Description"  focusIndicator="true" fill name="text" value={formObj.text} onChange={handleInputChanged}/>
-                                   
-                                </Box>
-
-                                <Box gridArea="tags" >
-                                    <FormField  htmlFor="text-area" border>
-                                        <TextArea id="text-area" placeholder="Enter topics separated by commas" name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} />
-                                    </FormField>
-                                </Box>
-
-                                {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
-                                
-                                <Box gridArea="button" >
-                                    <Button type="submit" onClick={handleSubmit}>Ask Question</Button>
-                                </Box>
-                                </form>
-                            </Grid>
-
-                        </Box>
+    return ( 
+        
+        <Box align='center' margin={{top: '74px'}}>
+            <Box width='70%'>
+                <Grommet theme={theme}>
+                <Form onSubmit={handleSubmit} value={formValues}>
+                    <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
+                        <Heading textAlign='center' color='#FCE181' level={2}>
+                            Submit a question!
+                        </Heading>
                     </Box>
-
-                </Box>
-
-            </Grid>
-
-
-        </div>
+                    <FormField required label='Title' name='title' htmlFor='new-question-title'>
+                        <TextArea 
+                            id='new-question-title'
+                            name='title'
+                            placeholder='Enter a descriptive question title.' 
+                            value={formValues.title}
+                            onChange={handleInput} />
+                    </FormField>
+                    <FormField label='Description' 
+                        name='text' htmlFor='new-question-text'>
+                        <Grommet theme={descrTheme}>
+                        <TextArea
+                            id='new-question-text'
+                            name='text'
+                            placeholder='Enter a detailed description of your question.' 
+                            value={formValues.text}
+                            onChange={handleInput} />
+                        </Grommet>
+                    </FormField>
+                    <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
+                        <TextArea 
+                            id='new-question-tags'
+                            name='tags'
+                            placeholder='Enter a list of topics related to your question (separated by a comma).' 
+                            value={formValues.tags}
+                            onChange={handleInput} />
+                    </FormField>
+                    <Box align='center'>
+                        <Button size='medium' primary type='submit' label='Submit' />
+                    </Box>
+                </Form>
+                </Grommet>
+            </Box>
+        </Box>
+    
     )
 }
