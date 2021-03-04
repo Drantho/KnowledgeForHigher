@@ -1,12 +1,16 @@
 import { React, useState, useEffect } from 'react';
 
-import { Grommet, Box, Text, Button } from 'grommet';
+import { Grommet, Box, Text, Button, Tip } from 'grommet';
 import { Up, Down } from 'grommet-icons';
 import API from '../utils/API';
 
 export default function Rating(props) {
 
     const handleRating = async (event) => {
+        if (!props.userState.isSignedIn) {
+            return;
+        }
+
         let node = event.target;
         let up = false;
 
@@ -67,25 +71,56 @@ export default function Rating(props) {
             width={{ min: '24px' }} 
             margin={{ horizontal: 'medium' }} 
             justify='center'>
-            <Button onClick={handleRating}>
-                <Box>
-                    <Up />
-                    <Text margin={{ top: '-7px', bottom: '5px' }}
-                        color='green'
-                        alignSelf='center'>{ratings ? ratings.positive : ''}</Text>
-                </Box>
-            </Button>
+            {props.userState.isSignedIn ?
+                <Button onClick={handleRating}>
+                    <Box>
+                        <Up />
+                        <Text margin={{ top: '-7px', bottom: '5px' }}
+                            color='green'
+                            alignSelf='center'>{ratings ? ratings.positive : ''}</Text>
+                    </Box>
+                </Button>
+                :
+                <Tip dropProps={{align: {bottom: 'top'}}} plain content={
+                    <Box pad='xsmall' round='xsmall' background='#FCE181' width={{ max: '90px' }}>
+                        <Text size='12px'>You must be signed in to leave a rating!</Text>
+                    </Box>}> 
+                    <Button onClick={handleRating}>
+                        <Box>
+                            <Up />
+                            <Text margin={{ top: '-7px', bottom: '5px' }}
+                                color='green'
+                                alignSelf='center'>{ratings ? ratings.positive : ''}</Text>
+                        </Box>
+                    </Button>
+                </Tip>
+            }
 
             <Box width='100%' height='2px' background='#222E42' />
-
-            <Button onClick={handleRating}>
-                <Box>
-                    <Text margin={{ top: '5px', bottom: '-7px' }}
-                        color='red'
-                        alignSelf='center'>{ratings ? ratings.negative : ''}</Text>
-                    <Down />
-                </Box>
-            </Button>
+            {props.userState.isSignedIn ? 
+                <Button onClick={handleRating}>
+                    <Box>
+                        <Text margin={{ top: '5px', bottom: '-7px' }}
+                            color='red'
+                            alignSelf='center'>{ratings ? ratings.negative : ''}</Text>
+                        <Down />
+                    </Box>
+                </Button>
+                : 
+                    <Tip plain content={
+                                <Box pad='xsmall' round='xsmall' background='#FCE181' width={{max: '90px'}}>
+                                    <Text size='12px'>You must be signed in to leave a rating!</Text>
+                                </Box>}>
+                    <Button onClick={handleRating}>
+                        <Box>
+                            <Text margin={{ top: '5px', bottom: '-7px' }}
+                                color='red'
+                                alignSelf='center'>{ratings ? ratings.negative : ''}</Text>
+                            <Down />
+                        </Box>
+                    </Button>
+                </Tip>
+            }
         </Box>
         </Grommet>
     )

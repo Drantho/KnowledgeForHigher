@@ -198,7 +198,7 @@ export default function Question(props) {
                                 text={e.text}/>
                 })}
 
-                {(props.userState.id !== question.User.id) && 
+                {(props.userState.id !== question.User.id && props.userState.isSignedIn) && 
                 <Accordion margin={{top: '15px'}} width='85%'>
                     <AccordionPanel label='Leave a comment...'>
                         <Box>
@@ -214,6 +214,15 @@ export default function Question(props) {
                         </Box>
                     </AccordionPanel>
                 </Accordion>}
+
+                {!props.userState.isSignedIn && 
+                    <Box pad='small' margin={{top: 'xsmall'}} 
+                        align='center' round='small' fill background='rgba(0,0,0,0.2)'>
+                    <Link to='/splash'>
+                        <Text pad='small'>Sign In or Sign Up to leave a comment!</Text>
+                    </Link>
+                    </Box>
+                }
             </Box>
 
             <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
@@ -230,8 +239,9 @@ export default function Question(props) {
                 }
             </Box>
             
-            {(props.userState.id !== question.User.id) && 
+            {(props.userState.id !== question.User.id && props.userState.isSignedIn) && 
             <Box>
+
                 <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
                 <Box height='3px' background='#222E42' />
                 <Form onSubmit={handleSubmit} value={answer.text}>
@@ -242,8 +252,18 @@ export default function Question(props) {
                         value={answer.text} />
                     <Button type='submit' label='Submit' />
                 </Form>
+
             </Box>}
 
+            {!props.userState.isSignedIn &&
+                <Box pad='small' margin={{ top: 'xsmall' }}
+                    align='center' round='small' fill background='rgba(0,0,0,0.2)'>
+                    <Link to='/splash'>
+                        <Text pad='small'>Sign In or Sign Up to submit an answer!</Text>
+                    </Link>
+                </Box>
+            }
+            
             </Box>
         </Box>
         </Grommet>
