@@ -15,7 +15,7 @@ export default function EntityCard(props) {
             </CardHeader>
             <CardBody>
                 <Box pad={{bottom: '10px'}} fill align='center' direction='row'>
-                    <Rating type={props.entity.type} 
+                    <Rating type={props.entity.type} owner={props.entity.User.id} 
                         userState={props.userState} reference={props.entity.id} />
                     <Box fill width='100%'>
                         <Link to={`/${props.entity.type}/${props.entity.id}`} >
