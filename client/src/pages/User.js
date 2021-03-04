@@ -89,7 +89,7 @@ export default function User() {
 
                 <Box gridArea="profile" margin={{ "left": "20px" }} width="130px" direction="row">
                     <Stack>
-                       
+                        
                             <Avatar size="125px" src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${user.portrait}.jpg`} />
                      
                     </Stack>
@@ -158,7 +158,7 @@ export default function User() {
 
                 <Box gridArea="bio">
                     <BioBox/>
-                    <Paragraph>
+                    <Paragraph margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                         {user.bio}
                     </Paragraph>
 

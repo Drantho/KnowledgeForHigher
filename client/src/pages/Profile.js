@@ -263,7 +263,7 @@ export default function Profile(props) {
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
                     <BioBox />
-                    <Paragraph margin="none" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                    <Paragraph margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                         {props.userState.bio}
                     </Paragraph>
                         
