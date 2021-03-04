@@ -100,6 +100,7 @@ export default function Profile(props) {
                 tags: [formObj.tagsArr]
             }, props.userState.token).then(tagsLinkResponse => {
                 getServices();
+                serviceButton();
                 setFormObj({
                     name: "",
                     description: "",
