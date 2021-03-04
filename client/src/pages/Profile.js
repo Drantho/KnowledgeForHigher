@@ -253,8 +253,8 @@ export default function Profile(props) {
                     </Stack>
                 </Box>
 
-                <Box gridArea="profile" margin={{ "left": "120px", "top": "50px" }} border width="200px" background="white" height="40px" round="5px">
-                    <Text size="25px" margin={{ "left": "35px" }}> Nolan Stucky </Text>
+                <Box gridArea="profile" margin={{ "left": "120px", "top": "50px" }} background="white" height="40px" round="5px">
+                    <Text size="25px" margin={{ "left": "35px" }}> {props.userState.firstName} {props.userState.lastName} </Text>
                 </Box>
 
                 <Box gridArea="myTags">
