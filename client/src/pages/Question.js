@@ -129,8 +129,8 @@ export default function Question(props) {
     const descriptionBoxTheme = {
         box: {
             extend: `
-                border: 1px solid #d6bf6d;
-                border-bottom: 4px solid #d6bf6b;
+                background-color: #FFFFFF;
+                border: 2px solid #FCE181;
                 border-radius: 10px;`
         }
     }
@@ -162,9 +162,9 @@ export default function Question(props) {
                         </Box>
 
                         <Box fill width={{ max: '180px', min: '180px' }}
-                            background='#FCE181'
+                            background='#FFFFFF'
                             border={{
-                                color: '#d6bf6d'
+                                color: '#d6bf6b'
                             }}
                             round='small'
                             align='center'
