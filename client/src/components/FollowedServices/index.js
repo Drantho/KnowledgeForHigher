@@ -18,7 +18,7 @@ export default function FollowedServices() {
                 }}
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px">Services</Text>
+                    <Text size="25px" color="#FCE181">Services</Text>
                 </Box>
 
             </Box>

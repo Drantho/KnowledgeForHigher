@@ -138,7 +138,7 @@ function App() {
           <Profile userState={userState} setUserState={setUserState}/>
         </ProtectedRoute>
         <Route exact path="/tag/:id">
-          <Tag />
+          <Tag userState={userState}/>
         </Route>
         <Route exact path="/question/:id">
           <Question userState={userState}/>

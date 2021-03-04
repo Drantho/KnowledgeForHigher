@@ -1,13 +1,14 @@
-import {React, useState, useEffect} from 'react';
-import {useParams, Link} from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import API from '../utils/API';
-import { Box, Grid } from 'grommet';
+import { Box, Grid, Text, Button } from 'grommet';
 import TagQuestion from '../components/TagQuestion'
 import FollowedServices from '../components/FollowedServices'
 import Service from '../components/Service'
 
-export default function Tag() {
-    const {id} = useParams();
+
+export default function Tag(props) {
+    const { id } = useParams();
     const [questions, setQuestions] = useState([]);
     const [services, setServices] = useState([]);
     const [tag, setTag] = useState({
@@ -25,7 +26,7 @@ export default function Tag() {
         }]
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         API.getTagById(id).then(response => {
             setTag(response.data);
             console.log(response.data);
@@ -46,12 +47,19 @@ export default function Tag() {
         }).catch(err => {
             console.log(err);
         });
-    },[])
+    }, [])
 
-    console.log("this is to test tag service object")
+    const handleFollowTag = tag =>{
+        console.log(`handlefollowtag(${tag}) clicked`);
+        API.linkTagToUser({tags: [tag]}, props.userState.token).then(response => {
+            console.log(response);
+        });
+    }
+
+    
 
     return (
-        <Box margin={{top:"75px"}}>
+        <Box margin={{ top: "75px" }}>
             {/* <h1>Tag Page: {id}</h1>
             <h2>{tag.name}</h2>
             <h3>Questions:</h3>
@@ -87,8 +95,35 @@ export default function Tag() {
                 {/* =========================================================== */}
 
 
-                <Box gridArea="main" height="flex" background="#f0f0f0">
+                <Box gridArea="main" height="flex" >
+                    <Box margin={{ "bottom": "50px" }}>
+                        <Box
+                            justify="center"
+                            align="center"
+                            pad="5px"
+                            background="#222E42"
+                            round="5px"
+                            height="60px"
+                        >
 
+                            <Grid
+                                areas={[
+                                    ['title', 'title', 'button'],
+                                ]}
+                                columns={['flex', 'flex', 'flex']}
+                                rows={['45px']}
+                                gap="15px"
+                                responsive="true"
+                            >
+                                <Box gridArea="title">
+                                    <Text size="25px">{tag.name} questions</Text>
+                                </Box>
+                                <Box gridArea="button">
+                                    <Button onClick={()=>handleFollowTag(tag.name)}>follow {tag.name}</Button>
+                                </Box>
+                            </Grid>
+                        </Box>
+                    </Box>
                 </Box>
 
                 <Box gridArea="question" margin={{ "top": "-10px", }} >

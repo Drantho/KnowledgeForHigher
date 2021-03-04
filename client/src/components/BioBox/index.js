@@ -21,7 +21,7 @@ export default function BioBox() {
                 
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px">Bio</Text>
+                    <Text size="25px" color="#FCE181">Bio</Text>
                 </Box>
 
             </Box>
