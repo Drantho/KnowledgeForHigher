@@ -32,7 +32,7 @@ export default function Comment(props) {
                     <Grommet theme={theme}>
                     <Box margin={{top: '8px', left: '10px'}}>
                         <Text size='16px'>
-                            {` - ${props.user.firstName} ${props.user.lastName}, ${props.date}`}
+                            {` - ${props.user.userName}, ${props.date}`}
                         </Text>    
                     </Box>
                     </Grommet> }

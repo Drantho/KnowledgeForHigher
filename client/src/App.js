@@ -39,7 +39,7 @@ function App() {
     email: "",
     isSignedIn: false,
     token: "",
-    portrait: "mziei8xfs9okenktbabp"
+    portrait: "qi6o2g0haw3vfcjetmmn"
   });
 
   const handleInputChanged = event => {

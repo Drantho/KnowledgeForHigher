@@ -1,20 +1,77 @@
-import {React, useState, useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import API from '../utils/API';
 import { useParams, Link } from 'react-router-dom';
 
+import Comment from '../components/Comment';
+import Rating from '../components/Rating';
+import QuestionTags from '../components/QuestionTags';
+
+import {
+    Box,
+    Button,
+    Heading,
+    Accordion,
+    AccordionPanel,
+    Anchor,
+    Avatar,
+    Grid,
+    Text,
+    TextArea,
+    Form,
+    FormField,
+    Grommet
+} from 'grommet';
+
 export default function Service(props) {
 
-    const {id} = useParams();
+    const theme = {
+        global: {
+            colors: {
+                focus: undefined
+            }
+        },
+        accordion: {
+            border: undefined,
+            heading: {
+                margin: {
+                    vertical: '10px'
+                }
+            }
+        },
+        formField: {
+            border: undefined
+        },
+        textArea: {
+            extend: `
+                margin-top: 4px;
+                border: 1px solid #222E42;
+                border-radius: 3px;
+                background-color: white;
+            `
+        }
+
+    }
+
+    const descriptionBoxTheme = {
+        box: {
+            extend: `
+                border: 1px solid #d6bf6d;
+                border-bottom: 4px solid #d6bf6b;
+                border-radius: 10px;`
+        }
+    }
+
+    const { id } = useParams();
 
     const emptyComment = {
         text: "",
         type: "service",
         ref: id,
         user: 1
-    };    
+    };
 
     const [service, setService] = useState({
-        id: "",    
+        id: "",
         Tags: [],
         User: {}
     });
@@ -29,19 +86,19 @@ export default function Service(props) {
         User: {
             id: "",
             userName: ""
-        }        
+        }
     }]);
 
     const [ratings, setRatings] = useState({});
 
     const handleInputChanged = event => {
-        setComment({...comment, text: event.target.value});
+        setComment({ ...comment, text: event.target.value });
     }
 
     const handleSubmit = async event => {
         event.preventDefault();
-
-        API.createServiceComment(comment).then(response => {
+        console.log(`sending data to front api: `, comment);
+        API.createServiceCommet(comment, props.userState.token).then(response => {
             console.log(response);
 
             API.getAllServiceComments(id).then(response => {
@@ -56,9 +113,9 @@ export default function Service(props) {
             {
                 isPositive: rating,
                 type: type,
-                ref: target 
+                ref: target
             },
-            props.userState.token    
+            props.userState.token
         ).then(response => {
             console.log(response);
             API.getRating(id, "question").then(response => {
@@ -68,9 +125,9 @@ export default function Service(props) {
             console.log(err);
         })
     }
-    
+
     useEffect(() => {
-        
+
         API.getServiceById(id).then(response => {
             setService(response.data);
             console.log(response.data);
@@ -89,35 +146,94 @@ export default function Service(props) {
     }, [])
 
     return (
-        <div>
-            <h1>Service Page: {service.id}</h1>
-            <h2>{service.name}</h2>
-            <h2>Provided By: <Link to={`/users/${service.User.id}`}>{service.User.userName}</Link></h2>
-            <p>
-                <strong>Rating</strong><br/>                
-                <button onClick={()=>{HandleRating(true, id, "service")}}>Up</button><button onClick={()=>{HandleRating(false, id, "service")}}>Down</button>
-            </p>
-            <p>
-                <strong>Up: {ratings.positive}</strong>
-            </p>         
-            <p>
-                <strong>Down: {ratings.negative}</strong>
-            </p> 
-            <p>{service.description}</p>
-            <p>
-                <strong>Price: </strong>${service.price}
-            </p>
-            <strong>Tags:</strong>
-            <ul>
-                {service.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
-            </ul>
-            <strong>Comments: </strong>
-            <ul>
-                {comments.map(comment => <li key={comment.id}>{comment.text} - <Link to={`/users/${comment.UserId}`}>{comment.User.userName}</Link></li>)}
-            </ul>
-            <strong>Add Comment</strong>
-            <textarea name="comment" value={comment.text} onChange={handleInputChanged}/>
-            <button onClick={handleSubmit}>Submit</button>
-        </div>
+        <Grommet theme={theme}>
+
+            <Box margin={{ top: '100px', bottom: '20px' }} align='center'>
+                <Box width='80%'>
+
+                    <Box height='3px' background='#222E42' />
+
+                    <Box justify='between' align='center' direction='row'>
+                        <Box align='center' direction='row'>
+                            <Rating userState={props.userState} type='question' reference={id} />
+                            <Box pad={{ bottom: '10px' }}>
+                                <Heading fill level={2}>{service.name}</Heading>
+                                <Box direction='row'>
+                                    {service.Tags.map(tag => <QuestionTags key={tag.id} props={tag}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></QuestionTags>)}
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box fill width={{ max: '180px', min: '180px' }}
+                            background='#FCE181'
+                            border={{
+                                color: '#d6bf6d'
+                            }}
+                            round='small'
+                            align='center'
+                            direction='row'>
+                            <Box margin={{ left: '20px' }} align='end'>
+                                <Text size='small'>{service.User.userName}</Text>
+                            </Box>
+                            <Link to={`/users/${service.User.id}`}>
+                                <Avatar
+                                    margin='small'
+                                    size='40px'
+                                    src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${service.User.portrait}.png`} />
+                            </Link>
+                        </Box>
+                    </Box>
+
+
+                    <Box height='3px' background='#222E42' />
+
+                    <Grommet theme={descriptionBoxTheme}>
+
+                        <Box pad={{ vertical: '30px', horizontal: '15px' }}
+                            background='rgba(252,225,129,0.8)'
+                            round='small'
+                            margin={{ horizontal: 'large', top: '20px' }}>
+                            <Text color='#222E42' size='large'>{service.description}</Text>
+                            <p>
+                                <strong>Price: </strong>${service.price}
+                            </p>
+                        </Box>
+
+                    </Grommet>
+                    <div>
+                        <Box height='3px' background='#222E42' />
+
+                        <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Comments</Heading>
+                        <Box height='3px' background='#222E42' />
+                        <Box align='center'>
+                            {comments.map((e) => {
+                                return <Comment
+                                    user={e.User}
+                                    reference={e.id}
+                                    date={e.createdAt}
+                                    text={e.text} />
+                            })}
+
+                            {props.userState.isSignedIn &&
+                                <Accordion margin={{ top: '15px' }} width='85%'>
+                                    <AccordionPanel label='Leave a comment...'>
+                                        <Box>
+                                            <Form onSubmit={handleSubmit}
+                                                value={comment}>
+                                                <FormField htmlFor='text-area'
+                                                    onChange={handleInputChanged}
+                                                    component={TextArea}
+                                                    placeholder='Comment...'
+                                                    value={comment.text} />
+                                                <Button type='submit' label='Submit' />
+                                            </Form>
+                                        </Box>
+                                    </AccordionPanel>
+                                </Accordion>}
+                        </Box>
+                    </div>
+                </Box>
+            </Box>
+        </Grommet>
     )
 }
