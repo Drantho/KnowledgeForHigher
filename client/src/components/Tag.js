@@ -1,16 +1,56 @@
-import React from 'react'
+import {React, useState, useEffect} from 'react'
 
-import {Box, Card} from 'grommet';
+import {Box, Card, Button, Grommet, Tip} from 'grommet';
+import {Add} from 'grommet-icons';
 import {Link} from 'react-router-dom';
 
+import API from '../utils/API';
+
 export default function Tag(props) {
+    const handleFollowTag = (event)=> {
+        console.log(`handlefollowtag(${props.tag.id}) clicked`);
+        API.linkTagToUser({ tags: [props.tag.name] }, props.userState.token).then(response => {
+            console.log(response);
+        });
+        setFollowing(true);
+    }
+
+    const [following, setFollowing] = useState();
+
+    useEffect(() => {
+        API.getTagsByUser(props.userState.id).then( (result) => {
+            if (result.data.findIndex(e => e.id === props.tag.id) !== -1) {
+                setFollowing(true);
+            }
+        });
+    }, []);
+
+    const theme={
+        button: {
+            extend: `
+                padding: 0
+            `
+        }
+    }
+
     return (
-        <Card background='#FCE181' height='30px' width='xsmall'>
-            <Link to={`/tag/${props.tag.id}`}>
-            <Box justify='center' align='center' >
-                {props.tag.name}
+        <Grommet theme={theme}>
+
+        <Card justify='center' background='#FCE181' height='30px' width='xsmall'>
+            <Box justify='center' direction='row'>
+                <Link to={`/tag/${props.tag.id}`}>
+                    <Box margin={{right: '10px'}}>
+                        {props.tag.name}
+                    </Box>
+                </Link>
+                { !following && 
+                    <Tip content='Follow'>
+                        <Button onClick={handleFollowTag} icon={<Add size='16px' color='black' />} />
+                    </Tip>
+                }
+                
             </Box>
-            </Link>
         </Card>
+        </Grommet>
     )
 }

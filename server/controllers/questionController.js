@@ -27,6 +27,7 @@ router.get('/', (request, response) => {
             return response.json(result);
 
         }).catch((err) => {
+            console.log(err)
             response.status(500).json(err);
             return;
         });

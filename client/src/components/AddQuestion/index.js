@@ -24,7 +24,7 @@ export default function AddQuestion() {
                 responsive="true"
             >
                 <Box gridArea="question" width="500px">
-                    <Text size="30px">Add a Question!</Text>
+                    <Text size="30px" color="#FCE181">Add a Question!</Text>
                 </Box>
             </Grid>
         </Box>

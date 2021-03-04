@@ -1,14 +1,16 @@
-import {React, useState, useEffect} from 'react';
-import {useParams, Link} from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import API from '../utils/API';
-import { Box, Grid, Heading } from 'grommet';
+import { Box, Grid, Heading, Button } from 'grommet';
+import { Add } from 'grommet-icons';
 import TagQuestion from '../components/TagQuestion'
 import FollowedServices from '../components/FollowedServices'
 import Service from '../components/Service'
 import QuestionCard from '../components/QuestionCard';
 
-export default function Tag() {
-    const {id} = useParams();
+
+export default function Tag(props) {
+    const { id } = useParams();
     const [questions, setQuestions] = useState([]);
     const [services, setServices] = useState([]);
     const [tag, setTag] = useState({
@@ -23,7 +25,7 @@ export default function Tag() {
         }]
     });
 
-    useEffect(()=>{
+    useEffect(() => {
         API.getTagById(id).then(response => {
             setTag(response.data);
             console.log(response.data);
@@ -45,7 +47,14 @@ export default function Tag() {
         }).catch(err => {
             console.log(err);
         });
-    },[])
+    }, [])
+
+    const handleFollowTag = tag =>{
+        console.log(`handlefollowtag(${tag}) clicked`);
+        API.linkTagToUser({tags: [tag]}, props.userState.token).then(response => {
+            console.log(response);
+        });
+    }
 
 
     return (
@@ -56,7 +65,7 @@ export default function Tag() {
             </Heading>
             {tag.Questions.map( (e) => {
                 console.log(e);
-                return <QuestionCard question={e} />
+                return <QuestionCard userState={props.userState} question={e} />
             })}
         </Box>
     )

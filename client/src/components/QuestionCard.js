@@ -32,7 +32,7 @@ export default function QuestionCard(props) {
                         <Box direction='row'>
                             {
                                 props.question.Tags.map((e) => {
-                                    return <Tag tag={e} />
+                                    return <Tag userState={props.userState} tag={e} />
                                 })
                             }
                         </Box>

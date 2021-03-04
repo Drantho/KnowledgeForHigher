@@ -92,7 +92,7 @@ export default function Splash(props) {
 
     return (
         <Grommet theme={customTheme}>
-        <Box ref={ref} pad={{bottom: '30px'}} >
+        <Box margin={{top: '74px'}} ref={ref} pad={{bottom: '30px'}} >
             <Box alignSelf='center' width='80%' margin='large' justify='center'>
                 <Tabs activeIndex={index} onActive={onActive}>
                     <Tab title='Sign In'>
