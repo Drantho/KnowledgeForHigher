@@ -184,14 +184,14 @@ export default function UserHome(props) {
                         <UserTags />
                     </div>
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
 
                     <div onClick={handleShowPopularTags}>
                         <PopularTags />
                     </div>
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`}  style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
                 </Box>
 
@@ -207,13 +207,6 @@ export default function UserHome(props) {
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {/* {services.map(service => {
-                            return <li key={service.id}>
-                                <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
-                                {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
-                            </li>
-                        }
-                        )} */}
                         {services.map(service => <Service props={service} />)}
                     </Box>
                 </Box>
