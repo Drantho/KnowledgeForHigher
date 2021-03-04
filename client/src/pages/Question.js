@@ -151,7 +151,7 @@ export default function Question(props) {
             <Box justify='between' align='center' direction='row'>
                 <Box align='center' direction='row'>
                     <Rating setAnswers={setAnswers} userState={props.userState}
-                        type='question' reference={id} />
+                        type='question' owner={question.User.id} reference={id} />
                     <Box pad={{bottom: '10px'}}>
                         <Heading fill margin={{top: '10px'}} level={2}>{question.title}</Heading>
                         <Box direction='row'>
