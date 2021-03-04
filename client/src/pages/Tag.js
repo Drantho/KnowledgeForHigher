@@ -59,53 +59,5 @@ export default function Tag() {
                 return <QuestionCard question={e} />
             })}
         </Box>
-
-
-        // <Box margin={{top:"75px"}}>
-        //     <Heading level={2}>
-        //         Tagged: '{tag.name}'
-        //     </Heading>
-        //     <Grid
-        //         areas={[
-        //             ['blank3', 'search', 'blank4'],
-        //             ['blank1', 'main', 'blank2'],
-        //             ['myTags', 'question', 'services'],
-        //             ['myTags', 'question', 'services']
-        //         ]}
-        //         columns={['1/4', 'flex', '1/4']}
-        //         rows={['50px']}
-        //         gap="small"
-        //         responsive="true"
-        //     >
-        //         <Box gridArea="blank1" />
-        //         <Box gridArea="blank2" />
-        //         <Box gridArea="blank3" />
-        //         <Box gridArea="blank4" />
-
-        //         {/* =========================================================== */}
-
-        //         {/* <Box gridArea="search" margin={{ "top": "-70px" }} ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick}/></Box> */}
-
-        //         {/* =========================================================== */}
-
-
-        //         <Box gridArea="main" height="flex" background="#f0f0f0">
-
-        //         </Box>
-
-        //         <Box gridArea="question" margin={{ "top": "-10px", }} >
-        //             {questions.map(question => <TagQuestion props={question} />)}
-
-        //         </Box>
-
-        //         <Box gridArea="services">
-        //             <FollowedServices />
-        //             <Box>
-        //                 {services.map(service => <Service props={service} />)}
-        //             </Box>
-        //         </Box>
-
-        //     </Grid>
-        // </Box>
     )
 }
