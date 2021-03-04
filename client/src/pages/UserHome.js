@@ -155,44 +155,6 @@ export default function UserHome(props) {
 
     return (
         <Box margin={{top:"75px"}}>
-            {/* <h1>User Home</h1>
-            <h2>My feed</h2>
-            <h3>My Tags</h3>
-            <span onClick={handleShowMyTags}>{showAllMyTags ? "hide" : "show"} all</span>
-            <ul>
-                {tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></li>)}
-            </ul>
-            <h3>Popular Tags</h3>
-            <span onClick={handleShowPopularTags}>{showAllPopularTags ? "hide" : "show"} all</span>
-            <ul>
-                {popularTags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)}/></li>)}
-            </ul>
-            <h3>Questions</h3>
-            <ul>
-                {questions.map(question => {
-                    return <li key={question.id}>
-                        <Link to={`/question/${question.id}`}>{question.title}</Link> - 
-                        up: {question.Ratings.filter(rating => rating.isPositive).length} - 
-                        down: {question.Ratings.filter(rating => !rating.isPositive).length}
-                        <br />
-                        {question.Tags.map(tag => <span key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
-                    </li>
-                })}
-            </ul>
-            <h3>Services</h3>
-            <ul>
-                {services.map(service => {
-                    return <li key={service.id}>
-                        <Link to={`/service/${service.id}`}>{service.name}</Link> -  
-                        up: {service.Ratings.filter(service => service.isPositive).length} - 
-                        down: {service.Ratings.filter(service => service.isPositive).length}
-                        <br/>
-                         - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
-                        {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
-                    </li>
-                }
-                )}
-            </ul> */}
 
             <Grid
                 areas={[
@@ -222,14 +184,14 @@ export default function UserHome(props) {
                         <UserTags />
                     </div>
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                        {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
 
                     <div onClick={handleShowPopularTags}>
                         <PopularTags />
                     </div>
                     <Box style={{ flexWrap: "wrap" }} direction="row" width="400px" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
-                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`} onClick={() => handleHideTag(tag.name)} /></Tags>)}
+                        {popularTags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link><img src={tag.show ? `./assets/images/show.png` : `./assets/images/hide.png`}  style={{cursor: "pointer", position: "relative", top: "3px", left: "8px"}} onClick={() => handleHideTag(tag.name)} /></Tags>)}
                     </Box>
                 </Box>
 
@@ -245,13 +207,6 @@ export default function UserHome(props) {
                 <Box gridArea="services">
                     <FollowedServices />
                     <Box>
-                        {/* {services.map(service => {
-                            return <li key={service.id}>
-                                <Link to={`/service/${service.id}`}>{service.name}</Link> - <Link to={`/users/${service.UserId}`}>{service.User.userName}</Link><br />
-                                {service.Tags.map(tag => <span id={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link> </span>)}
-                            </li>
-                        }
-                        )} */}
                         {services.map(service => <Service props={service} />)}
                     </Box>
                 </Box>

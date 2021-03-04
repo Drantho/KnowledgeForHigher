@@ -8,7 +8,7 @@ export default function OtherUserQuestion(props) {
     console.log("otheruserquestion props")
     console.log(props);
 
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${props.props.User.portrait}.jpg`;
+    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,r_max/w_200/${props.props.User.portrait}.jpg`;
 
     return (
      
