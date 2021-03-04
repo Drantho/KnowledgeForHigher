@@ -29,13 +29,13 @@ export default function MobileSearchBar(props) {
 
                     <Box  align="center" justify="start">
                         <MediaQuery minDeviceWidth={400}>
-                        <Box width="200px" gap="medium" style={{ position: "fixed", left:"50%", top: -65}} margin={{top:"68px", left:"-100px"}}>
+                        <Box width="200px" gap="medium" style={{ position: "fixed", left:"50%", top: -65, zIndex:"20"}} margin={{top:"68px", left:"-100px"}}>
                             <TextInput name="searchString" onChange={props.handleInputChanged} value={props.searchString} style={{background: "white", color: "black"}} icon={<Search color="black"/>} reverse placeholder="search questions..."  /><br/>                        
                             
                         </Box>
                         </MediaQuery>
                         <MediaQuery maxDeviceWidth={400}>
-                        <Box width="150px" style={{ position: "fixed", left:"50%", top: -65}} margin={{top:"68px", left:"-100px"}}>
+                        <Box width="150px" style={{ position: "fixed", left:"50%", top: -65, zIndex:"20"}} margin={{top:"68px", left:"-100px"}}>
                             <TextInput name="searchString" onChange={props.handleInputChanged} value={props.searchString} style={{background: "white", color: "black"}} icon={<Search color="black"/>} reverse placeholder="search questions..."  /><br/>                        
                             
                         </Box>
