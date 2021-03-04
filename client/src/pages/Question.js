@@ -144,7 +144,7 @@ export default function Question(props) {
     
     return (
         <Grommet theme={theme}>
-        <Box margin={{vertical: '20px'}} align='center'>
+        <Box margin={{top: '100px', bottom: '20px'}} align='center'>
             <Box width='80%'>
 
             <Box height='3px' background='#222E42' />
