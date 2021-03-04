@@ -83,6 +83,7 @@ export default function UserNavbar(props) {
                     <Nav direction="row">
                         <DropButton
                             label="Menu"
+                            color="#FCE181"
                             dropAlign={{ top: 'bottom', right: 'right' }}
                             dropContent={
                                 <Box background="#222E42">

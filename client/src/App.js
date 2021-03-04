@@ -119,9 +119,26 @@ function App() {
     }
   }, [])
 
+  const globalGrommetTheme = {
+    global: {
+      focus: {
+        border: {
+          color :'rgba(0,0,0,0)'
+        }
+      },
+      button: {
+        active: {
+          background: {
+            color: 'red'
+          }
+        }
+      }
+    }
+  }
+
   return (
     <Router>
-      <Grommet theme={{global:{focus:{border:{color: 'rgba(0,0,0,0)'}}},button:{primary:{color:'salmon'}}}}>
+      <Grommet theme={globalGrommetTheme}>
       <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
       <Switch>
