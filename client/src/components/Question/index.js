@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Anchor, Avatar, Grid, Text } from 'grommet';
+import { Box, Anchor, Avatar, Grid, Text,Heading,Paragraph,Stack} from 'grommet';
 import { Link } from 'react-router-dom'
 import './style.css';
 import { Down, Up } from 'grommet-icons';
@@ -26,13 +26,13 @@ export default function Question(props) {
 
                 <Grid
                     areas={[
-                        ['votes', 'title', 'title', 'title'],
-                        ['side', 'border', 'border', 'border'],
-                        ['side', 'description', 'description', 'description'],
-                        ['side', 'ratings', 'ratings', 'ratings'],
-                        ['side', 'tags', 'tags', 'tags']
+                        ['votes', 'title', 'title', 'title','icon'],
+                        ['side', 'border', 'border', 'border','border'],
+                        ['side', 'description', 'description', 'description','description'],
+                        ['side', 'ratings', 'ratings', 'ratings','ratings'],
+                        ['side', 'tags', 'tags', 'tags','tags']
                     ]}
-                    columns={['40px', 'flex', 'flex', 'flex']}
+                    columns={['40px', 'flex', 'flex', 'flex','70px']}
                     rows={['flex']}
                     responsive="true"
                 >
@@ -49,34 +49,33 @@ export default function Question(props) {
                     <Box gridArea="side" background="#DFDFE5" />
                     <Box gridArea="blank" background="#DFDFE5" />
 
-                    <Box margin="15px" alignSelf="start">                    
+                      
+                    <Box margin="15px" alignSelf="start" gridArea="icon">                  
                         <Anchor color="white">
                             
                             <Link to={`/users/${props.props.User.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar title={props.props.User.userName} src={thumbnail} size="35px" /></Link>
                         </Anchor>
                     </Box>
+                    
 
-                    <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
+                    <Box gridArea="title" width="1000px" margin={{left:"6px"}}>
                         <Link to={`/question/${props.props.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                         <Box>
-                        <Text size="2em" wordBreak="break-word" id="questionTitle" >
+                        <Heading   level={3}>
                             {props.props.title}
-                        </Text>
+                        </Heading>
                         </Box>
                         </Link>
                     </Box>
                     
                     <Box gridArea="border" border="bottom" />
 
-                    <Box gridArea="description" id="questionSizeBox" >
-                        <Box id="questionSize" wordBreak="break-word" pad="5px">
-                            <Text size="medium">{props.props.text}</Text>
+                    <Box gridArea="description"  >
+                        <Box pad="5px">
+                            <Text >{props.props.text}</Text>
                         </Box>
                     </Box>
 
-                    <Box gridArea="ratings">
-
-                    </Box>
 
                     <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
                         {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
@@ -88,5 +87,3 @@ export default function Question(props) {
         </Box>
     )
 }
-
-

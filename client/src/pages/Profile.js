@@ -8,6 +8,7 @@ import UserServices from '../components/UserServices'
 import UserTags from '../components/UserTags'
 import Tags from '../components/Tags'
 import BioBox from '../components/BioBox';
+import MediaQuery from 'react-responsive'
 
 export default function Profile(props) {
     const history = useHistory();
@@ -230,6 +231,7 @@ export default function Profile(props) {
     }
     console.log(tags)
     return (
+        <MediaQuery minDeviceWidth={1400}>
         <Box margin={{ top: "75px" }}>
             <Grid
                 areas={[
@@ -246,7 +248,7 @@ export default function Profile(props) {
 
                 <Box gridArea="blank2" />
                 <Box gridArea="blank3" />
-
+                
                 <Box gridArea="profile" margin={{ "left": "20px" }} width="130px" direction="row">
                     <Stack>
                         <Anchor color="white">
@@ -268,7 +270,6 @@ export default function Profile(props) {
                     <Paragraph margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
                         {props.userState.bio}
                     </Paragraph>
-                        
                 </Box>
 
                 <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
@@ -279,6 +280,7 @@ export default function Profile(props) {
                         background="#222E42"
                         round="5px"
                         height="60px"
+                        margin={{bottom:"20px"}}
                     >
 
                         <Grid
@@ -427,6 +429,7 @@ export default function Profile(props) {
 
             </Grid>
         </Box>
+    </MediaQuery>
 
 
     )
