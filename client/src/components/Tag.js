@@ -36,7 +36,7 @@ export default function Tag(props) {
     return (
         <Grommet theme={theme}>
 
-        <Card justify='center' background='#FCE181' height='30px' width='xsmall'>
+        <Card margin={{horizontal: '5px'}} justify='center' background='#FCE181' pad='small'>
             <Box justify='center' direction='row'>
                 <Link to={`/tag/${props.tag.id}`}>
                     <Box margin={{right: '10px'}}>
