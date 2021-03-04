@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea, Paragraph } from 'grommet';
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -143,8 +143,10 @@ export default function Profile(props) {
         setBio(event.target.value);
     }
 
-    const submitBio = () => {
-        const setResult = API.
+    const submitBio = async () => {
+        await API.updateUser({bio: bio}, props.userState.token).catch(err => console.log(err))
+        setBio("");
+        props.setUserState({...props.userState, bio: bio})
     }
 
     const [showQuestion, setShowQuestion] = useState(true);
@@ -261,6 +263,10 @@ export default function Profile(props) {
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
                     <BioBox />
+                    <Paragraph margin="none" margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                        {props.userState.bio}
+                    </Paragraph>
+                        
                 </Box>
 
                 <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
@@ -368,11 +374,10 @@ export default function Profile(props) {
 
                 {addBio ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
-                        <Text>Add Bio</Text>
                         <TextArea name="bio" fill="true" style={{backgroundColor: "white", color: "black"}} value={bio} onChange={handleBioChanged}>
 
                         </TextArea>
-                        <Button onClick={dubmitBio}>Add Bio</Button>
+                        <Button onClick={submitBio}>Add Bio</Button>
                     </Box>
                     :
                     <div />

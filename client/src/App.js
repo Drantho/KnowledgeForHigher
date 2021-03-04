@@ -56,6 +56,7 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
+        bio: response.data.user.bio,
         isSignedIn: true,
         token: response.data.token,
         portrait: response.data.user.portrait        
@@ -80,6 +81,7 @@ function App() {
         firstName: response.data.user.firstName,
         lastName: response.data.user.lastName,
         email: response.data.user.email,
+        bio: response.data.user.bio,
         portrait: localStorage.getItem("portrait") || response.data.user.portrait,
         isSignedIn: true,
         token: response.data.token

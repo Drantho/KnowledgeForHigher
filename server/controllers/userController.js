@@ -78,6 +78,7 @@ router.put('/', authenticate, (request, response) => {
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });

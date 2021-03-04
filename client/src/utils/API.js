@@ -168,7 +168,7 @@ export default {
   updateUser: (data, token) => {
     console.log((`${url}/api/user`));
     console.log(data);
-    return axios.put(`${url}/api/put`, data, {
+    return axios.put(`${url}/api/user`, data, {
       headers:{
           authorization: `Bearer: ${token}`
       }
