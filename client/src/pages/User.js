@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import API from "../utils/API";
-import { Box, Grid, Avatar, Button, Text, Stack } from 'grommet';
+import { Box, Grid, Avatar, Button, Text, Stack, Paragraph } from 'grommet';
 import OtherUserQuestion from '../components/OtherUserQuestion'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -35,7 +35,7 @@ export default function User() {
 
         const joined = new Date(userFromAPI.data.createdAt);
 
-        setUser({ userName: userFromAPI.data.userName, portrait: userFromAPI.data.portrait, createdAt: (joined.getMonth() + 1) + "/" + joined.getDate() + "/" + joined.getFullYear(), Services: services.data, Questions: questions.data, Answers: answers.data })
+        setUser({ userName: userFromAPI.data.userName, portrait: userFromAPI.data.portrait, createdAt: (joined.getMonth() + 1) + "/" + joined.getDate() + "/" + joined.getFullYear(), Services: services.data, Questions: questions.data, Answers: answers.data, bio: userFromAPI.data.bio})
     }, [])
 
     const [showQuestion, setShowQuestion] = useState(true);
@@ -158,7 +158,10 @@ export default function User() {
 
                 <Box gridArea="bio">
                     <BioBox/>
-                    
+                    <Paragraph>
+                        {user.bio}
+                    </Paragraph>
+
                 </Box>
 
             </Grid>
