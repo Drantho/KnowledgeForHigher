@@ -38,8 +38,8 @@ export default function Tag(props) {
 
         <Card margin={{horizontal: '5px'}} justify='center' background='#FCE181' pad='small'>
             <Box justify='center' direction='row'>
-                <Link to={`/tag/${props.tag.id}`}>
-                    <Box margin={{right: '10px'}}>
+                <Link to={`/tag/${props.tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                    <Box margin={{right: '10px'}} >
                         {props.tag.name}
                     </Box>
                 </Link>

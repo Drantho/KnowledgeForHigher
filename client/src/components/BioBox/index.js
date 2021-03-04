@@ -10,7 +10,7 @@ export default function BioBox() {
                 justify="center"
                 align="center"
                 pad="5px"
-                background="#2B3952"
+                background="#3A4B6A"
                 round="5px"
                 height="flex"
 
@@ -21,7 +21,7 @@ export default function BioBox() {
                 
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px" color="#FCE181">Bio</Text>
+                    <Text size="25px" color="white" weight="bold" style={{letterSpacing:"2px"}} >Bio</Text>
                 </Box>
 
             </Box>

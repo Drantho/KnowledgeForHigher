@@ -129,7 +129,7 @@ function App() {
       button: {
         active: {
           background: {
-            color: 'red'
+            color: '#FCE181'
           }
         }
       }

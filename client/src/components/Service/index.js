@@ -11,6 +11,7 @@ export default function Service(services) {
     return (
         <Box alignSelf="start" margin={{ "right": "10px" }}>
             <Box
+                fill="true"
                 direction="row"
                 align="center"
                 background="#F3F3F3"
