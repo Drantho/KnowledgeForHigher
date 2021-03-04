@@ -38,10 +38,10 @@ export default function Service(services) {
                     <Box gridArea="votes" background="#DFDFE5">
                         <Box margin={{ "left": "7px" }}>
                             <Up />
-                            <Text margin={{ "left": "7px", "top": "-11px" }} color="green">{services.props.Ratings.filter(rating => rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "top": "-11px" }} >{services.props.Ratings.filter(rating => rating.isPositive).length}</Text>
 
                             <Box border margin={{ "right": "15px", "left": "7px", "top": "5px", "bottom": "5px" }} />
-                            <Text margin={{ "left": "7px", "bottom": "-11px" }} color="red">{services.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
+                            <Text margin={{ "left": "7px", "bottom": "-11px" }} >{services.props.Ratings.filter(rating => !rating.isPositive).length}</Text>
                             <Down />
                         </Box>
                     </Box>
