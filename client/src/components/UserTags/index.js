@@ -10,7 +10,7 @@ export default function UserTags() {
                 justify="center"
                 align="center"
                 pad="5px"
-                background="#2B3952"
+                background="#00B8D4"
                 round="5px"
                 height="flex"
                 margin={{
@@ -20,7 +20,7 @@ export default function UserTags() {
                 
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px" color="#FCE181">Followed Tags</Text>
+                    <Text size="25px" color="white" weight="bold" style={{letterSpacing:"2px"}}>Followed Tags</Text>
                 </Box>
 
             </Box>

@@ -9,7 +9,7 @@ export default function FollowedServices() {
                 justify="center"
                 align="center"
                 pad="5px"
-                background="#2B3952"
+                background="#00B8D4"
                 round="5px"
                 height="flex"
                 margin={{
@@ -18,7 +18,7 @@ export default function FollowedServices() {
                 }}
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px" color="#FCE181">Services</Text>
+                    <Text size="25px" color="white" weight="bold" style={{letterSpacing:"2px"}}>Services</Text>
                 </Box>
 
             </Box>

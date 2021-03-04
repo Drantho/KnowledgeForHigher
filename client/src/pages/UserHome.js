@@ -159,7 +159,7 @@ export default function UserHome(props) {
 
     return (
         <Grommet>
-            <MediaQuery minDeviceWidth={1000}>
+            <MediaQuery minDeviceWidth={1400}>
                 <Box margin={{ top: "75px" }}>
                     <Grid
                         areas={[
@@ -218,7 +218,7 @@ export default function UserHome(props) {
                     </Grid>
                 </Box>
             </MediaQuery>
-            <MediaQuery maxDeviceWidth={999}>
+            <MediaQuery maxDeviceWidth={1400}>
             <Box margin={{ top: "75px" }}>
                 <Grid
                     areas={[
@@ -242,7 +242,7 @@ export default function UserHome(props) {
                     </Box>
 
                     <Box gridArea="question" margin={{ "top": "-10px", "left":"20px"}} >
-                        {questions.map(question => <MobileQuestion props={question} />)}
+                        {questions.map(question => <Question props={question} />)}
 
                     </Box>
 

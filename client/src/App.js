@@ -121,7 +121,7 @@ function App() {
 
   return (
     <Router>
-      <Grommet theme={{global:{focus:{border:{color: 'rgba(0,0,0,0)'}}}}}>
+      <Grommet theme={{global:{focus:{border:{color: 'rgba(0,0,0,0)'}}},button:{primary:{color:'salmon'}}}}>
       <UserNavbar userState={userState}/>
       {/* <LoginNavbar/> */}
       <Switch>
