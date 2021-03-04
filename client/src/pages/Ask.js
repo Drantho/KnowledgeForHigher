@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
-import { Box, Form, FormField, TextArea, Button,Text} from 'grommet';
-import AddQuestion from '../components/AddQuestion'
+import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
 
 
 export default function Ask(props) {
@@ -15,7 +14,10 @@ export default function Ask(props) {
 
     const handleSubmit = (event) => {
         // Convert tags string to array
-        const tags = formValues.tags.split(',').map( e => e.trim());
+        let tags;
+        if (formValues.tags) {
+            tags = formValues.tags.split(',').map(e => e.trim());
+        }
 
         API.createQuestion({
              ...formValues,
@@ -29,16 +31,69 @@ export default function Ask(props) {
 
         setFormValues({
             title: '',
-            description: '',
+            text: '',
             tags: ''
         });
+    }
+
+    const theme = {
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        button: {
+            border: {color: '#FCE181'},
+            primary: {
+                color: '#FCE181',
+                border: { color: '#FCE181' }
+            },
+            size: {
+                medium: {
+                    border: {
+                        radius: '8px'
+                    }
+                }
+            },
+            extend: `
+                width: 150px;
+                height: 60px
+            `
+        },
+        formField: {
+            border: false
+        }
+    }
+
+    const descrTheme = {
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        textArea: {
+            extend: `
+                height: 200px
+
+            `
+        }
     }
 
     return ( 
         <Box align='center' margin={{top: '74px'}}>
             <Box width='70%'>
+                <Grommet theme={theme}>
                 <Form onSubmit={handleSubmit} value={formValues}>
-                    <FormField label='Title' name='title' htmlFor='new-question-title'>
+                    <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
+                        <Heading textAlign='center' color='#FCE181' level={2}>
+                            Submit a question!
+                        </Heading>
+                    </Box>
+                    <FormField required label='Title' name='title' htmlFor='new-question-title'>
                         <TextArea 
                             id='new-question-title'
                             name='title'
@@ -47,13 +102,15 @@ export default function Ask(props) {
                             onChange={handleInput} />
                     </FormField>
                     <FormField label='Description' 
-                        name='description' htmlFor='new-question-description'>
-                        <TextArea 
-                            id='new-question-description'
-                            name='description'
+                        name='text' htmlFor='new-question-text'>
+                        <Grommet theme={descrTheme}>
+                        <TextArea
+                            id='new-question-text'
+                            name='text'
                             placeholder='Enter a detailed description of your question.' 
-                            value={formValues.description}
+                            value={formValues.text}
                             onChange={handleInput} />
+                        </Grommet>
                     </FormField>
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                         <TextArea 
@@ -63,8 +120,11 @@ export default function Ask(props) {
                             value={formValues.tags}
                             onChange={handleInput} />
                     </FormField>
-                    <Button type='submit' label='Submit' />
+                    <Box align='center'>
+                        <Button size='medium' primary type='submit' label='Submit' />
+                    </Box>
                 </Form>
+                </Grommet>
             </Box>
 
         </Box>
