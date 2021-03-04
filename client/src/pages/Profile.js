@@ -31,6 +31,8 @@ export default function Profile(props) {
 
     const [portraitData, setPortraitData] = useState({});
 
+    const [bio, setBio] = useState("");
+
     const getServices = () => {
         API.getServicesByUser(props.userState.id).then(response => {
             setServices(response.data);
@@ -135,10 +137,10 @@ export default function Profile(props) {
             localStorage.setItem("portrait", photoResult.data.id)
             props.setUserState({ ...props.userState, portrait: photoResult.data.id })
         }
+    }
 
-
-
-
+    const handleBioChanged = event => {
+        setBio(event.target.value);
     }
 
     const [showQuestion, setShowQuestion] = useState(true);
@@ -363,6 +365,9 @@ export default function Profile(props) {
                 {addBio ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
                         <Text>Add Bio</Text>
+                        <textarea name="bio" value={bio} onChange={handleBioChanged}>
+
+                        </textarea>
                     </Box>
                     :
                     <div />
