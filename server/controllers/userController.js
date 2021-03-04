@@ -66,25 +66,19 @@ router.post('/', ({ body }, response) => {
 
 router.put('/', authenticate, (request, response) => {
 
-    if (profanityCheck(request.body.firstName + ' ' + request.body.lastName + ' ' + request.body.username)) {
+    if (profanityCheck(request.body.firstName + ' ' + request.body.lastName + ' ' + request.body.username + ' ' + request.body.bio)) {
         response.status(400).json({
             err: 'User contains disallowed term/phrase.'
         });
         return;
     }
 
-    db.User.update({
-        username: request.body.username,
-        firstName: request.body.firstName,
-        lastName: request.body.lastName,
-        email: request.body.email,
-        password: request.body.password,
-        bio: request.body.bio
-    }, {
+    db.User.update(request.body, {
         where: { id: request.userId }
     }).then((result) => {
         response.json(result);
     }).catch((err) => {
+        console.log(err);
         response.status(500).json(err);
     });
 });

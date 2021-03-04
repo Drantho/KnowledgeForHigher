@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea, Paragraph, TextInput } from 'grommet';
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -30,6 +30,8 @@ export default function Profile(props) {
     const [portraitSrc, setPortraitSrc] = useState("");
 
     const [portraitData, setPortraitData] = useState({});
+
+    const [bio, setBio] = useState("");
 
     const getServices = () => {
         API.getServicesByUser(props.userState.id).then(response => {
@@ -98,6 +100,7 @@ export default function Profile(props) {
                 tags: [formObj.tagsArr]
             }, props.userState.token).then(tagsLinkResponse => {
                 getServices();
+                serviceButton();
                 setFormObj({
                     name: "",
                     description: "",
@@ -134,11 +137,18 @@ export default function Profile(props) {
             console.log(`photoResult`, photoResult);
             localStorage.setItem("portrait", photoResult.data.id)
             props.setUserState({ ...props.userState, portrait: photoResult.data.id })
+            setPortraitSrc("");
         }
+    }
 
+    const handleBioChanged = event => {
+        setBio(event.target.value);
+    }
 
-
-
+    const submitBio = async () => {
+        await API.updateUser({bio: bio}, props.userState.token).catch(err => console.log(err))
+        setBio("");
+        props.setUserState({...props.userState, bio: bio})
     }
 
     const [showQuestion, setShowQuestion] = useState(true);
@@ -221,67 +231,6 @@ export default function Profile(props) {
     console.log(tags)
     return (
         <Box margin={{ top: "75px" }}>
-            {/* <pre>
-                {JSON.stringify(props, null, 4)}
-            </pre>
-            <h1>
-                Profile Page
-            </h1>
-            <h2>My Questions</h2>
-            <p>TODO: user id hard coded - change to logged in user</p>
-            <ul>
-                {questions.map(question => <li key={question.id}><Link to={`/question/${question.id}`}><strong>{question.title}</strong></Link><p>{question.text}</p></li>)}
-            </ul> */}
-            {/* <h2>Add Service</h2>
-            <label htmlFor="name">
-                Service:
-            </label>
-            <input name="name" value={formObj.name} onChange={handleInputChange} /><br />
-            <br />
-            <label htmlFor="description">
-                Description:
-            </label>
-            <input name="description" value={formObj.description} onChange={handleInputChange} /><br />
-            <br />
-            <label htmlFor="price">
-                Price
-            </label>
-            <input name="price" value={formObj.price} onChange={handleInputChange} /><br />
-            <br />
-            <label htmlFor="tags">
-                Price
-            </label>
-            <textarea name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
-            <br />
-            <button onClick={handleSubmit}>Add Service</button>
-            <h2>My Services {services.length}</h2>
-            <ul>
-                {services.map(service => {
-                    return <li key={service.id}>
-                        {service.name}<br />
-                        {service.Tags.map(tag => <span key={tag.id}>{tag.name} - </span>)}
-                    </li>
-                })}
-            </ul>
-            <h2>My Answers</h2>
-            <ul>
-                {answers.map(answer => <li>{answer.text} - <Link to={`question/${answer.QuestionId}`}>{answer.Question.title}</Link></li>)}
-            </ul>
-            <h2>Change My Portrait</h2>
-            <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
-
-
-            <div>
-                <h3>Preview</h3>
-                <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
-                <button onClick={handleAddPhoto}>upload</button>
-            </div>
-
-            <pre>
-                {JSON.stringify(props.userState, null, 4)}
-            </pre> */}
-
-
             <Grid
                 areas={[
                     ['blank3', 'blank3', 'blank3'],
@@ -306,8 +255,8 @@ export default function Profile(props) {
                     </Stack>
                 </Box>
 
-                <Box gridArea="profile" margin={{ "left": "120px", "top": "50px" }} border width="200px" background="white" height="40px" round="5px">
-                    <Text size="25px" margin={{ "left": "35px" }}> Nolan Stucky </Text>
+                <Box gridArea="profile" margin={{ "left": "120px", "top": "50px" }} background="white" height="40px" round="5px">
+                    <Text size="25px" margin={{ "left": "35px" }}> {props.userState.firstName} {props.userState.lastName} </Text>
                 </Box>
 
                 <Box gridArea="myTags">
@@ -316,6 +265,10 @@ export default function Profile(props) {
                         {tags.map(tag => <Tags key={tag.id}><Link to={`/tag/${tag.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>{tag.name}</Link></Tags>)}
                     </Box>
                     <BioBox />
+                    <Paragraph margin={{ "left": "25px", "right": "150px", "bottom": "10px" }}>
+                        {props.userState.bio}
+                    </Paragraph>
+                        
                 </Box>
 
                 <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
@@ -422,24 +375,24 @@ export default function Profile(props) {
                 {addService ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
                         <Text>Add Service</Text>
-                        <input name="name" value={formObj.name} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="name" value={formObj.name} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="description">
                             Description:
                         </label>
-                        <input name="description" value={formObj.description} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="description" value={formObj.description} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="price">
                             Price
                         </label>
-                        <input name="price" value={formObj.price} onChange={handleInputChange} /><br />
+                        <TextInput style={{backgroundColor: "white", color: "black"}} name="price" value={formObj.price} onChange={handleInputChange} /><br />
                         <br />
                         <label htmlFor="tags">
-                            Price
+                            Tags
                         </label>
-                        <textarea name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
+                        <TextArea style={{backgroundColor: "white", color: "black"}} name="tagsStr" value={formObj.tagsStr} onChange={handleInputChange} /><br />
                         <br />
-                        <button onClick={handleSubmit}>Add Service</button>
+                        <Button onClick={handleSubmit} default label="Add Service"/>
                     </Box>
                     :
                     <div />
@@ -450,7 +403,11 @@ export default function Profile(props) {
                         <Text>Add Photo</Text>
                         <input id="photoInput" type="file" name="image" onChange={handleGetPhoto} />
                         <img id="preview" alt="preview" src={portraitSrc} style={{ display: portraitSrc ? "block" : "none", width: "400px" }} />
-                        <button onClick={handleAddPhoto}>upload</button>
+                        {portraitSrc ?
+                            <Button onClick={handleAddPhoto} default label="Upload"/>
+                        :
+                        <div/>
+                        }
                     </Box>
                     :
                     <div />
@@ -459,7 +416,10 @@ export default function Profile(props) {
 
                 {addBio ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
-                        <Text>Add Bio</Text>
+                        <TextArea name="bio" fill="true" style={{backgroundColor: "white", color: "black"}} value={bio} onChange={handleBioChanged}>
+
+                        </TextArea>
+                        <Button onClick={submitBio}  default label="Submit"/>
                     </Box>
                     :
                     <div />

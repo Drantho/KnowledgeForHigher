@@ -7,7 +7,6 @@ import QuestionTags from '../QuestionTags'
 export default function UserServices(service) {
     console.log("user services")
     console.log(service)
-    const thumbnail = `https://res.cloudinary.com/drantho/image/upload//w_125,h_125,c_crop,g_face,r_max/w_200/${service.props.User.portrait}.jpg`;
 
     return (
      
@@ -65,13 +64,13 @@ export default function UserServices(service) {
 
                    
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
-                        <Link to={`/users/${service.props.UserId}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <Box>
+                        <Link to={`/service/${service.props.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
                             {service.props.name}
                         </Text>
-                        </Box>
                         </Link>
+                        </Box>
                     </Box>
                     
 
