@@ -19,7 +19,12 @@ router.get('/', (request, response) => {
             where: condition,
             include: [{
                 model: db.Question,
-                through: { attributes: [] }
+                through: { attributes: [] },
+                include: [{
+                    model: db.User
+                }, {
+                    model: db.Tag  
+                }]
             },
             {
                 model: db.Service,
@@ -29,8 +34,10 @@ router.get('/', (request, response) => {
                 },
                 required: false,
                 include: [{
-                    model: db.User,
-                    attributes: ['userName', 'id']
+                    model: db.User
+                }, {
+                    model: db.Tag,
+                    through: { attributes: [] }
                 }]
             }]
         }).then((result) => {

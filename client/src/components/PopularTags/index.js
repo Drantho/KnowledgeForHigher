@@ -20,7 +20,7 @@ export default function UserTags() {
                 }}
             >
                 <Box height="35px" width="400px" align="center">
-                    <Text size="25px">Popular Tags</Text>
+                    <Text size="25px" color="#FCE181">Popular Tags</Text>
                 </Box>
 
             </Box>

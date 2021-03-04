@@ -282,31 +282,67 @@ export default function Profile(props) {
 
                         <Grid
                             areas={[
-                                ['addBio','addService', 'addPhoto', 'question', 'answer', 'service'],
+                                ['addBio', 'addService', 'addPhoto', 'question', 'answer', 'service'],
                             ]}
                             columns={['flex', 'flex', 'flex']}
                             rows={['45px']}
                             gap="15px"
                             responsive="true"
                         >
-                            <Box gridArea="addBio">
+                            {addBio ?
+                                <Box gridArea="addBio">
+                                    <Button onClick={addBioButton}><Text color="#FCE181">Add Bio</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="addBio">
                                 <Button onClick={addBioButton}><Text>Add Bio</Text></Button>
-                            </Box>
-                            <Box gridArea="addService">
+                                </Box>
+                            }
+                            {addService ?
+                                <Box gridArea="addService">
+                                    <Button onClick={addServiceButton}><Text color="#FCE181">Add Service</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="addService">
                                 <Button onClick={addServiceButton}><Text>Add Service</Text></Button>
-                            </Box>
-                            <Box gridArea="addPhoto">
+                                </Box>
+                            }
+                            {addPhoto ?
+                                <Box gridArea="addPhoto">
+                                    <Button onClick={addPhotoButton}><Text color="#FCE181">Add Photo</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="addPhoto">
                                 <Button onClick={addPhotoButton}><Text>Add Photo</Text></Button>
-                            </Box>
-                            <Box gridArea="question">
+                                </Box>
+                            }
+                            {showQuestion ?
+                                <Box gridArea="question">
+                                    <Button onClick={questionButton}><Text color="#FCE181">My Questions</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="question">
                                 <Button onClick={questionButton}><Text>My Questions</Text></Button>
-                            </Box>
-                            <Box gridArea="answer">
+                                </Box>
+                            }
+                            {showAnswer ?
+                                <Box gridArea="answer">
+                                    <Button onClick={answerButton}><Text color="#FCE181">My Answers</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="answer">
                                 <Button onClick={answerButton}><Text>My Answers</Text></Button>
-                            </Box>
-                            <Box gridArea="service">
+                                </Box>
+                            }
+                            {showService ?
+                                <Box gridArea="service">
+                                    <Button onClick={serviceButton}><Text color="#FCE181">My Services</Text></Button>
+                                </Box>
+                                :
+                                <Box gridArea="service">
                                 <Button onClick={serviceButton}><Text>My Services</Text></Button>
-                            </Box>
+                                </Box>
+                            }
                         </Grid>
                     </Box>
 

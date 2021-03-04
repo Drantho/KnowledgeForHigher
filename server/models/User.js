@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         portrait:{
             type: Sequelize.STRING,
-            defaultValue: "mziei8xfs9okenktbabp"
+            defaultValue: "qi6o2g0haw3vfcjetmmn"
         },
         bio: {
             type: Sequelize.STRING(1500)

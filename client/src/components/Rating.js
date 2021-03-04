@@ -38,11 +38,16 @@ export default function Rating(props) {
         });
     };
 
-    const [ratings, setRatings] = useState();
+    const [ratings, setRatings] = useState({
+        positive: 0,
+        negative: 0
+    });
 
     useEffect( () => {
+        console.log('Getting ratings for ' + props.type + ' nummber ' + props.reference)
         API.getRating(props.reference, props.type).then( (result) => {
             setRatings(result.data);
+            console.log(result.data);
         }).catch( (err) => {
             console.log(err);
         });
