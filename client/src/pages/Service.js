@@ -55,9 +55,10 @@ export default function Service(props) {
     const descriptionBoxTheme = {
         box: {
             extend: `
-                border: 1px solid #d6bf6d;
+                border: 2px solid #FCE181;
                 border-bottom: 4px solid #d6bf6b;
-                border-radius: 10px;`
+                border-radius: 10px;
+                background-color: #F9F9F9`
         }
     }
 
