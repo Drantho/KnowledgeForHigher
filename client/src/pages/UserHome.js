@@ -11,6 +11,8 @@ import Tags from '../components/Tags'
 import Service from '../components/Service'
 import MediaQuery from 'react-responsive'
 import MobileSearchBar from '../components/MobileSearchBar'
+import MobileHomeBar from '../components/MobileHomeBar';
+import MobileNavbar from '../components/MobileNavbar'
 
 export default function UserHome(props) {
 
@@ -155,10 +157,24 @@ export default function UserHome(props) {
         fillFeeds(tags.concat(popularTags));
     }
 
+    const [showQuestion, setShowQuestion] = useState(true)
 
+    const toggleQuestion = () => {
+        setShowQuestion(!showQuestion)
+    }
+
+    const globalGrommetTheme = {
+        global: {
+          focus: {
+            border: {
+              color :'#FCE181'
+            }
+          },
+        }
+      }
 
     return (
-        <Grommet>
+        <Grommet theme={globalGrommetTheme}>
             <MediaQuery minDeviceWidth={1000}>
                 <Box margin={{ top: "75px" }}>
                     <Grid
@@ -219,7 +235,8 @@ export default function UserHome(props) {
                 </Box>
             </MediaQuery>
             <MediaQuery maxDeviceWidth={1000}>
-            <Box margin={{ top: "75px" }}>
+            <MobileNavbar tags={tags} handleHideTag={handleHideTag} toggleQuestion={toggleQuestion} popularTags={popularTags}/>
+            <Box margin={{ top: "110px" }}>
                 <Grid
                     areas={[
                         ['search'],
@@ -239,13 +256,17 @@ export default function UserHome(props) {
 
                     <Box gridArea="search" ><MobileSearchBar searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box>
 
-                    <Box gridArea="main" height="flex" background="#f0f0f0">
-
+                    <Box gridArea="main" height="flex" background="#f0f0f0" margin={{ "top": "10px", "left":"20px"}}>
+                        {/* <MobileHomeBar/> */}
                     </Box>
 
                     <Box gridArea="question" margin={{ "top": "10px", "left":"20px"}} >
-                        {questions.map(question => <Question props={question} />)}
-
+                        { showQuestion && 
+                        questions.map(question => <Question props={question} />)
+                        }
+                        { !showQuestion &&
+                        services.map(service => <Service props={service} />)
+                        }
                     </Box>
 
                 </Grid>

@@ -25,9 +25,9 @@ export default function UserNavbar(props) {
     }
 
     return (
-        <Box style={{ position: "fixed", top: 0, width: "100%" }}>
+        <Box style={{ position: "fixed", top: 0, width: "100%" , zIndex: 10}}>
             <MediaQuery minDeviceWidth={1200}>
-                <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed", top: 0, width: "100vw" }}>
+                <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed !important", top: 0, width: "100vw"}}>
                     {/* <pre>
                     {JSON.stringify(props, null, 4)}
                 </pre>               */}
@@ -71,7 +71,7 @@ export default function UserNavbar(props) {
                 </Header>
             </MediaQuery>
             <MediaQuery maxDeviceWidth={1200}>
-                <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed", top: 0, width: "100vw" }}>
+                <Header background="#222E42" animation={{ type: "fadeIn", duration: "1000" }} elevation="large" pad="xsmall" style={{ position: "fixed !important", top: 0, width: "100vw", zIndex: 10}}>
                     {/* <pre>
                     {JSON.stringify(props, null, 4)}
                 </pre>               */}
@@ -83,6 +83,7 @@ export default function UserNavbar(props) {
                     <Nav direction="row">
                         <DropButton
                             label="Menu"
+                            color="#FCE181"
                             dropAlign={{ top: 'bottom', right: 'right' }}
                             dropContent={
                                 <Box background="#222E42">
