@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react'
 import API from "../utils/API";
 import { useHistory, Link } from "react-router-dom"
-import { Box, Grid, Anchor, Avatar, Button, Text, Stack } from 'grommet';
+import { Box, Grid, Anchor, Avatar, Button, Text, Stack, TextArea } from 'grommet';
 import Question from '../components/Question'
 import UserAnswers from '../components/UserAnswers'
 import UserServices from '../components/UserServices'
@@ -141,6 +141,10 @@ export default function Profile(props) {
 
     const handleBioChanged = event => {
         setBio(event.target.value);
+    }
+
+    const submitBio = () => {
+        const setResult = API.
     }
 
     const [showQuestion, setShowQuestion] = useState(true);
@@ -365,9 +369,10 @@ export default function Profile(props) {
                 {addBio ?
                     <Box gridArea="question" pad="5px" margin={{ "top": "-50px" }}>
                         <Text>Add Bio</Text>
-                        <textarea name="bio" value={bio} onChange={handleBioChanged}>
+                        <TextArea name="bio" fill="true" style={{backgroundColor: "white", color: "black"}} value={bio} onChange={handleBioChanged}>
 
-                        </textarea>
+                        </TextArea>
+                        <Button onClick={dubmitBio}>Add Bio</Button>
                     </Box>
                     :
                     <div />

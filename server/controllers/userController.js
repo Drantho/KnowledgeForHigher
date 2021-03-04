@@ -73,14 +73,7 @@ router.put('/', authenticate, (request, response) => {
         return;
     }
 
-    db.User.update({
-        username: request.body.username,
-        firstName: request.body.firstName,
-        lastName: request.body.lastName,
-        email: request.body.email,
-        password: request.body.password,
-        bio: request.body.bio
-    }, {
+    db.User.update(request.body, {
         where: { id: request.userId }
     }).then((result) => {
         response.json(result);
