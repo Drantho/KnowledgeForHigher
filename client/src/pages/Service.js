@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 
 import Comment from '../components/Comment';
 import Rating from '../components/Rating';
+import QuestionTags from '../components/QuestionTags';
 
 import {
     Box,
@@ -153,9 +154,15 @@ export default function Service(props) {
                     <Box height='3px' background='#222E42' />
 
                     <Box justify='between' align='center' direction='row'>
-                        <Rating userState={props.userState}
-                            type='question' reference={id} />
-                        <Heading fill level={2}>{service.name}</Heading>
+                        <Box align='center' direction='row'>
+                            <Rating userState={props.userState} type='question' reference={id} />
+                            <Box pad={{ bottom: '10px' }}>
+                                <Heading fill level={2}>{service.name}</Heading>
+                                <Box direction='row'>
+                                    {service.Tags.map(tag => <QuestionTags key={tag.id} props={tag}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></QuestionTags>)}
+                                </Box>
+                            </Box>
+                        </Box>
 
                         <Box fill width={{ max: '180px', min: '180px' }}
                             background='#FCE181'
@@ -167,7 +174,6 @@ export default function Service(props) {
                             direction='row'>
                             <Box margin={{ left: '20px' }} align='end'>
                                 <Text size='small'>{service.User.userName}</Text>
-                                <Text size='small'>{service.User.firstName + ' ' + service.User.lastName}</Text>
                             </Box>
                             <Link to={`/users/${service.User.id}`}>
                                 <Avatar
@@ -197,15 +203,6 @@ export default function Service(props) {
                     <div>
                         <Box height='3px' background='#222E42' />
 
-                        <p>{service.description}</p>
-                        <p>
-                            <strong>Price: </strong>${service.price}
-                        </p>
-                        <strong>Tags:</strong>
-                        <ul>
-                            {service.Tags.map(tag => <li key={tag.id}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></li>)}
-                        </ul>
-                        
                         <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Comments</Heading>
                         <Box height='3px' background='#222E42' />
                         <Box align='center'>
@@ -217,7 +214,7 @@ export default function Service(props) {
                                     text={e.text} />
                             })}
 
-                            {(props.userState.id !== service.User.id) &&
+                            {props.userState.isSignedIn &&
                                 <Accordion margin={{ top: '15px' }} width='85%'>
                                     <AccordionPanel label='Leave a comment...'>
                                         <Box>
@@ -227,16 +224,13 @@ export default function Service(props) {
                                                     onChange={handleInputChanged}
                                                     component={TextArea}
                                                     placeholder='Comment...'
-                                                    value={comment} />
+                                                    value={comment.text} />
                                                 <Button type='submit' label='Submit' />
                                             </Form>
                                         </Box>
                                     </AccordionPanel>
                                 </Accordion>}
                         </Box>
-                        <strong>Add Comment</strong>
-                        <TextArea name="comment" value={comment.text} onChange={handleInputChanged} />
-                        <Button default fill="horizontal" onClick={handleSubmit} label="Submit"/>
                     </div>
                 </Box>
             </Box>
