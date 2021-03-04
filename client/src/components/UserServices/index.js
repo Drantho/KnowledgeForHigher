@@ -7,7 +7,7 @@ import QuestionTags from '../QuestionTags'
 export default function UserServices(service) {
     console.log("user services")
     console.log(service)
-    
+
     return (
      
         <Box>
@@ -64,13 +64,13 @@ export default function UserServices(service) {
 
                    
                     <Box gridArea="title" width="1000px" margin={{"left":"-65px"}}>
-                        <Link to={`/users/${service.props.UserId}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <Box>
+                        <Link to={`/service/${service.props.id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                         <Text size="2em" wordBreak="break-word" id="questionTitle" >
                             {service.props.name}
                         </Text>
-                        </Box>
                         </Link>
+                        </Box>
                     </Box>
                     
 
