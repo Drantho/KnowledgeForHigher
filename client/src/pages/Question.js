@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import Comment from '../components/Comment';
 import Rating from '../components/Rating';
 import Answer from '../components/Answer';
+import Tag from '../components/Tag';
 
 import { Box,
          Button, 
@@ -34,9 +35,7 @@ export default function Question(props) {
         title: "",
         text: "",
         User: {},
-        Tags: [{
-            id: "1"
-        }],
+        Tags: [],
     });
 
     const [answer, setAnswer] = useState({
@@ -150,9 +149,16 @@ export default function Question(props) {
             <Box height='3px' background='#222E42' />
 
             <Box justify='between' align='center' direction='row'>
-                <Rating setAnswers={setAnswers} userState={props.userState}
-                    type='question' reference={id}/>
-                <Heading fill level={2}>{question.title}</Heading>
+                <Box align='center' direction='row'>
+                    <Rating setAnswers={setAnswers} userState={props.userState}
+                        type='question' reference={id} />
+                    <Box pad={{bottom: '10px'}}>
+                        <Heading fill margin={{top: '10px'}} level={2}>{question.title}</Heading>
+                        <Box direction='row'>
+                            {question.Tags.map( e => <Tag tag={e} userState={props.userState}/> )}
+                        </Box>
+                    </Box>
+                </Box>
                 
                 <Box fill width={{max: '180px', min: '180px'}}
                   background='#FCE181' 
@@ -263,7 +269,7 @@ export default function Question(props) {
                     </Link>
                 </Box>
             }
-            
+
             </Box>
         </Box>
         </Grommet>

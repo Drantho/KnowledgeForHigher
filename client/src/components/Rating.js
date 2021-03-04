@@ -70,7 +70,7 @@ export default function Rating(props) {
         <Box onClick={e => e.stopPropagation()} 
             width={{ min: '24px' }} 
             margin={{ horizontal: 'medium' }} 
-            justify='center'>
+            justify='center' >
             {props.userState.isSignedIn ?
                 <Button onClick={handleRating}>
                     <Box>
