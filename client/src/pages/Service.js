@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 
 import Comment from '../components/Comment';
 import Rating from '../components/Rating';
-import QuestionTags from '../components/QuestionTags';
+import Tag from '../components/Tag';
 
 import {
     Box,
@@ -55,9 +55,10 @@ export default function Service(props) {
     const descriptionBoxTheme = {
         box: {
             extend: `
-                border: 1px solid #d6bf6d;
+                border: 2px solid #FCE181;
                 border-bottom: 4px solid #d6bf6b;
-                border-radius: 10px;`
+                border-radius: 10px;
+                background-color: #F9F9F9`
         }
     }
 
@@ -159,15 +160,15 @@ export default function Service(props) {
                             <Box pad={{ bottom: '10px' }}>
                                 <Heading fill level={2}>{service.name}</Heading>
                                 <Box direction='row'>
-                                    {service.Tags.map(tag => <QuestionTags key={tag.id} props={tag}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></QuestionTags>)}
+                                    {service.Tags.map(tag => <Tag key={tag.id} tag={tag} userState={props.userState}><Link to={`/tag/${tag.id}`}>{tag.name}</Link></Tag>)}
                                 </Box>
                             </Box>
                         </Box>
 
                         <Box fill width={{ max: '180px', min: '180px' }}
-                            background='#FCE181'
+                            background='#FFFFFF'
                             border={{
-                                color: '#d6bf6d'
+                                color: '#d6bf6b'
                             }}
                             round='small'
                             align='center'
