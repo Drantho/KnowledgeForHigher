@@ -9,9 +9,9 @@ export default function QuestionBox(props) {
             justify="center"
             align="center"
             pad="5px"
-            background="#222E42"
             round="5px"
             height="60px"
+         
         >
 
             <Grid
@@ -26,7 +26,7 @@ export default function QuestionBox(props) {
 
                 <Box gridArea="search"  round="5px">
                     <Box fill align="center" justify="start">
-                        <Box width="medium" gap="medium" >
+                        <Box width="350px" gap="medium" style={{ position: "fixed", left:"50%", top: 0}} margin={{top:"10px", left:"-175px"}}>
                             <TextInput name="searchString" onChange={props.handleInputChanged} value={props.searchString} style={{background: "white", color: "black"}} icon={<Search color="black"/>} reverse placeholder="search questions..."  /><br/>                        
                             
                         </Box>

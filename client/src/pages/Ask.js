@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
-import { Box, FormField, Grid, TextArea, Button,Text} from 'grommet';
+import { Box, FormField, Grid, TextArea, Button} from 'grommet';
 import AddQuestion from '../components/AddQuestion'
 export default function Ask(props) {
     const history = useHistory();
@@ -69,7 +69,23 @@ export default function Ask(props) {
     }
 
     return (
-        <Box margin={{top:"50px"}} fill="horizontal">
+        <div>
+            {/* <h1>Ask Page</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="title">
+                    Question:
+                </label>
+                <input name="title" value={formObj.title} onChange={handleInputChanged} /><br />
+                <label htmlFor="text">
+                    Details:
+                </label>
+                <textarea name="text" value={formObj.text} onChange={handleInputChanged} /><br />
+                <label htmlFor="tags">
+                    Tags
+                    </label>
+                <textarea name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} placeholder="enter topics separated by commas." /><br />
+                <button type="submit" onClick={handleSubmit}>Ask Question</button>
+            </form> */}
 
             <Grid
                 areas={[
@@ -78,14 +94,14 @@ export default function Ask(props) {
                     ['blank', 'question', 'blank2'],
                     ['blank', 'question', 'blank2']
                 ]}
-                columns={['flex', 'flex', 'flex']}
+                columns={['1/4', 'flex', '1/4']}
                 rows={['50px']}
                 gap="small"
                 responsive="true"
             >
 
 
-                <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }} >
+                <Box gridArea="main" height="flex" margin={{ "bottom": "50px" }}>
                     <AddQuestion/>
                 </Box>
 
@@ -110,29 +126,31 @@ export default function Ask(props) {
                                 rows={['flex']}
                                 responsive="true"
                             >
-                                {/* <form onSubmit={handleSubmit}> */}
+                                <form onSubmit={handleSubmit}>
                                 <Box gridArea="title">
-                                 
-                                    <TextArea id="text-area" fill="true" placeholder="Question Title" name="title" value={formObj.title} onChange={handleInputChanged} />
-                                    
+                                    <FormField  htmlFor="text-area" border>
+                                        <TextArea id="text-area" placeholder="Question Title" name="title" value={formObj.title} onChange={handleInputChanged} />
+                                    </FormField>
                                 </Box>
 
-                                <Box gridArea="details"  width="850px" height="300px">
+                                <Box gridArea="details" width="900px" height="400px">
                                     
-                                    <TextArea id="text-area" placeholder="Description"  focusIndicator="true" fill="true" name="text" value={formObj.text} onChange={handleInputChanged}/>
+                                    <TextArea id="text-area" placeholder="Description"  focusIndicator="true" fill name="text" value={formObj.text} onChange={handleInputChanged}/>
                                    
                                 </Box>
 
                                 <Box gridArea="tags" >
-                                    
-                                    <TextArea id="text-area" fill="true" placeholder="Enter topics separated by commas" name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} />
-                                  
+                                    <FormField  htmlFor="text-area" border>
+                                        <TextArea id="text-area" placeholder="Enter topics separated by commas" name="tagsString" value={formObj.tagsString} onChange={handleInputChanged} />
+                                    </FormField>
                                 </Box>
 
-                                <Box gridArea="button" background="#FCE181" round="50px" width="150px" margin={{"left":"100px", "top":"5px"}}>
-                                    <Button type="submit" onClick={handleSubmit} margin={{"left":"20px", }}><Text weight="bold">Ask Question</Text></Button>
+                                {/* <pre>{JSON.stringify(props,null,4)}</pre> */}
+                                
+                                <Box gridArea="button" >
+                                    <Button type="submit" onClick={handleSubmit}>Ask Question</Button>
                                 </Box>
-                                {/* </form> */}
+                                </form>
                             </Grid>
 
                         </Box>
@@ -143,6 +161,6 @@ export default function Ask(props) {
             </Grid>
 
 
-        </Box>
+        </div>
     )
 }
