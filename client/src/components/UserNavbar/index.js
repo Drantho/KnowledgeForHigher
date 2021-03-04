@@ -35,6 +35,7 @@ export default function UserNavbar(props) {
                         <Anchor color="white">
                             <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}><Avatar src={Icon} /></Link>
                         </Anchor>
+                        <Text size="25px" color="#FCE181">Knowledge4Hire</Text>
                     </Box>
                     <Nav direction="row" justify="end">
                         <Box direction="row" align="center" gap="small" pad="small">

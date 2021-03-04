@@ -10,7 +10,7 @@ export default function UserTags() {
                 justify="center"
                 align="center"
                 pad="5px"
-                background="#00B8D4"
+                background="#3A4B6A"
                 round="5px"
                 height="flex"
 

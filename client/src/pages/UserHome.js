@@ -4,7 +4,6 @@ import API from "../utils/API";
 import { Box, Grid, Grommet } from 'grommet';
 import QuestionBox from '../components/QuestionBox'
 import Question from '../components/Question'
-import MobileQuestion from '../components/MobileQuestion'
 import UserTags from '../components/UserTags'
 import PopularTags from '../components/PopularTags'
 import FollowedServices from '../components/FollowedServices'
@@ -236,6 +235,8 @@ export default function UserHome(props) {
                     <Box gridArea="blank2" />
                     <Box gridArea="blank3" />
                     <Box gridArea="blank4" />
+
+                    {/* <Box gridArea="search" ><QuestionBox searchString={searchString} handleInputChanged={handleInputChanged} handleSearchClick={handleSearchClick} /></Box> */}
 
                     <Box gridArea="main" height="flex" background="#f0f0f0">
 
