@@ -31,7 +31,7 @@
   - Bad-Words
   - Bcrypt
   - JSON Web Tokens
-  
+
 
   -------------------------------------------------------------------------------
 
@@ -52,28 +52,28 @@
   ### Screenshots
 
   ### Home screen
-  ![Home Screen](./screenshot1.png?raw=true "Home Screen")
+  ![Home Screen](/screenshot1.png?raw=true "Home Screen")
 
   ### Question Page
-  ![Question Page](./screenshot2.png?raw=true "Question Page")
+  ![Question Page](/screenshot2.png?raw=true "Question Page")
 
   ### Ask Question Form
-  ![Ask Question Form](./screenshot3.png?raw=true "Ask Question Form")
+  ![Ask Question Form](/screenshot3.png?raw=true "Ask Question Form")
 
   ### Tag Page
-  ![Tag Page](./screenshot4.png?raw=true "Tag Page")
+  ![Tag Page](/screenshot4.png?raw=true "Tag Page")
 
   ### Service Page
-  ![Service Page](./screenshot5.png?raw=true "Service Page")
+  ![Service Page](/screenshot5.png?raw=true "Service Page")
 
   ### Profile Page
-  ![Profile Page](./screenshot6.png?raw=true "Profile Page")
+  ![Profile Page](/screenshot6.png?raw=true "Profile Page")
 
   ### Messaging Page
-  ![Messaging Page](./screenshot7.png?raw=true "Messaging Page")
+  ![Messaging Page](/screenshot7.png?raw=true "Messaging Page")
 
   ### Mobile View
-  ![Mobile View](./screenshot7.png?raw=true "Mobile View")
+  ![Mobile View](/screenshot7.png?raw=true "Mobile View")
 
   -------------------------------------------------------------------------------
 
