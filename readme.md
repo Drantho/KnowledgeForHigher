@@ -52,28 +52,28 @@
   ### Screenshots
 
   ### Home screen
-  ![Home Screen](https://github.com/Drantho/KnowledgeForHigher/Screenshot1.png?raw=true "Home Screen")
+  ![Home Screen](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot1.png?raw=true "Home Screen")
 
   ### Question Page
-  ![Question Page](https://github.com/Drantho/KnowledgeForHigher/Screenshot2.png?raw=true "Question Page")
+  ![Question Page](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot2.png?raw=true "Question Page")
 
   ### Ask Question Form
-  ![Ask Question Form](https://github.com/Drantho/KnowledgeForHigher/Screenshot3.png?raw=true "Ask Question Form")
+  ![Ask Question Form](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot3.png?raw=true "Ask Question Form")
 
   ### Tag Page
-  ![Tag Page](https://github.com/Drantho/KnowledgeForHigher/Screenshot4.png?raw=true "Tag Page")
+  ![Tag Page](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot4.png?raw=true "Tag Page")
 
   ### Service Page
-  ![Service Page](https://github.com/Drantho/KnowledgeForHigher/Screenshot5.png?raw=true "Service Page")
+  ![Service Page](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot5.png?raw=true "Service Page")
 
   ### Profile Page
-  ![Profile Page](https://github.com/Drantho/KnowledgeForHigher/Screenshot6.png?raw=true "Profile Page")
+  ![Profile Page](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot6.png?raw=true "Profile Page")
 
   ### Messaging Page
-  ![Messaging Page](https://github.com/Drantho/KnowledgeForHigher/Screenshot7.png?raw=true "Messaging Page")
+  ![Messaging Page](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot7.png?raw=true "Messaging Page")
 
   ### Mobile View
-  ![Mobile View](https://github.com/Drantho/KnowledgeForHigher/Screenshot7.png?raw=true "Mobile View")
+  ![Mobile View](https://github.com/Drantho/KnowledgeForHigher/blob/dev/Screenshot8.png?raw=true "Mobile View")
 
   -------------------------------------------------------------------------------
 
