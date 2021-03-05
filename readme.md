@@ -1,10 +1,137 @@
-# Getting started
-- clone repo
-- create .env file in /server
-- add a USER_SECRET=YourUserSecret variable
-- create local database in mysql workbench
-- set your local database credentials in /server/config/config.json
+# Knowledge For Higher 
 
-## ERD
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=knowledgeforhigher.drawio#R7Z1vl5pIFsY%2FjefMvug%2BFH9EX6bt7MzsJLO93Zkk%2ByqHaLUyi2IAuzWffgsF1LrYFipVV4o5OWcEtaR5Lj%2B4T92q6liD6fLXyJtPPoYjGnRMY7TsWPcd0zQtk7D%2FpXtWmz3dnrnZMY780WYX2e548n%2FSbKeR7V34IxrvfTAJwyDx5%2Fs7h%2BFsRofJ3j4visLX%2FY89h8H%2Br869MQU7noZeAPd%2B8UfJJNtLDGP7xm%2FUH0%2Byn%2B452RvfveH%2FxlG4mGW%2F1zGt5%2FV%2Fm7enXt5W9vl44o3C151d1vuONYjCMNm8mi4HNEjPbX7aNt%2F754F3i%2BOO6CwR%2BcKXu88ff%2F%2F2Mvr69Hi3iOeDf92%2FW95krbx4wSI7H3%2FFNMoOOFnlJ4kd%2Bzx9mXjf0113k2QasE3CXr5O%2FIQ%2Bzb1h%2Bv4rixG2L068KMmktgy2g4mXeP6Mtbz50jAMAm8e%2B%2BvW7tefmPjB6IO3ChdJ%2Fjv51t2zv6Sjx43S6beZ6B9YY3H21WfW%2BFN2rOnbXuCPZ%2Bz1kJ2Y9Bfv4JnK%2F2waJXS5sys7c7%2FScEqTaMU%2Bkr17Y2Uqror42Gy%2F7sRML9s32QkXM48jL4vTcdH2Viv2IpOrgnQmkO6gbOxPT3wveGTXjzcbiygIBRpF4fyTF41pku2Yh356ft%2B%2FsLNaSOEHwSAMwlTnWThLfygJ59mbAX3Ov%2Fs9TJJwmsuZna2i0fWZcu7YP3buBsat03HYXzNg22S7zf6lH4%2BSQTiLk4hFV9oG9eLklcZJqepvXgHHQyGT3hJU3qpLeAsITy6q%2FJqz3lb5yqIanKghO7nPwZp9E380ojNxdUxhdXbksGWqYQM12MdRy5HzcfPZu5j9oD8bf9h8sytLr%2BW%2BVrtXk1T9nCZglJf4CjDaVY3RLhD%2BsspjwqgjrI4qjLpAjQV7EP3Tm1LcotQJU3HVsMC018JUCUz7qmHaB8JbuK%2FbMy7LnrA6qmCaJ6c7ctCp5we4JakTpeKaYUEpgdZMy1IZLCWmapgSaO00l6ZEXCBlOIWOy98sju%2B9ROOH0wq6oUEq9GpapEpBqqMcqdDmaTBSbWGBlCEVui9%2B%2FBCFzzSO%2FXDmafyoWkE9NGCF7s1%2FFgwpTMmDOmrblWjn4Mvh6Ip2JZLa9GuEb4OgL9EVDgYsnYkEOjfN7U0k%2BK0bE1o3OvcnVlAMy83QbI0bRTBV3qWYK61Fn2KFJx9lMIXGzUhr0%2BaEp1XlOG1NG0U4Vd6paOpk2pj4TRsTmjbsUBPcktSK0%2Buzakxo1bQ4lYJT9f2KJrR5GsxTcYGU8RR6L2nR2zedE%2F4KsmFBqg2zjHez%2BLUdRlMyjKaAYAZFW9QALYZRXV6%2BRiQY6s3v4jK4HvPbhglGc81vG3%2BCYZf0Cmt8L6ygGJp7YZteKIKpcvPbhtlFc81vG392YcPsQm%2B3poJmWHCa1821OJWNU%2BXmtwO7kZtr1hRxjhenjgn0%2BJHVuGlt2FSQDg1VoWHTUlUKVdV74A50exqMVXGBlGEVWjDae%2BAVZEODVOjctEiVg1TlY2sc6Pk0GKldYYGUIRUaMX58pEcKhSy1MlVcNyxM7bVTE6liak81U3vwftpcpvbwT0%2FUg%2Fc4vSuJK2iGhacONMQfvYSdkYMqalun4XLTndolD5kWKRHPdOtSL%2B%2Ffuu67ofoyjeIqOKdMo1T7%2Bmbqg1Z4c8s0ijivdDN0pOoBrXCd7ZoKii331doRsOi%2Fl6Ng64ArgmlJmYZkmEID%2FLLao4LpSQa4XJjCLN%2BPH8LYT%2FwXjfOLCsqhgWrrgSuCakmxhmSo6mSBd0%2BywOVCFVrgyWpOf%2FlRzEo0SH8288TT1zGNXvwh%2FQdu1WolbmWHXD1xoaPTElcKccsKOeQiNzea9ECuuECqkOtCkyaiz7%2Fs1chtoVtsZtxl2zqjV1xeLOh1oQfUolcOekW9%2BPq0h%2B5Rc9FbBDpi9EJLR%2FsaugqyoUEqdIIG4XSa%2Fp2HZNS2g%2FKG5Dl%2FRkW3pJeq6Izc66F0atOvEf6P%2Bh5KV7y04HAPZan29V260P9pbg%2Bli78E0i0pgdT5ZniJ4sdCLTkKttaOIpiW9FDKhWkPOjuX1R4VTE9yduTWPkJnR%2B%2BB5BU0w4LTXmvXKMJpSd%2BkZJzq5NYUcY4Yp9Ct%2Bbx%2BaRrIdam1nryyX6Oeqe0jqiKmlvU%2ByoVqHz6jIr94z7k28T%2Bj9kueUduCj4vJigW5%2FfYxVhVyy7pH5CJXp%2BfYItARIxc%2Bx7YFH5eXFw1629HoqtBbMhpdMnp1Go3exz8avQ%2B7G7Uv%2BKggGxqkNmLZ1WtEarGUrjqkQvOowUjFv%2B4qMaCjo%2FcMHxVEwwJUYkAb6JPXzu8BleKWYemLTndc7KxBu0Z4O%2BrL57YXwfUsxEIMaO40t4BuG%2BqY74fQ3tE5vaiiGZYJr4jRejaqkKp8ORZiQNPmsurjQip%2B14YY0LaZeVONU4wqquGBauvaqIKq8kVZiKGTbbMNdcRQJSW%2BDY2HkT%2Ff1H1g1qZetl7Cv5HMVgKTjqdNf%2FFBIbX1cFx738NhPBXEYyF0DQI2IuNAYOIQ8bU%2F0Zg4BGYcDTZxyBVkHARmHFqbOBU0w3NPbPMNVUhVb%2BIQmG802MQhV5BvmDDf0L72popwaLhqwr7ilqtyuKrex8m11sPHqZBcquMq7AHWe5R5FdXwQBUaOC1U5UBV%2Fdq6xITuT5OpKi6ROqpCS2ZtfA6Tb%2F7sOcQtTr10FVcPD12hndPSVRJdlS%2BzS0xoBDWZrq6wROroCt2ZefRWZxUKVerFqrhsaLBqQUunxaokrCpfaZdY0AdqMFaLWEeMVQuaMxGN5yw46bfE17pgroJ8aPBqt%2FMkqcJr2ThHyXh14M21wXgtYh0xXh14w%2FPjd0O91xusohwaslrQM39YRMOJF7f1ckAuko%2FvLurlRCum6lvUnFiN8MsR1MtZ4uuFoqmXs6Bd3uB6OesK7HIL2uVa13VU0AzPTbE1yVUhVX29nAU98suqjwupV%2BCRWzD713telSqqoYGqDbP4FqpyoKq%2BWM7WyiEvQh0xVG3okLdFyBWEw8NV6OC0XJXDVQT1cjZ0f5oMVnGJ1IEVWjLzKHzxR9rDVVw8PHBtxIKs1wlX9eVyNvSBmgxX%2FIuyEhuaM9vVAHBLUy9bL7E8q2S2OgIPrnQ0pnmvHjsFfrJ6pIGXTsvyfvvOpu9v09FIzH1x6Wz0LorWJ%2FX9408ahZ%2FCj95s1cm6J7fvTb3Z6N9rWdnvRKuvmWrrjf%2BmGwyI2eb9cvfN%2B1W%2BtfSTr%2FnPstc732Jb2y%2BlG%2Fl3oL559024iIb0jdOXnaskv1kcPM3ZFZOeSdFrupjJeG%2Fe1nxntFbghe4db1l4ZL%2FxkN5ttoFn8p2o%2FHywmz89%2B9Y2yEBDFtcQ387m1IB21sFa%2FN3nxK9Ax6uS%2BM3i0KgQh0XMk2oxf0b8EsEAzjMcNAFs9fbjznJODGDb2W%2FIIbIjWGCqnWsksHHb7%2Ff3oj%2Bts38z%2FtnGA418dkrX5SnnxXau69HY7lrYYtviQjIfj1c5trmGbL6h2mNbIHNTSufbfo9wMUokxmg%2Brw%2Ba0HO527lpnohVlw%2B9vmysCpQPqAi9M4KFYLsJO%2F19kV2%2BwO7UaHGl34QFJme6bLSw7PVQsOy%2BVeQzt8a6uV1SyQRVPskrmtizuQdA9%2BQHQP5Jkp9VsfbYExhXoSb2riIHLyafPp6Fm9iCuGvsxx4hp0axy7dk8C3VHcZ50Ri2G%2B6pWXVZFL%2F9bHhGDLuCIez2kUUwoOepjwAO1xAo1q89fgXmEbum%2BD0YjUeDrI%2FNrXQdHm7dE6Osx7XU5xuqPcpMnFF2BrtsbEzqctkEMfl0QjRcwFgjU3Ya272y%2FhnLso7dV9MtPjM5ZBreGLeGY0lMdHqCjCyGVKCJ%2BqJqv4hV61Tb0CC3tkksp8tu55aRr8hbPKPy7dZ%2BDWB1yHeC1urs5jpG90hPT0nMnpptnUFu0VjPp9tGE%2BuQyycCnu8H5dupPbSl5%2F7VQltSCm8LRqKNzS%2B%2FsQgXQPwDgmgk3hSxl2dS9XWl%2FzZfJY9mEvy9%2FPOPn2Pny9fP3ekNTH8GmxkGQUDyQ9ArjjFf76lxjHlEY3YsH7y0NG79iewP46tySmL1YKFOl89Aijz36Eq7fIZxSu1OqWACmcQbtVeNGVN%2BRNfDsQ7FVjCivPTwSqaD%2BKOathcvnOOvusN1cqfoYR6leF3rj5ceDqwp%2Bmvm%2F1jQ3%2B8Vq3C0fHFXJkeWTMvOwcvGkSnbeWtWNaYO%2FPJAlDkevPTwzhsAUMOFSEd%2B3t7laejgouG5a0%2FhKuO%2BoCBYuHfewlIt9w5yT%2BaQ7dLDO2%2FGxWvjXg8X90pWpE1W80ozXlw%2F%2Bg5oggV95LzFn1r2HWSf1GHV5cd3rsFxXfQjx61MufiDLsTmpVb8O6QKGgBKr7B%2Fo3iQLyfgbHohw1VakQC%2F7LZ1cqk731KNvUjlMSC91F0oBkr7kDqndeUfjySRbiazpMyuyq1RVmz2%2BYiy%2BZpk4QIWA4T5xcqb2WYUhsnuxyNvPvkYjmj6if8D
+  ## Table of Contents
+  - [Description](#description)
+  - [Technologies](#technologies)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [Tests](#tests)
+  - [Known Issues](#known-issues)
+  - [Future Development](#future-development)
+  - [Questions](#questions)
+  - [License](#license)
+  ## Description
+
+  This is a community question/answer and service offered web app. Users are able to create local accounts, ask questions, answer questions, offer services, rate, and comment on content. Users can also search, browse, and view questions/services based on favorite tags. This app also contains a messaging service.
+
+  ### View Live: https://knowledge4hire.herokuapp.com/home
+  ### View on Github: https://github.com/Drantho/KnowledgeForHigher
+
+  ## Technologies
+  - React
+  - Node
+  - Express
+  - MySQL
+  - Sequelize
+  - Grommet
+  - Cloudinary
+  - Bad-Words
+  - Bcrypt
+  - JSON Web Tokens
+  
+
+  -------------------------------------------------------------------------------
+
+  ## Installation 
+
+  
+
+  -npm i in root, client, and server folders. Add a .env file to /server and add a JWT_SECRET, DATABASE_URL, and cloudinary.com credentials.
+
+  -------------------------------------------------------------------------------
+
+  ## Usage 
+
+  
+
+  run npm start from root to start both nodemon server/server.js and front end React server via Concurrently. View screenshots for live usage.
+
+  ### Screenshots
+
+  ### Home screen
+  ![Home Screen](./screenshot1.png?raw=true "Home Screen")
+
+  ### Question Page
+  ![Question Page](./screenshot2.png?raw=true "Question Page")
+
+  ### Ask Question Form
+  ![Ask Question Form](./screenshot3.png?raw=true "Ask Question Form")
+
+  ### Tag Page
+  ![Tag Page](./screenshot4.png?raw=true "Tag Page")
+
+  ### Service Page
+  ![Service Page](./screenshot5.png?raw=true "Service Page")
+
+  ### Profile Page
+  ![Profile Page](./screenshot6.png?raw=true "Profile Page")
+
+  ### Messaging Page
+  ![Messaging Page](./screenshot7.png?raw=true "Messaging Page")
+
+  ### Mobile View
+  ![Mobile View](./screenshot7.png?raw=true "Mobile View")
+
+  -------------------------------------------------------------------------------
+
+  ## Contributing 
+
+  
+
+  Anthony Mitchell, Nolan Stucky, Mark Trubiano
+
+  -------------------------------------------------------------------------------
+
+  ## Tests 
+
+  none 
+
+  -------------------------------------------------------------------------------
+
+  ## Known Issues 
+
+  - root/package.json bug prevents heroku deploy. 
+
+  -------------------------------------------------------------------------------
+
+  ## Future Development 
+
+  - Add full CRUD functionality for content. 
+-  Add socket.io for instant messaging and video chat. 
+-  Add Stripe integration for in-app purchases. 
+-  Add LinkedIn integration to display credentials. 
+-  Add follow user functionality. 
+-  Add user privacy settings. 
+
+  -------------------------------------------------------------------------------
+
+  ## Questions
+  Anthony Mitchell
+  - github: https://github.com/Drantho 
+  - email: mitchellanthonyd@gmail.com
+  Nolan Stucky
+  - github: https://github.com/nolanstucky
+  - email: nolan@stucky.net
+  Mark Trupiano
+  - github: https://github.com/mtrupiano
+
+  Email us with any questions. 
+
+  -------------------------------------------------------------------------------
+
+  
+  ## License 
+ 
+The MIT License 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
+  
+  ------------------------------------------------------------------------------
+
+   readme automatically created with Readme Generator 
+
+   view on github: https://github.com/Drantho/ReadmeGenerator
