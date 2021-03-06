@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
 import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
 
+import SlateEditor from '../components/SlateEditor';
+import DraftEditor from '../components/DraftEditor';
+import PostEditor from '../components/PostEditor';
 
 export default function Ask(props) {
 
@@ -67,20 +70,8 @@ export default function Ask(props) {
         }
     }
 
-    const descrTheme = {
-        global: {
-            colors: {
-                focus: {
-                    border: undefined
-                }
-            }
-        },
-        textArea: {
-            extend: `
-                height: 200px
-
-            `
-        }
+    const getDraftValue = (draftRawObj) => {
+        setFormValues({ ...formValues, text: JSON.stringify(draftRawObj)});
     }
 
     return ( 
@@ -103,18 +94,11 @@ export default function Ask(props) {
                             value={formValues.title}
                             onChange={handleInput} />
                     </FormField>
-                    <FormField label='Description' 
-                        name='text' htmlFor='new-question-text'>
-                        <Grommet theme={descrTheme}>
-                        <TextArea
-                            style={{background:'white'}}
-                            id='new-question-text'
-                            name='text'
-                            placeholder='Enter a detailed description of your question.' 
-                            value={formValues.text}
-                            onChange={handleInput} />
-                        </Grommet>
-                    </FormField>
+
+                    <PostEditor 
+                        getDraftValue={getDraftValue} 
+                        controlledContent={formValues.text} />
+
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                         <TextArea
                             style={{background:'white'}}
@@ -131,6 +115,6 @@ export default function Ask(props) {
                 </Grommet>
             </Box>
         </Box>
-    
+        
     )
 }
