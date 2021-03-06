@@ -3,6 +3,9 @@ import { React, useState } from 'react';
 import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
 import { Bold, Underline, Italic, List, OrderedList, Code, Android } from 'grommet-icons';
 import { Grommet, Box, Button, Tip, Text } from 'grommet';
+
+import './customDraftStyle.css';
+import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
  
 export default function PostEditor(props) {
 
@@ -150,6 +153,49 @@ export default function PostEditor(props) {
         return editorState.getCurrentInlineStyle().has(style);
     }
 
+    const blockStyleFn = (contentBlock) => {
+        if (contentBlock.getType() === 'code-block') {
+            return 'codeBlockStyle';
+        }
+    }
+
+    const handleReturn = (event) => {
+
+        if (checkBlockType('code-block')) {
+            onChange(RichUtils.insertSoftNewline(editorState));
+            if (isSoftNewlineEvent(event)) {
+                return 'not-handled';
+            }
+            return 'handled'
+        }
+
+        return 'not-handled';
+    }
+
+    const onTab = (event) => {
+        if (checkBlockType('code-block')) {
+            event.preventDefault();
+            // Defining number of spaces to apply after tab press
+            let tabIndent = '    ';
+
+            // Getting variables to know text selection 
+            let selectionState = editorState.getSelection();
+            let anchorKey = selectionState.getAnchorKey();
+            let currentContent = editorState.getCurrentContent();
+            let currentContentBlock = currentContent.getBlockForKey(anchorKey);
+            let start = selectionState.getStartOffset();
+            let end = selectionState.getEndOffset();
+            let selectedText = currentContentBlock.getText().slice(start, end);
+
+            // Defining next state
+            let nextState = Modifier.replaceText(currentContent, selectionState, tabIndent + selectedText);
+            setEditorState(EditorState.push(editorState, nextState, 'indent'))
+            return 'handled';
+        }
+
+        return 'not-handled';
+    }
+
     const buttonRowTheme = {
         global: {
             active: {
@@ -224,7 +270,10 @@ export default function PostEditor(props) {
                     onChange={onChange}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    handleKeyCommand={handleKeyCommand} />
+                    handleKeyCommand={handleKeyCommand}
+                    blockStyleFn={blockStyleFn} 
+                    handleReturn={handleReturn} 
+                    onTab={onTab} />
             </Box>
         </Box>
     )
