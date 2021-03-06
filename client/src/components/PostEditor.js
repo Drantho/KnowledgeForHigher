@@ -1,40 +1,98 @@
 import { React, useState } from 'react';
 
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from 'draft-js';
-import { Bold, Underline, List, OrderedList, WifiNone } from 'grommet-icons';
+import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
+import { Bold, Underline, Italic, List, OrderedList, Code, Android } from 'grommet-icons';
 import { Grommet, Box, Button, Tip, Text } from 'grommet';
  
 export default function PostEditor(props) {
 
+    // Create an empty editor state object
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    // const [editorState, setEditorState] =
+    //     useState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
+
     const [styleState, setStyleState] = useState({
         bold: false,
         underline: false,
-        list: false
+        italic: false,
+        list: false,
+        orderedList: false,
+        code: false
     });
 
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
- 
+    
+    // Toggle in-line style to 'Bold'
     const _onBoldClick = (event) => {
         event.preventDefault();
         setStyleState({ ...styleState, bold: !styleState.bold });
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
     }
 
+    // Toggle in-line style to 'Underlined'
     const _onUnderlineClick = (event) => {
         event.preventDefault();
         setStyleState({ ...styleState, underline: !styleState.underline });
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'));
     }
+
+    // Toggle in-line style to 'Italic'
+    const _onItalicClick = (event) => {
+        event.preventDefault();
+        setStyleState({ ...styleState, italic: !styleState.italic });
+        setEditorState(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
+    }
+
+    // Toggle block type to 'Unordered List'
     const _onListClick = (event) => {
         event.preventDefault();
         setStyleState({ ...styleState, list: !styleState.list });
         setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
     }
 
-    const [editorState, setEditorState] = useState( EditorState.createEmpty() );
-    // const [editorState, setEditorState] =
-    //     useState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
+    // Toggle block type to 'Ordered List'
+    const _onOrderedListClick = (event) => {
+        event.preventDefault();
+        setStyleState({ ...styleState, orderedList: !styleState.orderedList });
+        setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+    }
+
+    // Toggle block type to 'Code'
+    const _onCodeClick = (event) => {
+        event.preventDefault();
+        
+        const anchorKey = editorState.getSelection().getAnchorKey();
+ 
+        //Then based on the docs for SelectionState -
+        const currentContent = editorState.getCurrentContent();
+        const currentBlock = currentContent.getBlockForKey(anchorKey);
+
+        const newSelectionState = SelectionState.createEmpty().merge({
+            anchorKey: anchorKey,
+            anchorOffset: 0,
+            focusKey: anchorKey,
+            focusOffset: currentBlock.getLength()
+        });
+
+        // Selected Text
+        const selectedText = currentBlock.getText();
+        const contentWithoutStyles = Modifier.replaceText(
+            editorState.getCurrentContent(),
+            newSelectionState,
+            selectedText,
+            null,
+        );
+            
+        const newstate = EditorState.push(
+            editorState,
+            contentWithoutStyles,
+            'change-inline-style',
+        );
+
+        setStyleState({...styleState, code: !styleState.code });
+        setEditorState(RichUtils.toggleBlockType(newstate, 'code-block'));
+    }
 
     const onChange = (newEditorState) => {
         const contentState = newEditorState.getCurrentContent();
@@ -67,13 +125,8 @@ export default function PostEditor(props) {
 
     const handleKeyCommand = (command, state) => {
         // If backspace on empty block, set to unstyled
-        if (command === 'backspace') {
-            console.log(RichUtils.getCurrentBlockType(state));
-            if (getCurrentBlock(editorState).getText() === '') {
-                setEditorState(RichUtils.toggleBlockType(state, 'unordered-list-item'));
-                console.log('resetting block format');
-
-            }
+        if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
+            setEditorState(RichUtils.toggleBlockType(state, 'unordered-list-item'));
         }
     }
 
@@ -87,6 +140,14 @@ export default function PostEditor(props) {
         const currentBlock = getCurrentBlock(state);
         const blockText = currentBlock.getText();
         return blockText[state.getSelection().getStartOffset() - 1];
+    }
+
+    const checkBlockType = (type) => {
+        return RichUtils.getCurrentBlockType(editorState) === type;
+    }
+
+    const checkInlineStyle = (style) => {
+        return editorState.getCurrentInlineStyle().has(style);
     }
 
     const buttonRowTheme = {
@@ -115,8 +176,8 @@ export default function PostEditor(props) {
             pad={{horizontal: 'small', top: 'xsmall'}}
             onMouseDown={ handleFocus.bind(this) }>
             <Grommet theme={buttonRowTheme}>
-                {isFocused ? 
-                    
+
+                { isFocused ? 
                 <Box animation={[{type: 'slideDown', duration: 150}]} 
                     elevation={isFocused ? 'medium' : 'none'} 
                     direction='row' 
@@ -124,21 +185,36 @@ export default function PostEditor(props) {
                     round='small'
                     pad={{ horizontal: 'small', vertical: 'xsmall' }} >
                     <Tip content={<Text size='small'>Bold</Text>}>
-                        <Button
-                            icon={<Bold color={styleState.bold ? 'black' : 'gray'} />}
+                        <Button disabled={checkBlockType('code-block')}
+                            icon={<Bold color={checkInlineStyle('BOLD') ? 'black' : 'gray'} />}
                             onMouseDown={_onBoldClick.bind(this)} />
                     </Tip>
                     <Tip content={<Text size='small'>Underline</Text>}>
-                        <Button
-                            icon={<Underline color={styleState.underline ? 'black' : 'gray'} />}
+                        <Button disabled={checkBlockType('code-block')}
+                            icon={<Underline color={checkInlineStyle('UNDERLINE') ? 'black' : 'gray'} />}
                             onMouseDown={_onUnderlineClick.bind(this)} />
                     </Tip>
+                    <Tip content={<Text size='small'>Italic</Text>}>
+                        <Button disabled={checkBlockType('code-block')}
+                            icon={<Italic color={checkInlineStyle('ITALIC') ? 'black' : 'gray'} />}
+                            onMouseDown={_onItalicClick.bind(this)} />
+                    </Tip>
                     <Tip content={<Text size='small'>List</Text>}>
-                        <Button
-                            icon={<List color={styleState.list ? 'black' : 'gray'} />}
+                        <Button disabled={checkBlockType('code-block')}
+                            icon={<List color={checkBlockType('unordered-list') ? 'black' : 'gray'} />}
                             onMouseDown={_onListClick.bind(this)} />
                     </Tip>
-                </Box> : <Box height='30px'></Box>}
+                    <Tip content={<Text size='small'>Ordered List</Text>}>
+                        <Button disabled={checkBlockType('code-block')}
+                            icon={<OrderedList color={checkBlockType('ordered-list') ? 'black' : 'gray'} />}
+                            onMouseDown={_onOrderedListClick.bind(this)} />
+                    </Tip>
+                    <Tip content={<Text size='small'>Code Block</Text>}>
+                        <Button
+                            icon={<Code color={checkBlockType('code-block') ? 'black' : 'gray'} />}
+                            onMouseDown={_onCodeClick.bind(this)} />
+                    </Tip>
+                </Box> : <Box height='30px'></Box> }
             
             </Grommet>
 

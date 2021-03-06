@@ -3,8 +3,6 @@ import API from "../utils/API";
 import { useHistory } from 'react-router-dom';
 import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
 
-import SlateEditor from '../components/SlateEditor';
-import DraftEditor from '../components/DraftEditor';
 import PostEditor from '../components/PostEditor';
 
 export default function Ask(props) {
