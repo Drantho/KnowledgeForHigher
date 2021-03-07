@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 
 import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
-import { Bold, Underline, Italic, List, OrderedList, Code, Android } from 'grommet-icons';
+import { Bold, Underline, Italic, List, OrderedList, Code, BlockQuote } from 'grommet-icons';
 import { Grommet, Box, Button, Tip, Text } from 'grommet';
 
 import './customDraftStyle.css';
@@ -65,8 +65,42 @@ export default function PostEditor(props) {
     const _onCodeClick = (event) => {
         event.preventDefault();
         
-        const anchorKey = editorState.getSelection().getAnchorKey();
+        // const anchorKey = editorState.getSelection().getAnchorKey();
  
+        // //Then based on the docs for SelectionState -
+        // const currentContent = editorState.getCurrentContent();
+        // const currentBlock = currentContent.getBlockForKey(anchorKey);
+
+        // const newSelectionState = SelectionState.createEmpty().merge({
+        //     anchorKey: anchorKey,
+        //     anchorOffset: 0,
+        //     focusKey: anchorKey,
+        //     focusOffset: currentBlock.getLength()
+        // });
+
+        // // Selected Text
+        // const selectedText = currentBlock.getText();
+        // const contentWithoutStyles = Modifier.replaceText(
+        //     editorState.getCurrentContent(),
+        //     newSelectionState,
+        //     selectedText,
+        //     null,
+        // );
+            
+        // const newstate = EditorState.push(
+        //     editorState,
+        //     contentWithoutStyles,
+        //     'change-inline-style',
+        // );
+        clearStyle();
+
+        setStyleState({...styleState, code: !styleState.code });
+        setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
+    }
+
+    const clearStyle = () => {
+        const anchorKey = editorState.getSelection().getAnchorKey();
+
         //Then based on the docs for SelectionState -
         const currentContent = editorState.getCurrentContent();
         const currentBlock = currentContent.getBlockForKey(anchorKey);
@@ -86,23 +120,19 @@ export default function PostEditor(props) {
             selectedText,
             null,
         );
-            
-        const newstate = EditorState.push(
+
+        const newState = EditorState.push(
             editorState,
             contentWithoutStyles,
             'change-inline-style',
         );
 
-        setStyleState({...styleState, code: !styleState.code });
-        setEditorState(RichUtils.toggleBlockType(newstate, 'code-block'));
+        setEditorState(newState);
     }
 
     const onChange = (newEditorState) => {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
-        if (newEditorState.getCurrentInlineStyle().has('BOLD')) {
-            setStyleState({ ...styleState, bold: true });
-        } 
 
         props.getDraftValue(convertToRaw(contentState));
     }
@@ -129,7 +159,7 @@ export default function PostEditor(props) {
     const handleKeyCommand = (command, state) => {
         // If backspace on empty block, set to unstyled
         if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
-            setEditorState(RichUtils.toggleBlockType(state, 'unordered-list-item'));
+            clearStyle();
         }
     }
 
@@ -145,10 +175,12 @@ export default function PostEditor(props) {
         return blockText[state.getSelection().getStartOffset() - 1];
     }
 
+    // Utility function to check current block's type
     const checkBlockType = (type) => {
         return RichUtils.getCurrentBlockType(editorState) === type;
     }
 
+    // Utililty function to check current selection's inline style
     const checkInlineStyle = (style) => {
         return editorState.getCurrentInlineStyle().has(style);
     }
@@ -172,6 +204,7 @@ export default function PostEditor(props) {
         return 'not-handled';
     }
 
+    // Set tab behavior when within code block
     const onTab = (event) => {
         if (checkBlockType('code-block')) {
             event.preventDefault();
