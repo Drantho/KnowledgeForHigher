@@ -1,11 +1,14 @@
 import { React, useState } from 'react';
 
 import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
+import clearFormatting from 'draft-js-clear-formatting';
 import { Bold, Underline, Italic, List, OrderedList, Code, BlockQuote } from 'grommet-icons';
 import { Grommet, Box, Button, Tip, Text } from 'grommet';
 
 import './customDraftStyle.css';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
+
+import EditorBarButton from './EditorBarButton';
  
 export default function PostEditor(props) {
 
@@ -57,8 +60,14 @@ export default function PostEditor(props) {
     // Toggle block type to 'Ordered List'
     const _onOrderedListClick = (event) => {
         event.preventDefault();
+        console.log(event.target);
         setStyleState({ ...styleState, orderedList: !styleState.orderedList });
         setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+    }
+
+    const _onBlockQuoteClick = (event) => {
+        event.preventDefault();
+        setEditorState(RichUtils.toggleBlockType(editorState, 'blockquote'))
     }
 
     // Toggle block type to 'Code'
@@ -150,16 +159,25 @@ export default function PostEditor(props) {
     }
 
     const handleFocus = async (event) => {
+        event.preventDefault();
         if (!isFocused) {
-            event.preventDefault();
             await editorRef.focus();
         }
     }
 
-    const handleKeyCommand = (command, state) => {
-        // If backspace on empty block, set to unstyled
+    const handleKeyCommand = async (command, state) => {
+
+        // If backspace on empty block, remove block type
         if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
-            clearStyle();
+            if (checkBlockType('unordered-list-item')) {
+                setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
+            } else if (checkBlockType('ordered-list-item')) {
+                setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+            } else if (checkBlockType('blockquote')) {
+                setEditorState(RichUtils.toggleBlockType(editorState, 'blockquote'));
+            } else if (checkBlockType('code-block')) {
+                setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
+            }
         }
     }
 
@@ -239,14 +257,6 @@ export default function PostEditor(props) {
             content: {
                 background: 'white'
             }
-        },
-        button: {
-            default: {
-                padding: {
-                    horizontal: '5px',
-                    vertical: '0px'
-                }
-            }
         }
     }
 
@@ -263,37 +273,76 @@ export default function PostEditor(props) {
                     background='#FCE181'
                     round='small'
                     pad={{ horizontal: 'small', vertical: 'xsmall' }} >
+
                     <Tip content={<Text size='small'>Bold</Text>}>
-                        <Button disabled={checkBlockType('code-block')}
-                            icon={<Bold color={checkInlineStyle('BOLD') ? 'black' : 'gray'} />}
-                            onMouseDown={_onBoldClick.bind(this)} />
+                    <Button 
+                        disabled={checkBlockType('code-block')}
+                        onMouseDown={_onBoldClick.bind(this)}>
+                        <Box pad={{ horizontal: '8px' }}>
+                        <Bold color={checkInlineStyle('BOLD') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
                     </Tip>
+
                     <Tip content={<Text size='small'>Underline</Text>}>
-                        <Button disabled={checkBlockType('code-block')}
-                            icon={<Underline color={checkInlineStyle('UNDERLINE') ? 'black' : 'gray'} />}
-                            onMouseDown={_onUnderlineClick.bind(this)} />
+                    <Button
+                        disabled={checkBlockType('code-block')}
+                        onMouseDown={_onUnderlineClick.bind(this)}> 
+                        <Box pad={{horizontal: '8px'}}>
+                        <Underline color={checkInlineStyle('UNDERLINE') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
                     </Tip>
+
                     <Tip content={<Text size='small'>Italic</Text>}>
-                        <Button disabled={checkBlockType('code-block')}
-                            icon={<Italic color={checkInlineStyle('ITALIC') ? 'black' : 'gray'} />}
-                            onMouseDown={_onItalicClick.bind(this)} />
+                    <Button 
+                        disabled={checkBlockType('code-block')}
+                        onMouseDown={_onItalicClick.bind(this)}>
+                        <Box pad={{horizontal: '8px'}}>
+                        <Italic color={checkInlineStyle('ITALIC') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>   
                     </Tip>
+
                     <Tip content={<Text size='small'>List</Text>}>
-                        <Button disabled={checkBlockType('code-block')}
-                            icon={<List color={checkBlockType('unordered-list') ? 'black' : 'gray'} />}
-                            onMouseDown={_onListClick.bind(this)} />
+                    <Button 
+                        disabled={checkBlockType('code-block')}
+                        onMouseDown={_onListClick.bind(this)}>
+                        <Box pad={{horizontal: '8px'}}>
+                        <List color={checkBlockType('unordered-list') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
                     </Tip>
+
                     <Tip content={<Text size='small'>Ordered List</Text>}>
-                        <Button disabled={checkBlockType('code-block')}
-                            icon={<OrderedList color={checkBlockType('ordered-list') ? 'black' : 'gray'} />}
-                            onMouseDown={_onOrderedListClick.bind(this)} />
+                    <Button
+                        disabled={checkBlockType('code-block')}
+                        onMouseDown={_onOrderedListClick.bind(this)}>
+                        <Box pad={{horizontal: '8px'}}>
+                        <OrderedList color={checkBlockType('ordered-list') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
                     </Tip>
+                    
+                    <Tip content={<Text size='small'>Block Quote</Text>}>
+                    <Button 
+                        disabled={checkBlockType('code-block')} name='block'
+                        onMouseDown={_onBlockQuoteClick.bind(this)}>
+                        <Box pad={{horizontal: '8px'}}>
+                        <BlockQuote color={checkBlockType('blockquote') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
+                    </Tip>
+
                     <Tip content={<Text size='small'>Code Block</Text>}>
-                        <Button
-                            icon={<Code color={checkBlockType('code-block') ? 'black' : 'gray'} />}
-                            onMouseDown={_onCodeClick.bind(this)} />
+                    <Button onMouseDown={_onCodeClick.bind(this)}>
+                        <Box pad={{horizontal: '8px'}}>
+                        <Code color={checkBlockType('code-block') ? 'black' : 'gray'} />
+                        </Box>
+                    </Button>
                     </Tip>
-                </Box> : <Box height='30px'></Box> }
+
+                </Box> : <Box height='36px'></Box> }
             
             </Grommet>
 
