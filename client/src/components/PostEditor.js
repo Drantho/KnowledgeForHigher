@@ -6,6 +6,8 @@ import { Grommet, Box, Button, Tip, Text } from 'grommet';
 
 import './customDraftStyle.css';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
+
+import StyleButton from './StyleButton';
  
 export default function PostEditor(props) {
 
@@ -279,6 +281,22 @@ export default function PostEditor(props) {
                     background='#FCE181'
                     round='small'
                     pad={{ horizontal: 'small', vertical: 'xsmall' }} >
+
+                    <StyleButton style='Bold'
+                        disabled={checkInlineStyle('BOLD')}
+                        checkInlineStyle={checkInlineStyle} 
+                        onClick={_onBoldClick} 
+                        thisTarget={this} />
+                    <StyleButton style='Underline'
+                        disabled={checkInlineStyle('UNDERLINE')}
+                        checkInlineStyle={checkInlineStyle} 
+                        onClick={ e => setEditorState(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE')) } 
+                        thisTarget={this} />
+                    <StyleButton style='Italic'
+                        disabled={checkInlineStyle('ITALIC')}
+                        checkInlineStyle={checkInlineStyle} 
+                        onClick={_onBoldClick} 
+                        thisTarget={this} />
 
                     <Tip content={<Text size='small'>Bold</Text>}>
                     <Button 
