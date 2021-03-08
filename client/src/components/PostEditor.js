@@ -123,15 +123,19 @@ export default function PostEditor(props) {
 
         // If backspace on empty block, remove block type
         if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
-            if (checkBlockType('unordered-list-item')) {
-                setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
-            } else if (checkBlockType('ordered-list-item')) {
-                setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
-            } else if (checkBlockType('blockquote')) {
-                setEditorState(RichUtils.toggleBlockType(editorState, 'blockquote'));
-            } else if (checkBlockType('code-block')) {
-                setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
-            }
+            clearBlockType();
+        }
+    }
+
+    const clearBlockType = () => {
+        if (checkBlockType('unordered-list-item')) {
+            setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
+        } else if (checkBlockType('ordered-list-item')) {
+            setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+        } else if (checkBlockType('blockquote')) {
+            setEditorState(RichUtils.toggleBlockType(editorState, 'blockquote'));
+        } else if (checkBlockType('code-block')) {
+            setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
         }
     }
 
@@ -165,11 +169,13 @@ export default function PostEditor(props) {
 
     const handleReturn = (event) => {
 
+        if (isSoftNewlineEvent(event)) {
+            clearBlockType();
+            return 'not-handled';
+        }
+        
         if (checkBlockType('code-block')) {
             onChange(RichUtils.insertSoftNewline(editorState));
-            if (isSoftNewlineEvent(event)) {
-                return 'not-handled';
-            }
             return 'handled'
         }
 
