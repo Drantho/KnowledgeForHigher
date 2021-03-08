@@ -95,7 +95,8 @@ export default function Ask(props) {
 
                     <PostEditor 
                         getDraftValue={getDraftValue} 
-                        controlledContent={formValues.text} />
+                        controlledContent={formValues.text}
+                        placeholder='Enter a detailed description for your question...' />
 
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                         <TextArea

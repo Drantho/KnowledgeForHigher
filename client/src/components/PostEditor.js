@@ -10,6 +10,7 @@ import { Editor,
 import { Box } from 'grommet';
 
 import './customDraftStyle.css';
+import 'draft-js/dist/Draft.css';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 
 import StyleButton from './StyleButton';
@@ -20,6 +21,16 @@ export default function PostEditor(props) {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     // const [editorState, setEditorState] =
     //     useState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
+    
+    // If the user changes block type before entering any text, we can
+    // either style the placeholder or hide it. Let's just hide it now.
+    let className = '';
+    const contentState = editorState.getCurrentContent();
+    if (!contentState.hasText()) {
+        if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+            className += ' hidePlaceholder';
+        }
+    }
 
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
@@ -73,9 +84,8 @@ export default function PostEditor(props) {
     }
 
     const handleKeyCommand = async (command, state) => {
-
         // If backspace on empty block, remove block type
-        if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
+        if (command === 'backspace' && getCurrentBlock(editorState).getText().trim() === '' ) {
             setIsCodeBlock(false);
             clearBlockType();
         }
@@ -122,12 +132,11 @@ export default function PostEditor(props) {
     }
 
     const handleReturn = (event) => {
-
+        
         if (isSoftNewlineEvent(event)) {
-            clearBlockType();
             return 'not-handled';
         }
-        
+
         if (checkBlockType('code-block')) {
             onChange(RichUtils.insertSoftNewline(editorState));
             return 'handled'
@@ -157,8 +166,8 @@ export default function PostEditor(props) {
             setEditorState(EditorState.push(editorState, nextState, 'indent'))
             return 'handled';
         }
-
-        return 'not-handled';
+        onChange(RichUtils.onTab(event, editorState, 4));
+        return 'handled';
     }
 
     return (
@@ -195,6 +204,7 @@ export default function PostEditor(props) {
             </Box> : <Box height='36px' /> }
 
             <Box fill pad={{vertical: 'small'}} align='left'> 
+                <div className={className}>
                 <Editor ref={setEditorRef}
                     editorState={editorState}
                     onChange={onChange}
@@ -203,7 +213,9 @@ export default function PostEditor(props) {
                     handleKeyCommand={handleKeyCommand}
                     blockStyleFn={blockStyleFn} 
                     handleReturn={handleReturn} 
-                    onTab={onTab} />
+                    onTab={onTab}
+                    placeholder={props.placeholder} />
+                </div>
             </Box>
         </Box>
     )

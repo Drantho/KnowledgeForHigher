@@ -6,3 +6,7 @@
     border-radius: 5px;
     box-shadow: inset 1px 1px 2px 1px #ffeca7d7
 }
+
+.hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
