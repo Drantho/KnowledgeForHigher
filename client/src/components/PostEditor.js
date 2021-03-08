@@ -1,8 +1,13 @@
 import { React, useState, useEffect } from 'react';
 
-import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
-import { Bold, Underline, Italic, List, OrderedList, Code, BlockQuote } from 'grommet-icons';
-import { Grommet, Box, Button, Tip, Text } from 'grommet';
+import { Editor, 
+    EditorState, 
+    SelectionState, 
+    RichUtils, 
+    Modifier, 
+    convertToRaw } from 'draft-js';
+
+import { Box } from 'grommet';
 
 import './customDraftStyle.css';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
@@ -18,6 +23,7 @@ export default function PostEditor(props) {
 
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
+    const [isCodeBlock, setIsCodeBlock] = useState(false);
 
     const INLINE_STYLES = [
         { label: 'Bold', style: 'BOLD' },
@@ -32,72 +38,12 @@ export default function PostEditor(props) {
         { label: 'Code', style: 'code-block' }
     ]
 
-    const [isCodeBlock, setIsCodeBlock] = useState(false);
-
-    // Toggle block type to 'Unordered List'
-    const _onListClick = (event) => {
-        event.preventDefault();
-        setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
-    }
-
-    // Toggle block type to 'Ordered List'
-    const _onOrderedListClick = (event) => {
-        event.preventDefault();
-        
-        setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
-    }
-
     const _toggleInlineStyle = (inlineStyle) => {
         onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
     }
 
     const _toggleBlockType = (blockType) => {
         onChange(RichUtils.toggleBlockType(editorState, blockType));
-    }
-
-    const _onBlockQuoteClick = (event) => {
-        event.preventDefault();
-        setEditorState(RichUtils.toggleBlockType(editorState, 'blockquote'))
-    }
-
-    // Toggle block type to 'Code'
-    const _onCodeClick = (event) => {
-        event.preventDefault();
-        clearStyle();
-        setIsCodeBlock(!isCodeBlock);
-        setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
-    }
-
-    const clearStyle = () => {
-        const anchorKey = editorState.getSelection().getAnchorKey();
-
-        //Then based on the docs for SelectionState -
-        const currentContent = editorState.getCurrentContent();
-        const currentBlock = currentContent.getBlockForKey(anchorKey);
-
-        const newSelectionState = SelectionState.createEmpty().merge({
-            anchorKey: anchorKey,
-            anchorOffset: 0,
-            focusKey: anchorKey,
-            focusOffset: currentBlock.getLength()
-        });
-
-        // Selected Text
-        const selectedText = currentBlock.getText();
-        const contentWithoutStyles = Modifier.replaceText(
-            editorState.getCurrentContent(),
-            newSelectionState,
-            selectedText,
-            null,
-        );
-
-        const newState = EditorState.push(
-            editorState,
-            contentWithoutStyles,
-            'change-inline-style',
-        );
-
-        setEditorState(newState);
     }
 
     const onChange = (newEditorState) => {
@@ -215,92 +161,38 @@ export default function PostEditor(props) {
         return 'not-handled';
     }
 
-    const buttonRowTheme = {
-        global: {
-            active: {
-                color: 'black'
-            }
-        },
-        tip: {
-            content: {
-                background: 'white'
-            }
-        }
-    }
-
     return (
         <Box border='all' round='small' align='center' 
             pad={{horizontal: 'small', top: 'xsmall'}}
             onMouseDown={ handleFocus.bind(this) }>
-            <Grommet theme={buttonRowTheme}>
 
-                { isFocused ? 
-                <Box animation={[{type: 'slideDown', duration: 150}]} 
-                    elevation={isFocused ? 'medium' : 'none'} 
-                    direction='row' 
-                    background='#FCE181'
-                    round='small'
-                    pad={{ horizontal: 'small', vertical: 'xsmall' }} >
-                    
-                    { INLINE_STYLES.map( (type) => 
-                        <StyleButton active={editorState.getCurrentInlineStyle().has(type.style)}
-                            label={type.label}
-                            onToggle={_toggleInlineStyle}
-                            style={type.style} disabled={isCodeBlock} />
-                        )
-                    }
+            { isFocused ? 
+            <Box animation={[{type: 'slideDown', duration: 150}]} 
+                elevation={isFocused ? 'medium' : 'none'} 
+                direction='row' 
+                background='#FCE181'
+                round='small'
+                pad={{ horizontal: 'small', vertical: 'xsmall' }} >
+                
+                { INLINE_STYLES.map( (type) => 
+                    <StyleButton active={editorState.getCurrentInlineStyle().has(type.style)}
+                        label={type.label}
+                        onToggle={_toggleInlineStyle}
+                        style={type.style} disabled={isCodeBlock} />
+                    )
+                }
 
-                    { BLOCK_TYPES.map( (type) => 
-                            <StyleButton 
-                                active={type.style === getCurrentBlock(editorState).getType()} 
-                                label={type.label} 
-                                onToggle={_toggleBlockType}
-                                setIsCodeBlock={setIsCodeBlock}
-                                style={type.style} disabled={isCodeBlock} />
-                        )
-                    }
+                { BLOCK_TYPES.map( (type) => 
+                    <StyleButton 
+                        active={type.style === getCurrentBlock(editorState).getType()} 
+                        label={type.label} 
+                        onToggle={_toggleBlockType}
+                        setIsCodeBlock={setIsCodeBlock}
+                        style={type.style} disabled={isCodeBlock} />
+                    )
+                }
 
-                    <Tip content={<Text size='small'>List</Text>}>
-                    <Button 
-                        disabled={checkBlockType('code-block')}
-                        onMouseDown={_onListClick.bind(this)}>
-                        <Box pad={{horizontal: '8px'}}>
-                        <List color={checkBlockType('unordered-list-item') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-
-                    <Tip content={<Text size='small'>Ordered List</Text>}>
-                    <Button
-                        disabled={checkBlockType('code-block')}
-                        onMouseDown={_onOrderedListClick.bind(this)}>
-                        <Box pad={{horizontal: '8px'}}>
-                        <OrderedList color={checkBlockType('ordered-list-item') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-                    
-                    <Tip content={<Text size='small'>Block Quote</Text>}>
-                    <Button 
-                        disabled={checkBlockType('code-block')} name='block'
-                        onMouseDown={_onBlockQuoteClick.bind(this)}>
-                        <Box pad={{horizontal: '8px'}}>
-                        <BlockQuote color={checkBlockType('blockquote') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-
-                    <Tip content={<Text size='small'>Code Block</Text>}>
-                    <Button onMouseDown={_onCodeClick.bind(this)}>
-                        <Box pad={{horizontal: '8px'}}>
-                        <Code color={checkBlockType('code-block') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-
-                </Box> : <Box height='36px' /> }
-            
-            </Grommet>
+            </Box> : <Box height='36px' /> }
 
             <Box fill pad={{vertical: 'small'}} align='left'> 
                 <Editor ref={setEditorRef}
