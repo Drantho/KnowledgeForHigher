@@ -93,7 +93,7 @@ export default function PostEditor(props) {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
 
-        // props.getDraftValue(convertToRaw(contentState));
+        props.getDraftValue(convertToRaw(contentState));
     }
 
     const onFocus = (arg) => {
@@ -237,7 +237,6 @@ export default function PostEditor(props) {
                             style={type.style} disabled={isCodeBlock} />
                         )
                     }
-
 
                     <Tip content={<Text size='small'>List</Text>}>
                     <Button 
