@@ -60,7 +60,6 @@ export default function PostEditor(props) {
     const onChange = (newEditorState) => {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
-
         props.getDraftValue(convertToRaw(contentState));
     }
 
@@ -88,7 +87,7 @@ export default function PostEditor(props) {
         if (command === 'backspace' && getCurrentBlock(editorState).getText().trim() === '' ) {
             setIsCodeBlock(false);
             clearBlockType();
-        }
+        } 
     }
 
     const clearBlockType = () => {
@@ -109,20 +108,9 @@ export default function PostEditor(props) {
         return state.getCurrentContent().getBlockForKey(blockKey);
     }
 
-    const getCurrentLetter = (state) => {
-        const currentBlock = getCurrentBlock(state);
-        const blockText = currentBlock.getText();
-        return blockText[state.getSelection().getStartOffset() - 1];
-    }
-
     // Utility function to check current block's type
     const checkBlockType = (type) => {
         return RichUtils.getCurrentBlockType(editorState) === type;
-    }
-
-    // Utililty function to check current selection's inline style
-    const checkInlineStyle = (style) => {
-        return editorState.getCurrentInlineStyle().has(style);
     }
 
     const blockStyleFn = (contentBlock) => {
