@@ -1,10 +1,13 @@
 import { React, useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
 
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
+
 import Comment from '../components/Comment';
 import Rating from '../components/Rating';
 import Answer from '../components/Answer';
 import Tag from '../components/Tag';
+import PostEditor from '../components/PostEditor';
 
 import {
     Box,
@@ -55,13 +58,16 @@ export default function Question(props) {
 
     const [ratings, setRatings] = useState({});
 
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
     const handleSubmit = async () => {
 
         if (answer) {
-
+            console.log(answer);
             await API.createAnswer(answer, props.userState.token).catch(err => console.log(err));
 
             setAnswer({ ...answer, text: "" });
+            setEditorState(editorState.push(EditorState.createEmpty()));
 
             const newAnswers = await API.getAnswersByQuestion(id).catch(err => console.log(err));
             setAnswers(newAnswers.data);
@@ -86,13 +92,18 @@ export default function Question(props) {
 
     useEffect(async () => {
         const questionToShow = await API.getQuestionById(id).catch(err => console.log(err));
+        console.log(convertFromRaw(JSON.parse(questionToShow.data.text)))
         setQuestion(questionToShow.data);
+        setEditorState(
+            EditorState.createWithContent(convertFromRaw(JSON.parse(questionToShow.data.text)))
+        );
 
         const commentsToShow = await API.getAllQuestionComments(id).catch(err => console.log(err));;
         setQuestionComments(commentsToShow.data);
 
         const answerToShow = await API.getAnswersByQuestion(id).catch(err => console.log(err));;
         setAnswers(answerToShow.data);
+        console.log(answerToShow)
 
         const ratingToShow = await API.getRating(id, "question").catch(err => console.log(err));;
         setRatings(ratingToShow.data);
@@ -143,6 +154,12 @@ export default function Question(props) {
         setAnswer({ ...answer, text: event.target.value })
     }
 
+    const blockStyleFn = (contentBlock) => {
+        if (contentBlock.getType() === 'code-block') {
+            return 'codeBlockStyle';
+        }
+    }
+
     return (
         <Grommet theme={theme}>
             <Box margin={{ top: '100px', bottom: '20px' }} align='center'>
@@ -188,7 +205,10 @@ export default function Question(props) {
                             background='rgba(252,225,129,0.8)'
                             round='small'
                             margin={{ horizontal: 'large', top: '20px' }}>
-                            <Text color='#222E42' size='large'>{question.text}</Text>
+                            <Editor 
+                                editorState={editorState} 
+                                readOnly={true} 
+                                blockStyleFn={blockStyleFn}/>
                         </Box>
                     </Grommet>
 
@@ -249,7 +269,9 @@ export default function Question(props) {
                     {/* {(props.userState.id !== question.User.id && props.userState.isSignedIn) && */}
                     {(props.userState.isSignedIn) &&
                         <Box>
-
+                        <PostEditor
+                            getDraftValue={(value) => setAnswer({...answer, text: JSON.stringify(value) })}
+                            controlledContent={answer.text} />
                             <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
                             <Box height='3px' background='#222E42' />
                             <Form onSubmit={handleSubmit} value={answer.text}>

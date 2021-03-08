@@ -69,7 +69,7 @@ export default function Ask(props) {
     }
 
     const getDraftValue = (draftRawObj) => {
-        setFormValues({ ...formValues, text: JSON.stringify(draftRawObj)});
+        setFormValues({ ...formValues, text: JSON.stringify(draftRawObj) });
     }
 
     return ( 

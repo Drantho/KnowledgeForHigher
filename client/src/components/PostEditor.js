@@ -1,19 +1,25 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import { Editor, EditorState, SelectionState, RichUtils, Modifier, convertToRaw, convertFromRaw } from 'draft-js';
-import clearFormatting from 'draft-js-clear-formatting';
 import { Bold, Underline, Italic, List, OrderedList, Code, BlockQuote } from 'grommet-icons';
 import { Grommet, Box, Button, Tip, Text } from 'grommet';
 
 import './customDraftStyle.css';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
-
-import EditorBarButton from './EditorBarButton';
  
 export default function PostEditor(props) {
 
     // Create an empty editor state object
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+    // useEffect( () => {
+    //     console.log(props.controlledContent);
+    //     if (props.controlledContent === '') {
+    //         setEditorState(EditorState.createEmpty());
+    //     } else {
+    //         setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
+    //     }
+    // }, []);
     // const [editorState, setEditorState] =
     //     useState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
 
@@ -159,8 +165,8 @@ export default function PostEditor(props) {
     }
 
     const handleFocus = async (event) => {
-        event.preventDefault();
         if (!isFocused) {
+            event.preventDefault();
             await editorRef.focus();
         }
     }
@@ -309,7 +315,7 @@ export default function PostEditor(props) {
                         disabled={checkBlockType('code-block')}
                         onMouseDown={_onListClick.bind(this)}>
                         <Box pad={{horizontal: '8px'}}>
-                        <List color={checkBlockType('unordered-list') ? 'black' : 'gray'} />
+                        <List color={checkBlockType('unordered-list-item') ? 'black' : 'gray'} />
                         </Box>
                     </Button>
                     </Tip>
@@ -319,7 +325,7 @@ export default function PostEditor(props) {
                         disabled={checkBlockType('code-block')}
                         onMouseDown={_onOrderedListClick.bind(this)}>
                         <Box pad={{horizontal: '8px'}}>
-                        <OrderedList color={checkBlockType('ordered-list') ? 'black' : 'gray'} />
+                        <OrderedList color={checkBlockType('ordered-list-item') ? 'black' : 'gray'} />
                         </Box>
                     </Button>
                     </Tip>
@@ -342,7 +348,7 @@ export default function PostEditor(props) {
                     </Button>
                     </Tip>
 
-                </Box> : <Box height='36px'></Box> }
+                </Box> : <Box height='36px' /> }
             
             </Grommet>
 
