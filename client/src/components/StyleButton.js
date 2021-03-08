@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 
 import { Grommet, Box, Tip, Button, Text } from 'grommet';
-import { Bold, Italic, Underline } from 'grommet-icons';
+import { List, OrderedList, BlockQuote, Code, Bold, Italic, Underline } from 'grommet-icons';
 
 export default function StyleButton(props) {
 
@@ -12,6 +12,10 @@ export default function StyleButton(props) {
             'Bold': <Bold color={getColor()} />,
             'Underline': <Underline color={getColor()} />,
             'Italic': <Italic color={getColor()} />,
+            'List': <List color={getColor()} />,
+            'Ordered List': <OrderedList color={getColor()} />,
+            'Block Quote': <BlockQuote color={getColor()} />,
+            'Code': <Code color={props.active ? 'black' : 'gray'} />,
         });
        
     }, [props.disabled, props.active] );
@@ -30,10 +34,15 @@ export default function StyleButton(props) {
 
     const onClick = (event) => {
         event.preventDefault();
-        if (props.disabled) {
+        
+        if (props.style === 'code-block') {
+            props.setIsCodeBlock(!props.active);
+        }
+        
+        if (props.disabled && props.style !== 'code-block') {
             return;
         } 
-        
+
         props.onToggle(props.style);
     }
 

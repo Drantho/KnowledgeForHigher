@@ -19,11 +19,18 @@ export default function PostEditor(props) {
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
 
-    const INLINE_STYLES =[
+    const INLINE_STYLES = [
         { label: 'Bold', style: 'BOLD' },
         { label: 'Underline', style: 'UNDERLINE' },
         { label: 'Italic', style: 'ITALIC' } 
     ];
+
+    const BLOCK_TYPES = [
+        { label: 'List', style: 'unordered-list-item' },
+        { label: 'Ordered List', style: 'ordered-list-item' },
+        { label: 'Block Quote', style: 'blockquote' },
+        { label: 'Code', style: 'code-block' }
+    ]
 
     const [isCodeBlock, setIsCodeBlock] = useState(false);
 
@@ -42,6 +49,10 @@ export default function PostEditor(props) {
 
     const _toggleInlineStyle = (inlineStyle) => {
         onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
+    }
+
+    const _toggleBlockType = (blockType) => {
+        onChange(RichUtils.toggleBlockType(editorState, blockType));
     }
 
     const _onBlockQuoteClick = (event) => {
@@ -119,6 +130,7 @@ export default function PostEditor(props) {
 
         // If backspace on empty block, remove block type
         if (command === 'backspace' && getCurrentBlock(editorState).getText() === '' ) {
+            setIsCodeBlock(false);
             clearBlockType();
         }
     }
@@ -235,6 +247,16 @@ export default function PostEditor(props) {
                             label={type.label}
                             onToggle={_toggleInlineStyle}
                             style={type.style} disabled={isCodeBlock} />
+                        )
+                    }
+
+                    { BLOCK_TYPES.map( (type) => 
+                            <StyleButton 
+                                active={type.style === getCurrentBlock(editorState).getType()} 
+                                label={type.label} 
+                                onToggle={_toggleBlockType}
+                                setIsCodeBlock={setIsCodeBlock}
+                                style={type.style} disabled={isCodeBlock} />
                         )
                     }
 
