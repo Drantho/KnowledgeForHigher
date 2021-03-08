@@ -13,26 +13,8 @@ export default function PostEditor(props) {
 
     // Create an empty editor state object
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
-    // useEffect( () => {
-    //     console.log(props.controlledContent);
-    //     if (props.controlledContent === '') {
-    //         setEditorState(EditorState.createEmpty());
-    //     } else {
-    //         setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
-    //     }
-    // }, []);
     // const [editorState, setEditorState] =
     //     useState(EditorState.createWithContent(convertFromRaw(JSON.parse(props.controlledContent))));
-
-    const [styleState, setStyleState] = useState({
-        bold: false,
-        underline: false,
-        italic: false,
-        list: false,
-        orderedList: false,
-        code: false
-    });
 
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
@@ -40,36 +22,30 @@ export default function PostEditor(props) {
     // Toggle in-line style to 'Bold'
     const _onBoldClick = (event) => {
         event.preventDefault();
-        setStyleState({ ...styleState, bold: !styleState.bold });
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
     }
 
     // Toggle in-line style to 'Underlined'
     const _onUnderlineClick = (event) => {
         event.preventDefault();
-        setStyleState({ ...styleState, underline: !styleState.underline });
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'));
     }
 
     // Toggle in-line style to 'Italic'
     const _onItalicClick = (event) => {
         event.preventDefault();
-        setStyleState({ ...styleState, italic: !styleState.italic });
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
     }
 
     // Toggle block type to 'Unordered List'
     const _onListClick = (event) => {
         event.preventDefault();
-        setStyleState({ ...styleState, list: !styleState.list });
         setEditorState(RichUtils.toggleBlockType(editorState, 'unordered-list-item'));
     }
 
     // Toggle block type to 'Ordered List'
     const _onOrderedListClick = (event) => {
         event.preventDefault();
-        console.log(event.target);
-        setStyleState({ ...styleState, orderedList: !styleState.orderedList });
         setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
     }
 
@@ -81,37 +57,7 @@ export default function PostEditor(props) {
     // Toggle block type to 'Code'
     const _onCodeClick = (event) => {
         event.preventDefault();
-        
-        // const anchorKey = editorState.getSelection().getAnchorKey();
- 
-        // //Then based on the docs for SelectionState -
-        // const currentContent = editorState.getCurrentContent();
-        // const currentBlock = currentContent.getBlockForKey(anchorKey);
-
-        // const newSelectionState = SelectionState.createEmpty().merge({
-        //     anchorKey: anchorKey,
-        //     anchorOffset: 0,
-        //     focusKey: anchorKey,
-        //     focusOffset: currentBlock.getLength()
-        // });
-
-        // // Selected Text
-        // const selectedText = currentBlock.getText();
-        // const contentWithoutStyles = Modifier.replaceText(
-        //     editorState.getCurrentContent(),
-        //     newSelectionState,
-        //     selectedText,
-        //     null,
-        // );
-            
-        // const newstate = EditorState.push(
-        //     editorState,
-        //     contentWithoutStyles,
-        //     'change-inline-style',
-        // );
         clearStyle();
-
-        setStyleState({...styleState, code: !styleState.code });
         setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
     }
 
