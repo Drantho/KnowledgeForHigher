@@ -6,16 +6,22 @@ import { Bold, Italic, Underline } from 'grommet-icons';
 export default function StyleButton(props) {
 
     const [disabled, setDisabled] = useState(false);
-
+    const [icons, setIcons] = useState({});
+ 
     useEffect( () => {
+        setIcons({
+            'Bold': <Bold color={getColor('BOLD')} />,
+            'Underline': <Underline color={getColor('UNDERLINE')} />,
+            'Italic': <Italic color={getColor('ITALIC')} />,
+        })
         setDisabled(props.disabled);
     }, [props.disabled] );
 
-    const icons = {
-        'Bold': <Bold color={getColor('BOLD')} />,
-        'Underline': <Underline color={getColor('UNDERLINE')} />,
-        'Italic': <Italic color={getColor('ITALIC')} />,
-    }
+    // const icons = {
+    //     'Bold': <Bold color={getColor('BOLD')} />,
+    //     'Underline': <Underline color={getColor('UNDERLINE')} />,
+    //     'Italic': <Italic color={getColor('ITALIC')} />,
+    // }
 
     const getColor = (style) => {
         if (disabled) {
