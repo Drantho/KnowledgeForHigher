@@ -18,24 +18,14 @@ export default function PostEditor(props) {
 
     const [editorRef, setEditorRef] = useState({});
     const [isFocused, setIsFocused] = useState(false);
-    
-    // Toggle in-line style to 'Bold'
-    const _onBoldClick = (event) => {
-        event.preventDefault();
-        setEditorState(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
-    }
 
-    // Toggle in-line style to 'Underlined'
-    const _onUnderlineClick = (event) => {
-        event.preventDefault();
-        setEditorState(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'));
-    }
+    const INLINE_STYLES =[
+        { label: 'Bold', style: 'BOLD' },
+        { label: 'Underline', style: 'UNDERLINE' },
+        { label: 'Italic', style: 'ITALIC' } 
+    ];
 
-    // Toggle in-line style to 'Italic'
-    const _onItalicClick = (event) => {
-        event.preventDefault();
-        setEditorState(RichUtils.toggleInlineStyle(editorState, 'ITALIC'));
-    }
+    const [isCodeBlock, setIsCodeBlock] = useState(false);
 
     // Toggle block type to 'Unordered List'
     const _onListClick = (event) => {
@@ -46,7 +36,12 @@ export default function PostEditor(props) {
     // Toggle block type to 'Ordered List'
     const _onOrderedListClick = (event) => {
         event.preventDefault();
+        
         setEditorState(RichUtils.toggleBlockType(editorState, 'ordered-list-item'));
+    }
+
+    const _toggleInlineStyle = (inlineStyle) => {
+        onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
     }
 
     const _onBlockQuoteClick = (event) => {
@@ -58,6 +53,7 @@ export default function PostEditor(props) {
     const _onCodeClick = (event) => {
         event.preventDefault();
         clearStyle();
+        setIsCodeBlock(!isCodeBlock);
         setEditorState(RichUtils.toggleBlockType(editorState, 'code-block'));
     }
 
@@ -97,7 +93,7 @@ export default function PostEditor(props) {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
 
-        props.getDraftValue(convertToRaw(contentState));
+        // props.getDraftValue(convertToRaw(contentState));
     }
 
     const onFocus = (arg) => {
@@ -233,52 +229,15 @@ export default function PostEditor(props) {
                     background='#FCE181'
                     round='small'
                     pad={{ horizontal: 'small', vertical: 'xsmall' }} >
+                    
+                    { INLINE_STYLES.map( (type) => 
+                        <StyleButton active={editorState.getCurrentInlineStyle().has(type.style)}
+                            label={type.label}
+                            onToggle={_toggleInlineStyle}
+                            style={type.style} disabled={isCodeBlock} />
+                        )
+                    }
 
-                    <StyleButton style='Bold'
-                        disabled={checkInlineStyle('BOLD')}
-                        checkInlineStyle={checkInlineStyle} 
-                        onClick={_onBoldClick} 
-                        thisTarget={this} />
-                    <StyleButton style='Underline'
-                        disabled={checkInlineStyle('UNDERLINE')}
-                        checkInlineStyle={checkInlineStyle} 
-                        onClick={ e => setEditorState(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE')) } 
-                        thisTarget={this} />
-                    <StyleButton style='Italic'
-                        disabled={checkInlineStyle('ITALIC')}
-                        checkInlineStyle={checkInlineStyle} 
-                        onClick={_onBoldClick} 
-                        thisTarget={this} />
-
-                    <Tip content={<Text size='small'>Bold</Text>}>
-                    <Button 
-                        disabled={checkBlockType('code-block')}
-                        onMouseDown={_onBoldClick.bind(this)}>
-                        <Box pad={{ horizontal: '8px' }}>
-                        <Bold color={checkInlineStyle('BOLD') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-
-                    <Tip content={<Text size='small'>Underline</Text>}>
-                    <Button
-                        disabled={checkBlockType('code-block')}
-                        onMouseDown={_onUnderlineClick.bind(this)}> 
-                        <Box pad={{horizontal: '8px'}}>
-                        <Underline color={checkInlineStyle('UNDERLINE') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>
-                    </Tip>
-
-                    <Tip content={<Text size='small'>Italic</Text>}>
-                    <Button 
-                        disabled={checkBlockType('code-block')}
-                        onMouseDown={_onItalicClick.bind(this)}>
-                        <Box pad={{horizontal: '8px'}}>
-                        <Italic color={checkInlineStyle('ITALIC') ? 'black' : 'gray'} />
-                        </Box>
-                    </Button>   
-                    </Tip>
 
                     <Tip content={<Text size='small'>List</Text>}>
                     <Button 

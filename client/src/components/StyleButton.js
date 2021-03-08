@@ -5,30 +5,23 @@ import { Bold, Italic, Underline } from 'grommet-icons';
 
 export default function StyleButton(props) {
 
-    const [disabled, setDisabled] = useState(false);
     const [icons, setIcons] = useState({});
  
     useEffect( () => {
         setIcons({
-            'Bold': <Bold color={getColor('BOLD')} />,
-            'Underline': <Underline color={getColor('UNDERLINE')} />,
-            'Italic': <Italic color={getColor('ITALIC')} />,
-        })
-        setDisabled(props.disabled);
-    }, [props.disabled] );
-
-    // const icons = {
-    //     'Bold': <Bold color={getColor('BOLD')} />,
-    //     'Underline': <Underline color={getColor('UNDERLINE')} />,
-    //     'Italic': <Italic color={getColor('ITALIC')} />,
-    // }
+            'Bold': <Bold color={getColor()} />,
+            'Underline': <Underline color={getColor()} />,
+            'Italic': <Italic color={getColor()} />,
+        });
+       
+    }, [props.disabled, props.active] );
 
     const getColor = (style) => {
-        if (disabled) {
+        if (props.disabled) {
             return 'rgba(0,0,0,0.1)';
         }
 
-        if (props.checkInlineStyle(style)) {
+        if (props.active) {
             return 'black';
         } 
 
@@ -36,11 +29,12 @@ export default function StyleButton(props) {
     }
 
     const onClick = (event) => {
-        if (disabled) {
+        event.preventDefault();
+        if (props.disabled) {
             return;
         } 
-
-        props.onClick.bind(props.thisTarget);
+        
+        props.onToggle(props.style);
     }
 
     const buttonRowTheme = {
@@ -58,10 +52,10 @@ export default function StyleButton(props) {
 
     return (
         <Grommet theme={buttonRowTheme}>
-        <Tip content={<Text size='small'>{props.style}</Text>}>
+        <Tip content={<Text size='small'>{props.label}</Text>}>
             <Button onMouseDown={onClick}>
-                <Box pad={{ horizontal: '8px' }}>
-                    {icons[props.style]}
+                <Box margin={{top: '4px'}} pad={{ horizontal: '8px' }}>
+                    {icons[props.label]}
                 </Box>
             </Button>
         </Tip>
