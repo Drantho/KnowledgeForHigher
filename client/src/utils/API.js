@@ -153,6 +153,9 @@ export default {
       }
     })
   },
+  getCommentsByUser: id => {
+    return axios.get(`${url}/api/comment?user=${id}`)
+  },
   getAnswersByUser: id => {
     console.log((`${url}/api/answer?user=${id}`));
     return axios.get(`${url}/api/answer?user=${id}`)
@@ -213,6 +216,9 @@ export default {
   getRating: (id, type) => {
     console.log((`${url}/api/rating?ref=${id}&type=${type}`));
     return axios.get(`${url}/api/rating?ref=${id}&type=${type}`)
+  },
+  getRatingsByUser: (id) => {
+    return axios.get(`${url}/api/rating/all?user=${id}`)
   },
   uploadPhoto: (data, token) => {
     console.log((`${url}/api/user/portrait`));

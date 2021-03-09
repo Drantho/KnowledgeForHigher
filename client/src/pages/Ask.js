@@ -5,6 +5,8 @@ import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'gromme
 
 import PostEditor from '../components/PostEditor';
 
+import UserFeed from '../components/UserFeed';
+
 export default function Ask(props) {
 
     const [formValues, setFormValues] = useState({});
@@ -77,6 +79,7 @@ export default function Ask(props) {
         <Box align='center' margin={{top: '74px'}}>
             <Box width='70%'>
                 <Grommet theme={theme}>
+                <UserFeed userState={props.userState} />
                 <Form onSubmit={handleSubmit} value={formValues}>
                     <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
                         <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
