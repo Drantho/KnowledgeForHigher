@@ -13,7 +13,8 @@ export default function UserFeedQuestion(props) {
                     </Box>
                     <Box>
                         <Text size='small' weight='bold'>
-                            {props.userState.firstName} asked a question:
+                            {props.userState.id === props.targetUser ? 
+                                props.userState.firstName : 'You'} asked a question:
                         </Text>
                         <Anchor href={`/question/${props.question.id}`} >
                             {props.question.title}

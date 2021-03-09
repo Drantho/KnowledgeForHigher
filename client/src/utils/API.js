@@ -164,6 +164,9 @@ export default {
     console.log((`${url}/api/answer?question=${id}`));
     return axios.get(`${url}/api/answer?question=${id}`)
   },
+  getAnswerById: id => {
+    return axios.get(`${url}/api/answer?id=${id}`)
+  },
   createAnswer: (data, token) => {
     console.log((`${url}/api/answer`));
     console.log(data);

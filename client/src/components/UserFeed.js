@@ -13,11 +13,11 @@ export default function UserFeed(props) {
 
     useEffect( async () => {
 
-        const services = (await API.getServicesByUser(props.userState.id)).data;
-        const questions = (await API.getQuestionByUser(props.userState.id)).data;
-        const answers = (await API.getAnswersByUser(props.userState.id)).data;
-        const comments = (await API.getCommentsByUser(props.userState.id)).data;
-        const ratings = (await API.getRatingsByUser(props.userState.id)).data;
+        const services = (await API.getServicesByUser(props.targetUser.id)).data;
+        const questions = (await API.getQuestionByUser(props.targetUser.id)).data;
+        const answers = (await API.getAnswersByUser(props.targetUser.id)).data;
+        const comments = (await API.getCommentsByUser(props.targetUser.id)).data;
+        const ratings = (await API.getRatingsByUser(props.targetUser.id)).data;
 
         services.forEach(e => (e.entityType = 'service' ))
         questions.forEach(e => (e.entityType = 'question' ))
@@ -47,9 +47,15 @@ export default function UserFeed(props) {
                 entityList.map( e => {
                     switch (e.entityType) {
                         case 'comment':
-                            return <UserFeedComment  />
+                            return <UserFeedComment 
+                                        targetUser={props.targetUser} 
+                                        userState={props.userState}
+                                        comment={e} />
                         case 'question':
-                            return <UserFeedQuestion userState={props.userState} question={e} />
+                            return <UserFeedQuestion 
+                                        targetUser={props.targetUser} 
+                                        userState={props.userState} 
+                                        question={e} />
                     }
                 })
             }

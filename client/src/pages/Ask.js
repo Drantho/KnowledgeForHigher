@@ -79,7 +79,7 @@ export default function Ask(props) {
         <Box align='center' margin={{top: '74px'}}>
             <Box width='70%'>
                 <Grommet theme={theme}>
-                <UserFeed userState={props.userState} />
+                <UserFeed userState={props.userState} targetUser={props.userState} />
                 <Form onSubmit={handleSubmit} value={formValues}>
                     <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
                         <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
