@@ -6,6 +6,8 @@ import API from '../utils/API';
 
 import UserFeedComment from './UserFeedComment';
 import UserFeedQuestion from './UserFeedQuestion';
+import UserFeedAnswer from './UserFeedAnswer';
+import UserFeedRating from './UserFeedRating';
 
 export default function UserFeed(props) {
 
@@ -56,6 +58,16 @@ export default function UserFeed(props) {
                                         targetUser={props.targetUser} 
                                         userState={props.userState} 
                                         question={e} />
+                        case 'answer':
+                            return <UserFeedAnswer 
+                                        targetUser={props.targetUser}
+                                        userState={props.userState} 
+                                        answer={e}/>
+                        case 'rating':
+                            return <UserFeedRating
+                                        targetUser={props.targetUser}
+                                        userState={props.userState} 
+                                        rating={e} />
                     }
                 })
             }
