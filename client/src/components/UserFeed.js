@@ -1,8 +1,11 @@
 import { React, useState, useEffect } from 'react';
 
-import { Text } from 'grommet';
+import { Text, Box } from 'grommet';
 
 import API from '../utils/API';
+
+import UserFeedComment from './UserFeedComment';
+import UserFeedQuestion from './UserFeedQuestion';
 
 export default function UserFeed(props) {
 
@@ -33,26 +36,24 @@ export default function UserFeed(props) {
                 return 0;
             }
         } );
-
+        console.log(entities);
         setEntityList(entities);
 
     }, []);
 
     return (
-        <div>
+        <Box margin={{top: '30px'}} gap='small'>
             {
                 entityList.map( e => {
                     switch (e.entityType) {
+                        case 'comment':
+                            return <UserFeedComment  />
                         case 'question':
-                            return <Text>{e.title}</Text>
-                        case 'answer':
-                            return <Text>{e.text}</Text>
-                        case 'service':
-                            return <Text>{e.name}</Text>
+                            return <UserFeedQuestion userState={props.userState} question={e} />
                     }
                 })
             }
             
-        </div>
+        </Box>
     )
 }
