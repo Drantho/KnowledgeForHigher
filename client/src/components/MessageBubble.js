@@ -1,12 +1,12 @@
 import React from 'react';
 
-import {Card, Tip, CardBody, CardFooter, Text, Box, Grommet, grommet} from 'grommet';
+import { Card, Avatar, Tip, CardBody, Text, Box, Grommet } from 'grommet';
 
 export default function MessageBubble(props) {
 
     return (
         <Grommet>
-        <Box margin={{'vertical': 'xsmall'}}
+        <Box margin={{'vertical': '0px'}}
             align={props.sentOrRecieved === 'sent' ? 'end' : 'start'} gap='xsmall'>
             <Tip 
                 content={<Box><Text size='xsmall'>{props.date}</Text></Box>} 
@@ -16,14 +16,17 @@ export default function MessageBubble(props) {
                     justify: 'end', 
                     width: {max: '150px'},
                 }}>
-
-            <Card width='medium'
-                pad={{vertical: 'xsmall', horizontal:'medium'}} 
+            
+            <Box direction='row' align='center'>
+            <Card height='min-content' width={{max: 'medium'}}
+                pad={{vertical: 'xsmall', horizontal:'small'}} 
                 background={props.sentOrRecieved === 'sent' ? 'dark-4' : 'dark-1'} 
                 gap='xsmall'
                 round='medium'>
                 <CardBody><Text size='small'>{props.body}</Text></CardBody>
             </Card>
+            <Avatar size='medium' src={props.portrait} />
+            </Box>
             </Tip>
         </Box>
         </Grommet>

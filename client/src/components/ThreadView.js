@@ -1,37 +1,44 @@
 import { React, useState, useEffect, useRef } from 'react';
 import { Text, TextArea, Form, FormField, Button, Box, Heading } from 'grommet';
 
+import {
+    Editor,
+    EditorState,
+    ContentState,
+    SelectionState,
+    RichUtils,
+    Modifier,
+    convertToRaw
+} from 'draft-js';
+
 import MessageBubble from './MessageBubble';
 
 import messageAPI from '../utils/messageAPI';
+import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 
 export default function ThreadView(props) {
 
     const [messagesList, setMessagesList] = useState([]);
-
-    const [newMsg, setNewMsg] = useState({newMsg: ''});
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     const handleSend = async (event) => {
         event.preventDefault();
-        if (newMsg.newMsg === '' || newMsg.newMsg === null) {
-            console.log('empty message');
+        if (editorState.getCurrentContent().getPlainText() === '') {
             return;
         }
 
         const data = {
             recipientId: props.toUser.id,
             ThreadId: props.selectedThread,
-            body: newMsg.newMsg
+            body: editorState.getCurrentContent().getPlainText()
         }
 
         setMessagesList([...messagesList, {...data, senderId: props.userState.id}]);
         scrollToBottom();
         await messageAPI.sendMessage(data, props.userState.token);
-        setNewMsg({newMsg: ''});
-    }
 
-    const handleChange = (event) => {
-        setNewMsg({newMsg: event.target.value});
+        const clearedEditorState = EditorState.push(editorState, ContentState.createFromText(''));
+        setEditorState( clearedEditorState );
     }
 
     const messagesEndRef = useRef(null)
@@ -47,8 +54,19 @@ export default function ThreadView(props) {
         scrollToBottom();
     }, [props.selectedThread]);
 
+    const onChange = (newEditorState) => {
+        setEditorState(newEditorState);
+    }
+
+    const handleReturn = (event) => {
+        if (isSoftNewlineEvent(event)) {
+            return 'handled';
+        }
+        handleSend(event);
+    }
+
     return (
-        <Box background={{color: '#939393', opacity:'weak'}} width='100%'>
+        <Box justify='between' background={{color: '#939393', opacity:'weak'}} width='100%'>
                 {props.selectedThread !== -1 ? 
                 <>
                 <Box elevation='none' align='end' background={{ color: 'rgba(137,162,178,0.6)' }}>
@@ -58,30 +76,32 @@ export default function ThreadView(props) {
                     Conversation with {props.toUser.firstName + ' ' + props.toUser.lastName}
                 </Heading>
                 </Box>
-                <Box 
-                    margin={{horizontal: 'small', bottom: 'small'}} 
-                    height={{max: '500px', min: '500px'}} 
+                <Box flex='grow' 
                     overflow={{vertical: 'scroll'}}>
                     {messagesList.map( (e) => {
                         return props.selectedThread ? <MessageBubble 
                         sentOrRecieved={e.senderId === props.userState.id ? 'sent' : 'received'}
                         body={e.body} 
-                        date={e.formattedDate}/> : <></>
+                        date={e.formattedDate} 
+                        portrait={props.userState.portrait} /> : <></>
                     })}
                     <div ref={messagesEndRef}></div>
                 </Box>
 
-                <Box>
-                    <Form value={newMsg.newMsg}
+                <Box margin={{vertical: '10px'}}>
+                    <Form value={editorState.getCurrentContent().getPlainText()}
                         onSubmit={handleSend}>
-                        <Box direction='row' margin={{'horizontal': 'medium'}}>
-                            <TextArea 
-                                type='submit'
-                                margin={{'horizontal': 'small'}}
-                                name='message'
-                                onChange={handleChange}
-                                placeholder='Message...'
-                                value={newMsg.newMsg}/>
+                        <Box align='center' direction='row' margin={{'horizontal': 'medium'}}>
+                            <Box fill round='small'
+                                pad='small' 
+                                background='gray'>
+                                <Editor 
+                                    onChange={onChange} 
+                                    editorState={editorState}
+                                    placeholder='Enter a message...'
+                                    handleReturn={handleReturn} />
+                            </Box>
+
                             <Box justify='center' align='center'>
                                 <Button 
                                     margin={{'horizontal': 'small'}}
