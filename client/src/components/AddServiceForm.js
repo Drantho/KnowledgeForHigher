@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 
-import { Box, Text, TextInput, Button } from 'grommet';
+import { Box, Form, FormField, Text, TextInput, Button, Heading } from 'grommet';
 
 import PostEditor from './PostEditor';
 
@@ -14,10 +14,22 @@ export default function AddServiceForm(props) {
 
     return (
         <Box pad="5px">
-            <PostEditor getDraftValue={ 
-                    val => { setFormValues({ ...formValues, text: JSON.stringify(val) }) }
-                } controlledInput={formValues.text}
-                placeholder='Enter a detailed description of your service...' />
+            <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
+                <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
+                    Add a service
+                </Heading>
+            </Box>
+            <Form>
+                <FormField label='Service Name' 
+                    name='title'
+                    htmlFor='title'>
+                    <TextInput name='title' value={formValues.title} onChange={handleInput} />
+                </FormField>
+                <PostEditor getDraftValue={ 
+                        val => { setFormValues({ ...formValues, text: JSON.stringify(val) }) }
+                    } controlledInput={formValues.text}
+                    placeholder='Enter a detailed description of your service...' />
+            </Form>
         </Box>
     )
 }
