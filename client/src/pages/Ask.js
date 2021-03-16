@@ -70,6 +70,12 @@ export default function Ask(props) {
         setFormValues({ ...formValues, text: JSON.stringify(draftRawObj) });
     }
 
+    const onAddTag = (tag) => {
+        if (tagNames.indexOf(tag) < 0) {
+            setTagNames([...tagNames, tag]);
+        }
+    }
+
     return ( 
         
         <Box align='center' margin={{top: '74px'}}>
@@ -100,7 +106,8 @@ export default function Ask(props) {
 
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                     <TagInput placeholder='Add a tag'
-                        selectedTags={tagNames} setSelectedTags={setTagNames} />
+                        selectedTags={tagNames} setSelectedTags={setTagNames} 
+                        onAddTag={onAddTag} />
                         
                     </FormField>
 

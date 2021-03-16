@@ -40,12 +40,14 @@ export default function TagInput(props) {
     const onEnter = (event) => {
         if (event.code === 'Enter') {
             event.preventDefault();
-            onAddTag(currentTag);
+            props.onAddTag(currentTag);
+            setCurrentTag('');
         }
     };
 
     const handleSuggestionSelect = (event) => {
-        onAddTag(event.suggestion);  
+        props.onAddTag(event.suggestion);
+        setCurrentTag('');
     }
 
     const Tag = (args) => {
