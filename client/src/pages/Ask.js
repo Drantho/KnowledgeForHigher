@@ -4,25 +4,23 @@ import { useHistory } from 'react-router-dom';
 import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
 
 import PostEditor from '../components/PostEditor';
+import TagInput from '../components/TagInput';
 
 export default function Ask(props) {
 
     const [formValues, setFormValues] = useState({});
+
+    const [tagNames, setTagNames] = useState([]);
 
     const handleInput = (event) => {
         setFormValues({ ...formValues, [event.target.name]: event.target.value });
     }
 
     const handleSubmit = (event) => {
-        // Convert tags string to array
-        let tags;
-        if (formValues.tags) {
-            tags = formValues.tags.split(',').map(e => e.trim());
-        }
 
         API.createQuestion({
              ...formValues,
-             tags: tags,
+             tags: tagNames,
              user: props.userState.id
         }, props.userState.token).then( (response) => {
             console.log(response);
@@ -72,6 +70,12 @@ export default function Ask(props) {
         setFormValues({ ...formValues, text: JSON.stringify(draftRawObj) });
     }
 
+    const onAddTag = (tag) => {
+        if (tagNames.indexOf(tag) < 0) {
+            setTagNames([...tagNames, tag]);
+        }
+    }
+
     return ( 
         
         <Box align='center' margin={{top: '74px'}}>
@@ -93,20 +97,20 @@ export default function Ask(props) {
                             onChange={handleInput} />
                     </FormField>
 
+                    <FormField label='Description'>
                     <PostEditor 
                         getDraftValue={getDraftValue} 
                         controlledContent={formValues.text}
                         placeholder='Enter a detailed description for your question...' />
+                    </FormField>
 
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                        <TextArea
-                            style={{background:'white'}}
-                            id='new-question-tags'
-                            name='tags'
-                            placeholder='Enter a list of topics related to your question (separated by a comma).' 
-                            value={formValues.tags}
-                            onChange={handleInput} />
+                    <TagInput placeholder='Add a tag'
+                        selectedTags={tagNames} setSelectedTags={setTagNames} 
+                        onAddTag={onAddTag} />
+                        
                     </FormField>
+
                     <Box align='center'>
                         <Button size='medium' primary type='submit' label='Submit' />
                     </Box>
