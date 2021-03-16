@@ -185,7 +185,7 @@ router.post('/', authenticate, (request, response) => {
                         output.push(`These tags already existed: ${findResult.map( e => e.dataValues.name)}`);
                         output.push(`These tags were created: ${createResult.map( e => e.dataValues.name)}`);
                         output.push(`Linked tags ${linkResult.map( e => e.TagId)} to question`);
-
+                        console.log(output);
                         response.json(output);
                     }).catch( (err) => {
                         response.status(500).json(err);
