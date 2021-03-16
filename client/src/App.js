@@ -3,14 +3,14 @@ import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
-import Profile from "./pages/Profile";
+import Profile from "./pages/ProfilePage";
 import Question from "./pages/Question";
 import User from "./pages/User";
 import UserHome from './pages/UserHome';
 import Ask from './pages/Ask';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import NavbarTest from './components/Navbar';
+import Navbar from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
@@ -139,7 +139,7 @@ function App() {
   return (
     <Router>
       <Grommet theme={globalGrommetTheme}>
-      <UserNavbar userState={userState}/>
+      <Navbar userState={userState}/>
       {/* <LoginNavbar/> */}
       <Switch>
         <Route exact path="/">

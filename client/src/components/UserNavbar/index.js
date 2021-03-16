@@ -15,15 +15,6 @@ export default function UserNavbar(props) {
         window.location.reload();
     }
 
-    const renderItems = () => {
-        <Box>
-            <Text>hi</Text>
-            <Text>hi</Text>
-            <Text>hi</Text>
-            <Text>hi</Text>
-        </Box>
-    }
-
     return (
         <Box style={{ position: "fixed", top: 0, width: "100%" , zIndex: 10}}>
             <MediaQuery minDeviceWidth={1200}>
