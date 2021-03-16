@@ -28,26 +28,19 @@ export default function TagInput(props) {
         });
     }
 
-    const onAddTag = (tag) => {
-        if (props.selectedTags.indexOf(tag) < 0) {
-            props.setSelectedTags([...props.selectedTags, tag]);
-        }
-        setCurrentTag('');
-        setSuggestions([]);
-    };
-
-
     const onEnter = (event) => {
         if (event.code === 'Enter') {
             event.preventDefault();
             props.onAddTag(currentTag);
             setCurrentTag('');
+            setSuggestions([]);
         }
     };
 
     const handleSuggestionSelect = (event) => {
         props.onAddTag(event.suggestion);
         setCurrentTag('');
+        setSuggestions([]);
     }
 
     const Tag = (args) => {
