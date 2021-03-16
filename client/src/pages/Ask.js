@@ -91,11 +91,12 @@ export default function Ask(props) {
                             onChange={handleInput} />
                     </FormField>
 
+                    <FormField label='Description'>
                     <PostEditor 
                         getDraftValue={getDraftValue} 
                         controlledContent={formValues.text}
                         placeholder='Enter a detailed description for your question...' />
-
+                    </FormField>
 
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                     <TagInput placeholder='Add a tag'
