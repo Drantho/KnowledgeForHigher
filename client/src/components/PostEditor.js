@@ -5,7 +5,8 @@ import { Editor,
     SelectionState, 
     RichUtils, 
     Modifier, 
-    convertToRaw } from 'draft-js';
+    convertToRaw,
+    convertFromRaw } from 'draft-js';
 
 import { Box } from 'grommet';
 
@@ -157,6 +158,14 @@ export default function PostEditor(props) {
         onChange(RichUtils.onTab(event, editorState, 4));
         return 'handled';
     }
+
+    useEffect( () => {
+        if (props.initialContent) {
+            setEditorState(
+                EditorState.createWithContent(convertFromRaw(JSON.parse(props.initialContent)))
+            )
+        }
+    }, []);
 
     return (
         <Box border='all' round='small' align='center' 
