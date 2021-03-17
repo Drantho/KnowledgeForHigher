@@ -227,6 +227,32 @@ router.put('/user', authenticate, (request, response) => {
     });
 });
 
+router.delete('/user/:tag', authenticate, (request, response) => {
+
+    console.log(`User ${request.userId} unfollowing tag '${request.params.tag}'`);
+    db.Tag.findOne({
+        where: {
+            name: request.params.tag
+        }
+    }).then( (result) => {
+
+        db.sequelize.models.following.destroy({
+            where: {
+                TagId: result.dataValues.id,
+                UserId: request.userId
+            }
+        }).then( (deleteResult) => {
+            console.log('Unfollow successful!');
+            response.json(deleteResult);
+        }).catch( (err) => {
+            response.status(500).json(err);
+        });
+        
+    }).catch( (err) => {
+        response.status(500).json(err);
+    })
+})
+
 router.put('/service', authenticate, (request, response) => {
     db.Tag.findAll({
         where: {
