@@ -10,3 +10,21 @@
 .hidePlaceholder .public-DraftEditorPlaceholder-root {
   display: none;
 }
+
+div.DraftEditor-root {
+  padding: 10px;
+  min-height: 120px;
+  border: inset 1px #222E42;
+  border-radius: 5px;
+  background-color: rgb(132, 204, 252);
+  font-size: 12pt;
+  line-height: 1em;
+}
+
+.inline-editor div.DraftEditor-root {
+  width: min-content;
+  min-width: 250px;
+  min-height: min-content;
+  border: solid 2px gray;
+  background-color: #eee;
+}

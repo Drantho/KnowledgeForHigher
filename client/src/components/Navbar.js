@@ -40,8 +40,8 @@ export default function Navbar(props) {
             { props.userState.isSignedIn ? 
                 <Box align='center' gap='medium' direction='row'>
                     <Box direction='row' gap='small'>
-                        <Anchor color='#FCE181' href='/ask'>Ask</Anchor>
-                        <Anchor color='#FCE181' href='/home'>Home</Anchor>
+                        <Link to='/ask'>Ask</Link>
+                        <Link to='/home'>Home</Link>
                     </Box>
                     <UserWidget userState={props.userState} />
                 </Box>

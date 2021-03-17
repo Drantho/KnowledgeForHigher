@@ -139,13 +139,15 @@ function App() {
   return (
     <Router>
       <Grommet theme={globalGrommetTheme}>
-      <Navbar userState={userState}/>
-      {/* <LoginNavbar/> */}
+
+
       <Switch>
+
         <Route exact path="/">
           {userState.isSignedIn ?
             <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
+
         <Route exact path="/splash">
           {userState.isSignedIn ? 
             <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
@@ -153,9 +155,9 @@ function App() {
         <Route exact path="/browse">
           <Browse userState={userState}/>
         </Route>
-        <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
+        <Route exact path="/profile/:id">
           <Profile userState={userState} setUserState={setUserState}/>
-        </ProtectedRoute>
+        </Route>
         <Route exact path="/tag/:id">
           <Tag userState={userState}/>
         </Route>
