@@ -99,6 +99,11 @@ export default {
       }
     })  
   },
+  unLinkTagFromUser: (tag, token) => {
+    return axios.delete(`${url}/api/tag/user/${tag}`, {
+      headers: { authorization: `Bearer: ${token}` }
+    })
+  },
   getServicesByTag: id =>{
     console.log((`${url}/api/service?tag=${id}`));
     return axios.get(`${url}/api/service?tag=${id}`)
