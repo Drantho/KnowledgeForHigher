@@ -49,6 +49,7 @@ export default function TagInput(props) {
             props.setSelectedTags(
                 props.selectedTags.filter( e => e !== args.name )
             )
+            props.onRemoveTag(args.name);
         }
 
         return (
@@ -61,7 +62,7 @@ export default function TagInput(props) {
                     direction='row'
                     round='medium'
                     pad={{ horizontal: '16px', vertical: 'xxsmall' }}
-                    margin={{ horizontal: 'xxsmall' }}>
+                    margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}>
                     <Text margin={{ right: 'xsmall' }}>{args.name}</Text>
                     <Button onClick={removeTag}>
                         <FormClose size='18px' color='black' />
@@ -76,14 +77,14 @@ export default function TagInput(props) {
             <Box
                 direction="row"
                 align="center"
-                pad={{ horizontal: 'xsmall' }}
+                pad='xsmall'
                 border="all"
                 ref={boxRef}
                 wrap >
 
                 {props.selectedTags.map( v => <Tag name={v} />)}
 
-                <Box flex style={{ minWidth: '120px' }}>
+                <Box flex={props.lineBreak ? false : true} style={{ minWidth: '120px' }}>
                     <TextInput
                         type="search"
                         plain
