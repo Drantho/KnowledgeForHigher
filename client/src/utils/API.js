@@ -91,7 +91,9 @@ export default {
   linkTagToUser: (tag, token) => {
     console.log((`${url}/api/tag/user`));
     console.log(tag);
-    return axios.put(`${url}/api/tag/user`, tag, {
+    return axios.put(`${url}/api/tag/user`, {
+      tags: [tag]
+    }, {
       headers:{
           authorization: `Bearer: ${token}`
       }
