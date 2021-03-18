@@ -179,7 +179,7 @@ export default {
   },
   getUserById: id => {
     console.log((`${url}/api/user?id=${id}`));
-    return axios.get(`${url}/api/user?id=${id}`)
+    return axios.get(`${url}/api/user/?id=${id}`)
   },
   updateUser: (data, token) => {
     console.log((`${url}/api/user`));

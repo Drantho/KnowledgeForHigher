@@ -8,6 +8,7 @@ import API from '../utils/API';
 import Navbar from '../components/Navbar';
 import UserSidebar from '../components/UserSidebar';
 import UserEditForm from '../components/UserEditForm';
+import EntityCard from '../components/EntityCard';
 
 export default function ProfilePage(props) {
 
@@ -22,23 +23,29 @@ export default function ProfilePage(props) {
         id: parseInt(id)
     });
 
-    useEffect(() => {
-        API.getUserById(id).then( (response) => {
-            console.log(response.data);
-            setUser({
-                ...user,
-                userName: response.data.userName,
-                firstName: response.data.firstName,
-                lastName: response.data.lastName,
-                portrait: response.data.portrait,
-                email: response.data.email,
-                bio: response.data.bio
-            });
-        }).catch( (err) => {
-            console.log(err);
+    const [ questions, setQuestions ] = useState([]);
+    const [services, setServices ] = useState([]);
+
+    useEffect( async () => {
+        console.log(id);
+        console.log('use effect')
+        const userGet = await API.getUserById(id);
+        setUser({
+            ...user,
+            userName: userGet.data.userName,
+            firstName: userGet.data.firstName,
+            lastName: userGet.data.lastName,
+            portrait: userGet.data.portrait,
+            email: userGet.data.email,
+            bio: userGet.data.bio
         });
 
-    }, [])
+        const questionGet = await API.getQuestionByUser(id);
+        setQuestions(questionGet.data.map(e => ({ ...e, type: 'question' })));
+
+        const servicesGet = await API.getServicesByUser(id);
+        setServices(servicesGet.data.map( e => ({...e, type: 'service'})))
+    }, [props])
 
     return (
         <Grid fill rows={[ 'auto', 'flex' ]}
@@ -48,9 +55,11 @@ export default function ProfilePage(props) {
                 { name: 'sidebar', start: [0, 1], end: [0, 1] },
                 { name: 'main', start: [1, 1], end: [1, 1] }
             ]}>
+
             <Box gridArea='header'>
                 <Navbar userState={props.userState} />
             </Box>
+            
             <Box margin={{ top: '90px' }} width='300px' gridArea='sidebar'>
                 <UserSidebar user={user} userState={props.userState} />
             </Box>
@@ -60,12 +69,23 @@ export default function ProfilePage(props) {
                     <Tab title='Activity'>
                         
                     </Tab>
+
                     <Tab title='Questions'>
-                        
+                        <Box align='center' margin={{ top: 'small' }} gap='xsmall'>
+                            { questions.map( 
+                                e => <EntityCard entity={e} userState={props.userState} />
+                            )}
+                        </Box>
                     </Tab>
+
                     <Tab title='Services'>
-                        
+                        <Box align='center' margin={{ top: 'small' }} gap='xsmall'>
+                            {services.map(
+                                e => <EntityCard entity={e} userState={props.userState} />
+                            )}
+                        </Box>
                     </Tab>
+
                     { props.userState.id === user.id && 
                     
                         <Tab title='Edit'>

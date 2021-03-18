@@ -3,6 +3,7 @@ import { React, useState, useEffect } from 'react';
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import { Grid, Box, Button, Image, Text } from 'grommet';
 import TagInput from './TagInput';
+import TagDisplay from './TagDisplay';
 import API from '../utils/API';
  
 export default function UserSidebar(props) {
@@ -24,8 +25,8 @@ export default function UserSidebar(props) {
             EditorState.createWithContent(convertFromRaw(JSON.parse(props.user.bio)))
         );
 
-        API.getTagsByUser(props.userState.id).then( (response) => {
-            setFollowedTags(response.data.map( e => e.name ));
+        API.getTagsByUser(props.user.id).then( (response) => {
+            setFollowedTags(response.data);
         }).catch( (err) => {
             console.log(err);
         });
@@ -33,9 +34,8 @@ export default function UserSidebar(props) {
     }, [props]);
 
     const followTag = (tag) => {
-        console.log('i am here')
         API.linkTagToUser(tag, props.userState.token).then( (response) => {
-            setFollowedTags([ ...followedTags, tag ]);
+            setFollowedTags([ ...(followedTags.map( e => e.name )), tag ]);
             console.log(response);
         }).catch( (err) => {
             console.log(err);
@@ -75,7 +75,7 @@ export default function UserSidebar(props) {
                 { props.user.id === props.userState.id ? 
                 
                     <TagInput placeholder='Follow a new tag'
-                        selectedTags={followedTags} 
+                        selectedTags={followedTags.map( e => e.name )} 
                         setSelectedTags={setFollowedTags}
                         lineBreak={true}
                         onAddTag={followTag}
@@ -83,8 +83,7 @@ export default function UserSidebar(props) {
                     
                     :
 
-                    <Box>
-                    </Box>
+                    <TagDisplay userState={props.userState} tags={followedTags} />
             
                 }
             </Box>

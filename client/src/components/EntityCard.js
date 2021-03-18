@@ -24,13 +24,27 @@ export default function EntityCard(props) {
                                     props.entity.title : props.entity.name}
                             </Heading>
                         </Link>
-                        <Box margin={{vertical: '10px', left: '10px'}} direction='row'>
-                            <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
-                            <Text size='16px' margin={{vertical: 'small', left: '5px'}}>
-                                {props.entity.type === 'question' ? 
-                                    props.entity.text : props.entity.description}
-                            </Text>
-                        </Box>
+                        {
+                            (props.entity.type === 'question' && props.entity.text && 
+                                <Box margin={{vertical: '10px', left: '10px'}} direction='row'>
+                                    <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
+                                    <Text 
+                                        size='16px' 
+                                        margin={{vertical: 'small', left: '5px'}}>
+                                        { props.entity.text }
+                                    </Text>
+                                </Box>) 
+                            || 
+                            (props.entity.type === 'service' && props.entity.description && 
+                                <Box margin={{ vertical: '10px', left: '10px' }} direction='row'>
+                                    <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
+                                    <Text
+                                        size='16px'
+                                        margin={{ vertical: 'small', left: '5px' }}>
+                                        {props.entity.description}
+                                    </Text>
+                                </Box>)
+                        }
                         <Box direction='row'>
                             {
                                 props.entity.Tags.map((e) => {
