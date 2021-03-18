@@ -23,6 +23,8 @@ export default function Rating(props) {
             up = node.firstChild.ariaLabel === 'Up' ? true : false;
         }
 
+        console.log(props.type);
+
         await API.createRating({
             isPositive: up, 
             type: props.type, 

@@ -156,7 +156,7 @@ export default function Service(props) {
 
                     <Box justify='between' align='center' direction='row'>
                         <Box align='center' direction='row'>
-                            <Rating userState={props.userState} type='question' reference={id} />
+                            <Rating userState={props.userState} type='service' reference={id} />
                             <Box pad={{ bottom: '10px' }}>
                                 <Heading fill level={2}>{service.name}</Heading>
                                 <Box direction='row'>

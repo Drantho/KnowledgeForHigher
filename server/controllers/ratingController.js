@@ -55,6 +55,16 @@ router.get('/', (request, response) => {
 
 });
 
+router.get('/all', (request, response) => {
+    db.Rating.findAll( {
+        where: { UserId: request.query.user }
+    }).then( (result) => {
+        response.json(result);
+    }).catch( (err) => {
+        response.status(500).json(err);
+    });
+})
+
 
 router.put('/', authenticate, (request, response) => {
     db.Rating.update({ isPositive: Sequelize.literal('NOT isPositive') }, { // The sequelize literal may not work for this use-case
