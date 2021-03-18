@@ -38,13 +38,13 @@ export default function UserFeed(props) {
                 return 0;
             }
         } );
-        console.log(entities);
+
         setEntityList(entities);
 
     }, []);
 
     return (
-        <Box margin={{top: '30px'}} gap='small'>
+        <Box pad='15px' margin={{bottom: '30px'}} gap='xsmall'>
             {
                 entityList.map( e => {
                     switch (e.entityType) {

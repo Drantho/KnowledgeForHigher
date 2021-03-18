@@ -39,7 +39,7 @@ export default function UserFeedComment(props) {
     }, []);
 
     return (
-        <Card>
+        <Card height={{ min: '50px' }}>
             <Box align='center' justify='between' pad='small' fill direction='row'>
                 <Box gap='small' direction='row'>
                     <Box width='40px' align='center' justify='center'>

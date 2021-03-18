@@ -29,7 +29,7 @@ export default function UserFeedRating(props) {
     const cardString = `${props.userState.id === props.targetUser.id ? 'You' : props.targetUser.firstName} left a ${props.rating.isPositive ? 'positive' : 'negative'} rating on `
 
     return (
-        <Card>
+        <Card height={{ min: '50px' }}>
             <Box align='center' justify='between' pad='small' fill direction='row'>
                 <Box gap='small' direction='row'>
                     <Box width='40px' align='center' justify='center'>
