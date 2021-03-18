@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar';
 import UserSidebar from '../components/UserSidebar';
 import UserEditForm from '../components/UserEditForm';
 import EntityCard from '../components/EntityCard';
+import UserFeed from '../components/UserFeed';
 
 export default function ProfilePage(props) {
 
@@ -45,7 +46,34 @@ export default function ProfilePage(props) {
 
         const servicesGet = await API.getServicesByUser(id);
         setServices(servicesGet.data.map( e => ({...e, type: 'service'})))
-    }, [props])
+    }, [props]);
+
+    const tabTheme = {
+        tab: {
+            active: {
+                background: '#FCE181',
+                color: '#222E42'
+            },
+            color: 'white',
+            background: '#222E42',
+            border: undefined,
+            hover: {
+                background: 'light-blue'
+            },
+            margin: undefined,
+            pad: {
+                bottom: undefined,
+                horizontal: '20px'
+            },
+            extend: ` border-radius: 10px`
+        },
+        tabs: {
+            header: {
+                background: '#222E42',
+                padding: '20px'
+            }
+        }
+    }
 
     return (
         <Grid fill rows={[ 'auto', 'flex' ]}
@@ -59,19 +87,30 @@ export default function ProfilePage(props) {
             <Box gridArea='header'>
                 <Navbar userState={props.userState} />
             </Box>
-            
+
             <Box margin={{ top: '90px' }} width='300px' gridArea='sidebar'>
                 <UserSidebar user={user} userState={props.userState} />
             </Box>
 
-            <Box gridArea='main' margin={{ top: '90px' }}>
+            <Box 
+                gridArea='main' 
+                pad='small'  
+                margin={{ top: '90px' }}>
+                <Grommet theme={tabTheme}>
                 <Tabs>
                     <Tab title='Activity'>
-                        
+                        <Box height='80vh' overflow={{vertical: 'scroll'}}>
+                            <UserFeed targetUser={user} userState={props.userState} />
+                        </Box>
                     </Tab>
 
                     <Tab title='Questions'>
-                        <Box align='center' margin={{ top: 'small' }} gap='xsmall'>
+                        <Box 
+                            align='center' 
+                            margin={{ top: 'small' }} 
+                            gap='xsmall'
+                            height='80vh'
+                            overflow={{ vertical: 'scroll' }}>
                             { questions.map( 
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
@@ -79,7 +118,12 @@ export default function ProfilePage(props) {
                     </Tab>
 
                     <Tab title='Services'>
-                        <Box align='center' margin={{ top: 'small' }} gap='xsmall'>
+                        <Box 
+                            align='center' 
+                            margin={{ top: 'small' }} 
+                            gap='xsmall'
+                            height='80vh'
+                            overflow={{ vertical: 'scroll' }}>
                             {services.map(
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
@@ -98,6 +142,7 @@ export default function ProfilePage(props) {
                         </Tab>
                     }
                 </Tabs>
+                </Grommet>
             </Box>
 
         </Grid>
