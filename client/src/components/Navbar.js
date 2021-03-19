@@ -27,7 +27,13 @@ export default function Navbar(props) {
     }
     return (
         <Grommet theme={theme}>
-        <Header id='nav' pad='small' justify='between' margin={{bottom: '10px'}} background='#222E42'>
+        <Header 
+            elevation='small'
+            border={{ side: 'bottom', color: '#FCE181', size: '5px'}} 
+            id='nav' 
+            pad='small' 
+            justify='between' 
+            background='#222E42'>
             <Box align='center' direction='row'>
                 <Image width='56px' sizes='small' src='./assets/images/bookicon.png' />
                 <Heading color='#FCE181' 
