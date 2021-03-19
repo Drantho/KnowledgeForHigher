@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from 'react'
-
-import { Form, FormField, TextInput, Button, Box, Text } from 'grommet';
-
 import { Editor, EditorState, ContentState } from 'draft-js';
+
+import { Grommet, Button, Box, Text } from 'grommet';
+
 import API from '../utils/API';
 
 import PostEditor from './PostEditor';
@@ -49,11 +49,6 @@ export default function UserEditForm(props) {
         event.preventDefault();
         const newFirstName = firstNameEditorState.getCurrentContent().getPlainText();
         const newLastName = lastNameEditorState.getCurrentContent().getPlainText();
-        console.log({
-            firstName: newFirstName,
-            lastName: newLastName,
-            bio: formValues.bio
-        })
 
         API.updateUser({
             firstName: newFirstName,
@@ -71,17 +66,62 @@ export default function UserEditForm(props) {
         });
     }
 
+    const theme = {
+        formField: {
+            border: false
+        },
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        button: {
+            border: { color: '#FCE181' },
+            primary: {
+                color: '#FCE181',
+                border: { color: '#FCE181' }
+            },
+            size: {
+                medium: {
+                    border: {
+                        radius: '8px'
+                    }
+                }
+            },
+            extend: `
+                width: 150px;
+                height: 60px
+            `
+        }
+    }
+
     return (
+        <Grommet theme={theme}>
         <Box gap='small'>
-            <Box align='center' justify='end' direction='row' className='inline-editor'>
+
+            <Box 
+                align='center' 
+                justify='end' 
+                direction='row' 
+                className='inline-editor'
+            >
+
                 <Text margin={{right: '10px'}}>First Name: </Text>
-                <Box background='white' onDoubleClick={() => setFirstNameReadOnly({ val: false })}>
+
+                <Box 
+                    background='white' 
+                    onDoubleClick={() => setFirstNameReadOnly({ val: false })}
+                >
                     <Editor onEscape={handleEsc}
                         onChange={ state => setFirstNameEditorState(state) }
                         readOnly={firstNameReadOnly.val} 
                         editorState={firstNameEditorState} />
                 </Box>
+
             </Box>
+
             <Box align='center' justify='end' direction='row' className='inline-editor'>
                 <Text margin={{right: '10px'}}>Last Name: </Text>
                 <Box onDoubleClick={() => setLastNameReadOnly({ val: false })}>
@@ -91,14 +131,17 @@ export default function UserEditForm(props) {
                         editorState={lastNameEditorState} />
                 </Box>
             </Box>
+
             <Text>Bio:</Text>
-            <PostEditor getDraftValue={getDraftValue} 
+            <PostEditor 
+                getDraftValue={getDraftValue} 
                 controlledContent={formValues.bio}
                 initialContent={props.userState.bio} />
-
-            <Button label='Save' onClick={handleSave} />
+            <Box align='center'>
+                <Button primary label='Save' onClick={handleSave} />
+            </Box>
         </Box>
-
+        </Grommet>
 
     )
 }
