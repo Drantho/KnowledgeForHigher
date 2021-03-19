@@ -11,7 +11,6 @@ export default function UserSidebar(props) {
     const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 
     const [ followedTags, setFollowedTags ] = useState([]);
-    const [ currentTag, setCurrentTag ] = useState('');
 
     const blockStyleFn = (contentBlock) => {
         if (contentBlock.getType() === 'code-block') {
@@ -52,18 +51,32 @@ export default function UserSidebar(props) {
     }
 
     return (
-        <Box>
+        <Box 
+            overflow={{ vertical: 'scroll' }}
+            elevation='xsmall' 
+            height='100%' 
+            border={{ side: 'right', size: '2px', color: '#FCE181' }}>
 
-            <Image src={props.user.portrait} />
+            <Image
+                style={{ 
+                    border: 'solid 1px rgba(0,0,0,0.2)', 
+                    borderRadius: '50%', 
+                    margin: '10px',
+                    boxShadow: '0 0 5px rgba(0,0,0,0.4)'
+                }}
+                src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${props.user.portrait}.png`} />
+            
 
             <Box pad='small'>
                 <Text size='32pt'>{props.user.userName}</Text>
                 <Text>{props.user.firstName} {props.user.lastName}</Text>
                 <Text>{props.user.email}</Text>
             </Box>
+            
 
             <Box pad='small'>
-                <Text>About {props.user.userName}</Text>
+                <Text margin={{ bottom: '1px' }}>About {props.user.userName}</Text>
+                <Box background='#222E42' margin={{ bottom: '5px' }} height='1px' elevation='small' />
                 <Editor
                     editorState={editorState}
                     readOnly={true}
@@ -72,6 +85,7 @@ export default function UserSidebar(props) {
 
             <Box pad='small'>
                 <Text>Follows:</Text>
+                <Box background='#222E42' margin={{ bottom: '5px' }} height='1px' elevation='small' />
                 { props.user.id === props.userState.id ? 
                 
                     <TagInput placeholder='Follow a new tag'
