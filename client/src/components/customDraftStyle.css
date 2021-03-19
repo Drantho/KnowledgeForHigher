@@ -12,11 +12,12 @@
 }
 
 div.DraftEditor-root {
-  padding: 10px;
+  box-shadow: inset 0 0 4px #222E42;
+  -webkit-box-shadow: inset 0 0 4px #222E42;
+  padding: 12px;
   min-height: 120px;
-  border: inset 1px #222E42;
   border-radius: 5px;
-  background-color: rgb(132, 204, 252);
+  background-color: #9dbacc;
   font-size: 12pt;
   line-height: 1em;
 }
