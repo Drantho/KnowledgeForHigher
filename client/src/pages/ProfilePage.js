@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Grommet, Grid, Box, Tabs, Tab, Text } from 'grommet';
+import { Grommet, Grid, Box, Tabs, Tab, Text, Layer } from 'grommet';
+import { Add } from 'grommet-icons';
 
 import API from '../utils/API';
 
@@ -10,6 +11,8 @@ import UserSidebar from '../components/UserSidebar';
 import UserEditForm from '../components/UserEditForm';
 import EntityCard from '../components/EntityCard';
 import UserFeed from '../components/UserFeed';
+import AddServiceForm from '../components/AddServiceForm';
+import Ask from './Ask';
 
 export default function ProfilePage(props) {
 
@@ -25,12 +28,15 @@ export default function ProfilePage(props) {
     });
 
     const [ questions, setQuestions ] = useState([]);
-    const [services, setServices ] = useState([]);
+    const [ services, setServices ] = useState([]);
+
+    const [ questionFormOpen, setQuestionFormOpen ] = useState(false);
+    const [ serviceFormOpen, setServiceFormOpen ] = useState(false);
 
     useEffect( async () => {
-        console.log(id);
-        console.log('use effect')
+
         const userGet = await API.getUserById(id);
+
         setUser({
             ...user,
             userName: userGet.data.userName,
@@ -49,33 +55,57 @@ export default function ProfilePage(props) {
     }, [props]);
 
     const tabTheme = {
+        global: {
+            focus: {
+                border: {
+                    color: 'rgba(0,0,0,0)'
+                }
+            },
+            button: {
+                active: {
+                    background: {
+                        color: '#FCE181'
+                    }
+                }
+            }
+        },
         tab: {
+            width: '300px',
             active: {
                 background: '#FCE181',
-                color: '#222E42'
+                color: '#222E42',
             },
-            color: 'white',
-            background: '#222E42',
+            color: 'black',
+            background: '#9dbacc',
             border: undefined,
             hover: {
-                background: 'light-blue'
+                background: '#ffedab',
+                color: 'black'
             },
             margin: undefined,
             pad: {
                 bottom: undefined,
+                vertical: '10px',
                 horizontal: '20px'
             },
-            extend: ` border-radius: 10px`
+            extend: ` 
+                border-radius: 10px;
+            `
         },
         tabs: {
+            gap: 'small',
             header: {
-                background: '#222E42',
-                padding: '20px'
+                background: '#9dbacc',
+                extend: `
+                    padding: 10px; 
+                    box-shadow: 0 3px 5px -5px  #222E42
+                `
             }
         }
     }
 
     return (
+        <Grommet full>
         <Grid fill rows={[ 'auto', 'flex' ]}
             columns={[ 'auto', 'flex' ]}
             areas={[
@@ -84,22 +114,21 @@ export default function ProfilePage(props) {
                 { name: 'main', start: [1, 1], end: [1, 1] }
             ]}>
 
-            <Box gridArea='header'>
+            <Box margin={{ bottom: undefined }} gridArea='header'>
                 <Navbar userState={props.userState} />
             </Box>
 
-            <Box margin={{ top: '90px' }} width='300px' gridArea='sidebar'>
+            <Box margin={{ top: '77px' }} width='300px' gridArea='sidebar'>
                 <UserSidebar user={user} userState={props.userState} />
             </Box>
 
             <Box 
                 gridArea='main' 
-                pad='small'  
-                margin={{ top: '90px' }}>
+                margin={{ top: '77px' }}>
                 <Grommet theme={tabTheme}>
                 <Tabs>
                     <Tab title='Activity'>
-                        <Box height='80vh' overflow={{vertical: 'scroll'}}>
+                        <Box style={{ overflowY: 'scroll', height: '80vh' }}>
                             <UserFeed targetUser={user} userState={props.userState} />
                         </Box>
                     </Tab>
@@ -109,8 +138,23 @@ export default function ProfilePage(props) {
                             align='center' 
                             margin={{ top: 'small' }} 
                             gap='xsmall'
-                            height='80vh'
-                            overflow={{ vertical: 'scroll' }}>
+                        >
+                            { props.userState.id === user.id &&
+                                <Box
+                                    border={{ size: '1px' }}
+                                    hoverIndicator
+                                    onClick={() => setQuestionFormOpen(true)}
+                                    width='85%'
+                                    gap='small'
+                                    pad='small'
+                                    round='small'
+                                    direction='row'
+                                >
+                                    <Add />
+                                    <Text>Add a new question...</Text>
+                                </Box>
+                            }
+                            
                             { questions.map( 
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
@@ -124,6 +168,23 @@ export default function ProfilePage(props) {
                             gap='xsmall'
                             height='80vh'
                             overflow={{ vertical: 'scroll' }}>
+
+                            { props.userState.id === user.id && 
+                                <Box 
+                                    border={{ size: '1px' }} 
+                                    hoverIndicator
+                                    onClick={() => setServiceFormOpen(true)}
+                                    width='85%' 
+                                    gap='small'
+                                    pad='small' 
+                                    round='small'
+                                    direction='row'
+                                >
+                                    <Add />
+                                    <Text>Add a new service...</Text>
+                                </Box>
+                            }
+
                             {services.map(
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
@@ -143,8 +204,33 @@ export default function ProfilePage(props) {
                     }
                 </Tabs>
                 </Grommet>
+
+                { questionFormOpen && 
+                    <Layer style={{ width: '50%', padding: '10px' }}
+                        modal
+                        onClickOutside={() => setQuestionFormOpen(false)} 
+                        onEsc={() => setQuestionFormOpen(false)}
+                    >
+                        <Ask 
+                            userState={props.userState} 
+                            onSubmit={() => setQuestionFormOpen(false)} />
+                    </Layer>
+                }
+
+                { serviceFormOpen && 
+                    <Layer style={{ width: '50%', padding: '10px' }}
+                        modal
+                        onClickOutside={() => setServiceFormOpen(false)}
+                        onEsc={() => setServiceFormOpen(false)}
+                    >
+                        <AddServiceForm 
+                            onSubmit={() => setServiceFormOpen(false)} 
+                            userState={props.userState} />
+                    </Layer>
+                }
             </Box>
 
         </Grid>
+        </Grommet>
     )
 }
