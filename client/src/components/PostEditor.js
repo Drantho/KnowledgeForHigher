@@ -168,7 +168,7 @@ export default function PostEditor(props) {
     }, []);
 
     return (
-        <Box border='all' round='small' align='center' 
+        <Box elevation='large' border='all' round='small' align='center' 
             pad={{horizontal: 'small', top: 'xsmall'}}
             onMouseDown={ handleFocus.bind(this) }>
 
