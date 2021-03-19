@@ -8,16 +8,24 @@ import Tag from './Tag';
 
 export default function EntityCard(props) {
 
-    const theme = {
-
-    }
-
     return (
-        <Card style={{ minHeight: '160px', height: 'min-content', width: '85%' }}>
-            <CardHeader align='center' elevation='small' pad={{vertical: 'xsmall'}} background='#FCE181'>
-                <Text margin={{left: '20px'}} size='16px'>{props.entity.type === 'question' ? 'Question' : 'Service'}</Text> 
+        <Card style={{ width: '85%' }}>
+            <CardHeader 
+                align='center' 
+                elevation='small' 
+                pad={{vertical: 'xsmall'}} 
+                background='#FCE181'
+            >
+                <Text 
+                    margin={{left: '20px'}} 
+                    size='16px'
+                >
+                    {props.entity.type === 'question' ? 'Question' : 'Service'}
+                </Text> 
             </CardHeader>
-            <CardBody style={{height: 'min-content'}}>
+
+            <CardBody  style={{minHeight: 'min-content'}}>
+
                 <Box pad={{bottom: '10px'}} fill align='center' direction='row'>
                     <Rating type={props.entity.type} owner={props.entity.User.id} 
                         userState={props.userState} reference={props.entity.id} />
