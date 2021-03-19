@@ -1,4 +1,4 @@
-import { React, useState, useCallback, useEffect } from 'react';
+import { React, useState, useCallback } from 'react';
 
 import { Box, Button, Grommet, Keyboard, Text, TextInput } from 'grommet';
 import { FormClose } from 'grommet-icons';
@@ -74,10 +74,6 @@ export default function TagInput(props) {
             </Grommet>
         )
     }
-
-    useEffect(() => {
-
-    }, [props.selectedTags])
 
     return (
         <Keyboard>
