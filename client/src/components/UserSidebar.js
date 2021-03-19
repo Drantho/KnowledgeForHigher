@@ -25,7 +25,7 @@ export default function UserSidebar(props) {
         );
 
         API.getTagsByUser(props.user.id).then( (response) => {
-            setFollowedTags(response.data);
+            setFollowedTags(response.data.map(e => e.name));
         }).catch( (err) => {
             console.log(err);
         });
@@ -34,7 +34,7 @@ export default function UserSidebar(props) {
 
     const followTag = (tag) => {
         API.linkTagToUser(tag, props.userState.token).then( (response) => {
-            setFollowedTags([ ...(followedTags.map( e => e.name )), tag ]);
+            setFollowedTags([ ...followedTags, tag ]);
             console.log(response);
         }).catch( (err) => {
             console.log(err);
@@ -89,7 +89,7 @@ export default function UserSidebar(props) {
                 { props.user.id === props.userState.id ? 
                 
                     <TagInput placeholder='Follow a new tag'
-                        selectedTags={followedTags.map( e => e.name )} 
+                        selectedTags={followedTags} 
                         setSelectedTags={setFollowedTags}
                         lineBreak={true}
                         onAddTag={followTag}

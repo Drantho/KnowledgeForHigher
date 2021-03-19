@@ -1,4 +1,4 @@
-import { React, useState, useCallback } from 'react';
+import { React, useState, useCallback, useEffect } from 'react';
 
 import { Box, Button, Grommet, Keyboard, Text, TextInput } from 'grommet';
 import { FormClose } from 'grommet-icons';
@@ -66,7 +66,7 @@ export default function TagInput(props) {
                     pad={{ horizontal: '16px', vertical: 'xxsmall' }}
                     margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}
                 >
-                    <Text margin={{ right: 'xsmall' }}>{args.name}</Text>
+                    <Text size='12pt' margin={{ right: 'xsmall' }}>{args.name}</Text>
                     <Button onClick={removeTag}>
                         <FormClose size='18px' color='black' />
                     </Button>
@@ -74,6 +74,10 @@ export default function TagInput(props) {
             </Grommet>
         )
     }
+
+    useEffect(() => {
+
+    }, [props.selectedTags])
 
     return (
         <Keyboard>
@@ -86,6 +90,7 @@ export default function TagInput(props) {
                     borderRadius: '5px', 
                     boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)' 
                 }}
+                flex
                 wrap 
             >
 
