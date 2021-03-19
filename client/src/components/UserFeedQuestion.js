@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Card, Box, Text, Anchor } from 'grommet';
+import { Card, Box, Text, Anchor, Grommet } from 'grommet';
 import { Help } from 'grommet-icons';
 
 export default function UserFeedQuestion(props) {
 
     return (
-        <Card height={{ min: '60px' }}>
+        <Card style={{ minHeight: '60px' }}>
             <Box align='center' justify='between' pad='small' fill direction='row'>
                 <Box gap='small' direction='row'>
                     <Box width='40px' align='center' justify='center'>
