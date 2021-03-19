@@ -58,11 +58,14 @@ export default function TagInput(props) {
                     extend: `width: min-content`
                 }
             } }>
-                <Box align='center' background='#FCE181'
+                <Box 
+                    align='center' 
+                    background='#FCE181'
                     direction='row'
                     round='medium'
                     pad={{ horizontal: '16px', vertical: 'xxsmall' }}
-                    margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}>
+                    margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}
+                >
                     <Text margin={{ right: 'xsmall' }}>{args.name}</Text>
                     <Button onClick={removeTag}>
                         <FormClose size='18px' color='black' />
@@ -78,13 +81,20 @@ export default function TagInput(props) {
                 direction="row"
                 align="center"
                 pad='xsmall'
-                border="all"
                 ref={boxRef}
-                wrap >
+                style={{ 
+                    borderRadius: '5px', 
+                    boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)' 
+                }}
+                wrap 
+            >
 
                 {props.selectedTags.map( v => <Tag name={v} />)}
 
-                <Box flex={props.lineBreak ? false : true} style={{ minWidth: '120px' }}>
+                <Box 
+                    flex={props.lineBreak ? false : true} 
+                    style={{ minWidth: '120px', borderRadius: '2px' }}
+                >
                     <TextInput
                         type="search"
                         plain
@@ -94,6 +104,7 @@ export default function TagInput(props) {
                         value={currentTag}
                         onKeyPress={onEnter}
                         onSuggestionSelect={handleSuggestionSelect}
+                        style={{ borderRadius: '3px' }}
                         {...props}
                     />
                 </Box>
