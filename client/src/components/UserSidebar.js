@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import { Grid, Box, Button, Image, Text } from 'grommet';
+import { Box, Image, Text } from 'grommet';
 import TagInput from './TagInput';
 import TagDisplay from './TagDisplay';
 import API from '../utils/API';
