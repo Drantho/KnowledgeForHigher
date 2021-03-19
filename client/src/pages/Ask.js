@@ -1,12 +1,9 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import API from "../utils/API";
-import { useHistory } from 'react-router-dom';
-import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
+import { Box, Form, FormField, TextInput, Button, Heading, Grommet } from 'grommet';
 
 import PostEditor from '../components/PostEditor';
 import TagInput from '../components/TagInput';
-
-import UserFeed from '../components/UserFeed';
 
 export default function Ask(props) {
 
@@ -35,6 +32,7 @@ export default function Ask(props) {
             text: '',
             tags: ''
         });
+        props.onSubmit();
     }
 
     const theme = {
@@ -80,18 +78,26 @@ export default function Ask(props) {
 
     return ( 
         
-        <Box align='center' margin={{top: '74px'}}>
-            <Box width='70%'>
+        <Box align='center'>
+            <Box fill>
+
                 <Grommet theme={theme}>
-                <UserFeed userState={props.userState} targetUser={props.userState} />
+
                 <Form onSubmit={handleSubmit} value={formValues}>
+
                     <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
                         <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
                             Submit a question!
                         </Heading>
                     </Box>
-                    <FormField required label='Title' name='title' htmlFor='new-question-title' >
-                        <TextArea
+
+                    <FormField 
+                        required 
+                        label='Title' 
+                        name='title' 
+                        htmlFor='new-question-title' 
+                    >
+                        <TextInput
                             style={{background:'white'}}
                             id='new-question-title'
                             name='title'
@@ -101,23 +107,25 @@ export default function Ask(props) {
                     </FormField>
 
                     <FormField label='Description'>
-                    <PostEditor 
-                        getDraftValue={getDraftValue} 
-                        controlledContent={formValues.text}
-                        placeholder='Enter a detailed description for your question...' />
+                        <PostEditor 
+                            getDraftValue={getDraftValue} 
+                            controlledContent={formValues.text}
+                            placeholder='Enter a detailed description for your question...' />
                     </FormField>
 
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                    <TagInput placeholder='Add a tag'
-                        selectedTags={tagNames} setSelectedTags={setTagNames} 
-                        onAddTag={onAddTag} />
+                        <TagInput placeholder='Add tags...'
+                            selectedTags={tagNames} setSelectedTags={setTagNames} 
+                            onAddTag={onAddTag} />
                         
                     </FormField>
 
                     <Box align='center'>
                         <Button size='medium' primary type='submit' label='Submit' />
                     </Box>
+                    
                 </Form>
+
                 </Grommet>
             </Box>
         </Box>
