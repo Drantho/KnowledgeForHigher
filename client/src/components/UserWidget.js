@@ -11,7 +11,7 @@ export default function UserWidget(props) {
             style={{ boxShadow: '0 0 3px #9dbacc' }}
             elevation='0' 
             background='#FCE181'>
-            <CardBody onClick={() => history.push(`/users/${props.userState.id}`)}>
+            <CardBody onClick={() => history.push(`/profile/${props.userState.id}`)}>
                 <Box 
                     pad={{ horizontal: 'small' }} 
                     align='center' 
