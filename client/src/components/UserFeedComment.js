@@ -11,8 +11,20 @@ export default function UserFeedComment(props) {
     });
 
     const [targetString, setTargetString] = useState('');
+    const [ dateString, setDateString ] = useState('');
 
     useEffect( async () => {
+        const date = new Date(props.answer.createdAt);
+        const dateStr
+            = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date) + ' ' +
+            date.getDate();
+
+        if (date.getFullYear() < new Date(Date.now()).getFullYear()) {
+            dateStr.concat(', ' + date.getFullYear());
+        }
+
+        setDateString(dateStr);
+
         let commentTarget;
 
         if (props.comment.AnswerId) {
@@ -39,7 +51,7 @@ export default function UserFeedComment(props) {
     }, []);
 
     return (
-        <Card height={{ min: '50px' }}>
+        <Card>
             <Box align='center' justify='between' pad='small' fill direction='row'>
                 <Box gap='small' direction='row'>
                     <Box width='40px' align='center' justify='center'>
@@ -52,7 +64,7 @@ export default function UserFeedComment(props) {
                         </Text>
                     </Box>
                 </Box>
-                <Text size='small'>{props.comment.createdAt}</Text>
+                <Text size='small'>{dateString}</Text>
             </Box>
         </Card>
     )

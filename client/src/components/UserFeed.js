@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 
-import { Text, Box } from 'grommet';
+import { Text, Box, Grommet } from 'grommet';
 
 import API from '../utils/API';
 
@@ -8,6 +8,8 @@ import UserFeedComment from './UserFeedComment';
 import UserFeedQuestion from './UserFeedQuestion';
 import UserFeedAnswer from './UserFeedAnswer';
 import UserFeedRating from './UserFeedRating';
+
+import cardTheme from './cardTheme.json';
 
 export default function UserFeed(props) {
 
@@ -30,10 +32,14 @@ export default function UserFeed(props) {
         const entities = [...services, ...questions, ...answers, ...comments, ...ratings];
 
         entities.sort( (a, b) => {
-            if (a.createdAt > b.createdAt) {
-                return 1;
-            } else if (a.createdAt < b.createdAt) {
+
+            const aDate = new Date(a.createdAt);
+            const bDate = new Date(b.createdAt);
+
+            if (aDate > bDate) {
                 return -1;
+            } else if (aDate < bDate) {
+                return 1;
             } else {
                 return 0;
             }
@@ -44,7 +50,8 @@ export default function UserFeed(props) {
     }, []);
 
     return (
-        <Box pad='15px' margin={{bottom: '30px'}} gap='xsmall'>
+        <Grommet theme={cardTheme}>
+        <Box pad='15px' align='center' gap='xsmall'>
             {
                 entityList.map( e => {
                     switch (e.entityType) {
@@ -73,5 +80,6 @@ export default function UserFeed(props) {
             }
             
         </Box>
+        </Grommet>
     )
 }

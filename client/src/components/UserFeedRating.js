@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react';
 
-import { Card, Box, Text, Anchor } from 'grommet';
+import { Card, Box, Text, Anchor, Grommet } from 'grommet';
 import { Up, Down } from 'grommet-icons';
 import API from '../utils/API';
 
 export default function UserFeedRating(props) {
 
+    const [ dateString, setDateString ] = useState('');
     const [targetEntity, setTargetEntity] = useState({
         User: {}
     });
@@ -23,13 +24,25 @@ export default function UserFeedRating(props) {
                 targetEntity = (await API.getAnswerById(props.rating.AnswerId)).data;
                 break;
         }
+
+        const date = new Date(props.rating.createdAt);
+        const dateStr
+            = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date) + ' ' +
+                date.getDate();
+
+        if (date.getFullYear() < new Date(Date.now()).getFullYear()) {
+            dateStr.concat(', ' + date.getFullYear());
+        }
+
+        setDateString(dateStr);
+
         setTargetEntity(targetEntity);
     }, []);
 
     const cardString = `${props.userState.id === props.targetUser.id ? 'You' : props.targetUser.firstName} left a ${props.rating.isPositive ? 'positive' : 'negative'} rating on `
 
     return (
-        <Card height={{ min: '50px' }}>
+        <Card fill>
             <Box align='center' justify='between' pad='small' fill direction='row'>
                 <Box gap='small' direction='row'>
                     <Box width='40px' align='center' justify='center'>
@@ -42,7 +55,7 @@ export default function UserFeedRating(props) {
                         </Text>
                     </Box>
                 </Box>
-                <Text size='small'>{props.rating.createdAt}</Text>
+                <Text size='small'>{dateString}</Text>
             </Box>
         </Card>
     )
