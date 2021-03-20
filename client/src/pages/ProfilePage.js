@@ -13,6 +13,7 @@ import EntityCard from '../components/EntityCard';
 import UserFeed from '../components/UserFeed';
 import AddServiceForm from '../components/AddServiceForm';
 import Ask from './Ask';
+import cardTheme from '../components/cardTheme.json'
 
 export default function ProfilePage(props) {
 
@@ -56,9 +57,9 @@ export default function ProfilePage(props) {
 
     const tabTheme = {
         global: {
-            focus: {
-                border: {
-                    color: 'rgba(0,0,0,0)'
+            colors: {
+                focus: {
+                    border: undefined
                 }
             },
             button: {
@@ -104,6 +105,25 @@ export default function ProfilePage(props) {
         }
     }
 
+    const tabPaneTheme = {
+        ...cardTheme,
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            },
+            hover: {
+                background: {
+                    color: '#222e42'
+                },
+                color: 'white'
+            }
+        }
+    }
+
+    const headerOffset = '79px';
+
     return (
         <Grommet full>
         <Grid fill rows={[ 'auto', 'flex' ]}
@@ -118,34 +138,49 @@ export default function ProfilePage(props) {
                 <Navbar userState={props.userState} />
             </Box>
 
-            <Box margin={{ top: '77px' }} width='300px' gridArea='sidebar'>
+            <Box align='center' margin={{ top: headerOffset }} width='300px' gridArea='sidebar'>
                 <UserSidebar user={user} userState={props.userState} />
             </Box>
 
             <Box 
                 gridArea='main' 
-                margin={{ top: '77px' }}>
+                margin={{ top: headerOffset }}>
                 <Grommet theme={tabTheme}>
                 <Tabs>
                     <Tab title='Activity'>
-                        <Box style={{ overflowY: 'scroll', height: '80vh' }}>
+                        <Box 
+                            style={{ 
+                                overflowY: 'scroll', 
+                                height: 'calc(100vh - 79px - 64px)' 
+                            }}
+                        >
                             <UserFeed targetUser={user} userState={props.userState} />
                         </Box>
                     </Tab>
 
                     <Tab title='Questions'>
-                        <Box 
-                            align='center' 
-                            margin={{ top: 'small' }} 
-                            gap='xsmall'
+                        
+                        <Box // Container for Grommet
+                            style={{ 
+                                overflowY: 'scroll', 
+                                height: 'calc(100vh - 79px - 64px)' 
+                            }}
                         >
+
+                        <Grommet theme={tabPaneTheme}>
+                            <Box // Container for cards
+                                margin={{ vertical: 'small' }} 
+                                align='center' 
+                                gap='xsmall'
+                            >
+                            
                             { props.userState.id === user.id &&
                                 <Box
-                                    border={{ size: '1px' }}
                                     hoverIndicator
                                     onClick={() => setQuestionFormOpen(true)}
-                                    width='85%'
+                                    height={{ min: 'min-content' }}
                                     gap='small'
+                                    width='85%'
                                     pad='small'
                                     round='small'
                                     direction='row'
@@ -158,20 +193,29 @@ export default function ProfilePage(props) {
                             { questions.map( 
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
+                            </Box>
+                            </Grommet>
                         </Box>
+
                     </Tab>
 
                     <Tab title='Services'>
-                        <Box 
-                            align='center' 
-                            margin={{ top: 'small' }} 
-                            gap='xsmall'
-                            height='80vh'
-                            overflow={{ vertical: 'scroll' }}>
+                        <Box // Container for Grommet
+                            style={{
+                                overflowY: 'scroll',
+                                height: 'calc(100vh - 79px - 64px)'
+                            }}
+                        >
+
+                            <Grommet theme={tabPaneTheme}>
+                                <Box // Container for cards
+                                    margin={{ vertical: 'small' }}
+                                    align='center'
+                                    gap='xsmall'
+                                >
 
                             { props.userState.id === user.id && 
                                 <Box 
-                                    border={{ size: '1px' }} 
                                     hoverIndicator
                                     onClick={() => setServiceFormOpen(true)}
                                     width='85%' 
@@ -188,6 +232,8 @@ export default function ProfilePage(props) {
                             {services.map(
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
+                            </Box>
+                            </Grommet>
                         </Box>
                     </Tab>
 
