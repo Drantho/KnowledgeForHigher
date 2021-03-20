@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Heading, Card, CardHeader, Text, CardBody } from 'grommet';
 import { Link } from 'react-router-dom';
+import { convertFromRaw, ContentState } from 'draft-js';
 
 import Rating from './Rating';
 import Tag from './Tag';
 
 export default function EntityCard(props) {
+
+    const [descriptionDisplay, setDescriptionDisplay] = useState('');
+
+    useEffect( () => {
+        const content = convertFromRaw(JSON.parse(props.entity.text));
+        const descrStr = content.getFirstBlock().getText();
+        console.log(content.getBlocksAsArray().length);
+        if (content.getBlocksAsArray().length > 1) {
+            setDescriptionDisplay(descrStr.concat('...'));
+        } else {
+            setDescriptionDisplay(descrStr);
+        }
+    }, [])
 
     return (
         
@@ -42,30 +56,19 @@ export default function EntityCard(props) {
                     <Box fill width='100%'>
                         <Link to={`/${props.entity.type}/${props.entity.id}`} >
                             <Heading fill level={3} margin={{vertical: '2px'}}>
-                                {props.entity.type === 'question' ?
-                                    props.entity.title : props.entity.name}
+                                {props.entity.title}
                             </Heading>
                         </Link>
                         {
-                            (props.entity.type === 'question' && props.entity.text && 
+                            props.entity.text && 
                                 <Box margin={{vertical: '10px', left: '10px'}} direction='row'>
                                     <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
                                     <Text 
                                         size='16px' 
                                         margin={{vertical: 'small', left: '5px'}}>
-                                        { props.entity.text }
+                                        { descriptionDisplay }
                                     </Text>
-                                </Box>) 
-                            || 
-                            (props.entity.type === 'service' && props.entity.description && 
-                                <Box margin={{ vertical: '10px', left: '10px' }} direction='row'>
-                                    <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
-                                    <Text
-                                        size='16px'
-                                        margin={{ vertical: 'small', left: '5px' }}>
-                                        {props.entity.description}
-                                    </Text>
-                                </Box>)
+                                </Box>
                         }
                         <Box direction='row'>
                             {
