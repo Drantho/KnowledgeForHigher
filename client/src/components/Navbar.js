@@ -4,7 +4,7 @@ import { Grommet, Box, Header, Heading, Image, Button, Anchor } from 'grommet';
 
 import UserWidget from './UserWidget';
 
-import './Navbar.css'
+import './Navbar.css';
 
 export default function Navbar(props) {
 
@@ -25,19 +25,22 @@ export default function Navbar(props) {
             }
         }
     }
+
+    const icon = '/assets/images/bookicon.png';
+
     return (
         <Grommet theme={theme}>
         <Header 
             elevation='small'
             border={{ side: 'bottom', color: '#FCE181', size: '5px'}} 
             id='nav' 
-            pad='small' 
+            pad='9px' 
             justify='between' 
             background='#222E42'>
             <Box align='center' direction='row'>
-                <Image width='56px' sizes='small' src='./assets/images/bookicon.png' />
+                <Image width='56px' sizes='small' src={icon} />
                 <Heading color='#FCE181' 
-                    margin={{vertical: '0px', left: '3px'}} 
+                    margin={{vertical: '0px', left: '6px'}} 
                     level={3}>
                         Knowledge4Hire
                 </Heading>
