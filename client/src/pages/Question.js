@@ -8,6 +8,7 @@ import Rating from '../components/Rating';
 import Answer from '../components/Answer';
 import Tag from '../components/Tag';
 import PostEditor from '../components/PostEditor';
+import Navbar from '../components/Navbar';
 
 import {
     Box,
@@ -26,6 +27,7 @@ import {
 } from 'grommet';
 
 import API from '../utils/API';
+import UserWidget from '../components/UserWidget';
 
 export default function Question(props) {
     const { id } = useParams();
@@ -137,15 +139,6 @@ export default function Question(props) {
 
     }
 
-    const descriptionBoxTheme = {
-        box: {
-            extend: `
-                background-color: #FFFFFF;
-                border: 2px solid #FCE181;
-                border-radius: 10px;`
-        }
-    }
-
     const handleCommentInput = (event) => {
         setQuestionComment({ ...questionComment, text: event.target.value });
     }
@@ -162,55 +155,50 @@ export default function Question(props) {
 
     return (
         <Grommet theme={theme}>
-            <Box margin={{ top: '100px', bottom: '20px' }} align='center'>
-                <Box width='80%'>
+            <Navbar userState={props.userState}/>
+            <Box margin={{ bottom: '20px' }} align='center'>
+                <Box margin={{ top: 79 + 15 + 'px' }} width='80%'>
 
                     <Box height='3px' background='#222E42' />
 
                     <Box justify='between' align='center' direction='row'>
                         <Box align='center' direction='row'>
-                            <Rating setAnswers={setAnswers} userState={props.userState} type='question' owner={question.User.id} reference={id} />
+                            <Rating 
+                                setAnswers={setAnswers} 
+                                userState={props.userState} 
+                                type='question' 
+                                owner={question.User.id} 
+                                reference={id}
+                            />
                             <Box pad={{ bottom: '10px' }}>
-                                <Heading fill margin={{ top: '10px' }} level={2}>{question.title}</Heading>
+                                <Heading fill 
+                                    margin={{ top: '10px' }} 
+                                    level={2}
+                                >
+                                    {question.title}
+                                </Heading>
                                 <Box direction='row'>
-                                    {question.Tags.map(e => <Tag tag={e} userState={props.userState} />)}
+                                    {question.Tags.map(e => <Tag 
+                                                                tag={e} 
+                                                                userState={props.userState}
+                                                            /> )}
                                 </Box>
                             </Box>
                         </Box>
 
-                        <Box fill width={{ max: '180px', min: '180px' }}
-                            background='#FFFFFF'
-                            border={{
-                                color: '#d6bf6b'
-                            }}
-                            round='small'
-                            align='center'
-                            direction='row'>
-                            <Box margin={{ left: '20px' }} align='end'>
-                                <Text size='small'>{question.User.userName}</Text>                                
-                            </Box>
-                            <Link to={`/users/${question.User.id}`}>
-                                <Avatar
-                                    margin='small'
-                                    size='40px'
-                                    src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${question.User.portrait}.png`} />
-                            </Link>
-                        </Box>
+                        <UserWidget userState={props.userState} />
 
                     </Box>
                     <Box height='3px' background='#222E42' />
 
-                    <Grommet theme={descriptionBoxTheme}>
-                        <Box pad={{ vertical: '30px', horizontal: '15px' }}
-                            background='rgba(252,225,129,0.8)'
-                            round='small'
-                            margin={{ horizontal: 'large', top: '20px' }}>
-                            <Editor 
-                                editorState={editorState} 
-                                readOnly={true} 
-                                blockStyleFn={blockStyleFn}/>
-                        </Box>
-                    </Grommet>
+                    <Box pad={{ vertical: '30px', horizontal: '15px' }}
+                        round='small'
+                        margin={{ horizontal: 'medium', top: '20px' }}>
+                        <Editor 
+                            editorState={editorState} 
+                            readOnly={true} 
+                            blockStyleFn={blockStyleFn}/>
+                    </Box>
 
 
                     <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Comments</Heading>
