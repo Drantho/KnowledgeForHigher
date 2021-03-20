@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grommet, Box, Heading, Card, CardHeader, Text, CardBody, CardFooter } from 'grommet';
+import { Box, Heading, Card, CardHeader, Text, CardBody } from 'grommet';
 import { Link } from 'react-router-dom';
 
 import Rating from './Rating';
@@ -9,7 +9,8 @@ import Tag from './Tag';
 export default function EntityCard(props) {
 
     return (
-        <Card style={{ width: '85%' }}>
+        
+        <Card>
             <CardHeader 
                 align='center' 
                 elevation='small' 
@@ -24,11 +25,20 @@ export default function EntityCard(props) {
                 </Text> 
             </CardHeader>
 
-            <CardBody  style={{minHeight: 'min-content'}}>
+            <CardBody>
 
-                <Box pad={{bottom: '10px'}} fill align='center' direction='row'>
-                    <Rating type={props.entity.type} owner={props.entity.User.id} 
-                        userState={props.userState} reference={props.entity.id} />
+                <Box fill
+                    pad={{bottom: '10px'}}  
+                    align='center' 
+                    direction='row'
+                >
+                    <Rating 
+                        type={props.entity.type} 
+                        owner={props.entity.User.id} 
+                        userState={props.userState} 
+                        reference={props.entity.id} 
+                    />
+
                     <Box fill width='100%'>
                         <Link to={`/${props.entity.type}/${props.entity.id}`} >
                             <Heading fill level={3} margin={{vertical: '2px'}}>
