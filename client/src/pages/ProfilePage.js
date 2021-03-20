@@ -14,6 +14,7 @@ import UserFeed from '../components/UserFeed';
 import AddServiceForm from '../components/AddServiceForm';
 import Ask from './Ask';
 import cardTheme from '../components/cardTheme.json'
+import NothingHereDisplay from '../components/NothingHereDisplay';
 
 export default function ProfilePage(props) {
 
@@ -229,9 +230,14 @@ export default function ProfilePage(props) {
                                 </Box>
                             }
 
-                            {services.map(
+                            { services.length > 0 ? services.map(
                                 e => <EntityCard entity={e} userState={props.userState} />
-                            )}
+                            ) : <NothingHereDisplay container={{ 
+                                width: '70%',
+                                pad: {
+                                    vertical: 'medium'
+                                } 
+                            }} />}
                             </Box>
                             </Grommet>
                         </Box>
