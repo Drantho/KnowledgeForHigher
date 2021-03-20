@@ -5,6 +5,7 @@ import { Box, Image, Text } from 'grommet';
 import TagInput from './TagInput';
 import TagDisplay from './TagDisplay';
 import API from '../utils/API';
+import NothingHereDisplay from './NothingHereDisplay';
  
 export default function UserSidebar(props) {
 
@@ -19,10 +20,11 @@ export default function UserSidebar(props) {
     }
 
     useEffect( async () => {
-
-        setEditorState(
-            EditorState.createWithContent(convertFromRaw(JSON.parse(props.user.bio)))
-        );
+        if (props.user.bio !== '' && props.user.bio !== null) {
+            setEditorState(
+                EditorState.createWithContent(convertFromRaw(JSON.parse(props.user.bio)))
+            );
+        }
 
         API.getTagsByUser(props.user.id).then( (response) => {
             setFollowedTags(response.data.map(e => e.name));
@@ -77,10 +79,16 @@ export default function UserSidebar(props) {
             <Box pad='small'>
                 <Text margin={{ bottom: '1px' }}>About {props.user.userName}</Text>
                 <Box background='#222E42' margin={{ bottom: '5px' }} height='1px' elevation='small' />
-                <Editor
-                    editorState={editorState}
-                    readOnly={true}
-                    blockStyleFn={blockStyleFn} />
+
+                { props.user.bio ?
+                    <Editor
+                        editorState={editorState}
+                        readOnly={true}
+                        blockStyleFn={blockStyleFn} />
+                    :
+                    <NothingHereDisplay />
+                }
+                
             </Box>
 
             <Box pad='small'>

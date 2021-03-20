@@ -10,6 +10,7 @@ import UserFeedAnswer from './UserFeedAnswer';
 import UserFeedRating from './UserFeedRating';
 
 import cardTheme from './cardTheme.json';
+import NothingHereDisplay from './NothingHereDisplay';
 
 export default function UserFeed(props) {
 
@@ -52,7 +53,8 @@ export default function UserFeed(props) {
     return (
         <Grommet theme={cardTheme}>
         <Box pad='15px' align='center' gap='xsmall'>
-            {
+
+            { entityList.length > 0 ? 
                 entityList.map( e => {
                     switch (e.entityType) {
                         case 'comment':
@@ -77,6 +79,8 @@ export default function UserFeed(props) {
                                         rating={e} />
                     }
                 })
+                :
+                <NothingHereDisplay container={{ width: '85%' }} />
             }
             
         </Box>
