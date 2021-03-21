@@ -174,18 +174,6 @@ router.post('/', authenticate, (request, response) => {
     });
 });
 
-// router.put('/name', (request, response) => {
-//     db.Tag.update({
-//         name: request.body.name
-//     }, {
-//         where: { id: request.body.id }
-//     }).then((result) => {
-//         response.json(result);
-//     }).catch((err) => {
-//         response.status(500).json(err);
-//     });
-// });
-
 router.put('/description', authenticate, (request, response) => {
     if (profanityCheck(request.body.description)) {
         response.status(400).json({
