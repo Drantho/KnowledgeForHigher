@@ -77,7 +77,7 @@ export default function Question(props) {
                     </Box>
 
 
-                    <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }} >
+                    <Box gridArea="tags" alignSelf="start" direction="row" margin={{ "top": "15px" }}  style={{ flexWrap: "wrap" }}>
                         {props.props.Tags.map(tag => <QuestionTags props={tag}/>)}
 
                     </Box>

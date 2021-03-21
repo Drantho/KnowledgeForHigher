@@ -225,9 +225,9 @@ export default function UserHome(props) {
 
                         </Box>
 
-                        <Box gridArea="services">
+                        <Box gridArea="services"  >
                             <FollowedServices />
-                            <Box>
+                            <Box >
                                 {services.map(service => <Service props={service} />)}
                             </Box>
                         </Box>

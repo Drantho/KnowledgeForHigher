@@ -9,20 +9,19 @@ export default function Service(services) {
     console.log("testing services object")
     console.log(services)
     return (
-        <Box alignSelf="start" margin={{ "right": "10px" }}>
+       
             <Box
-                fill="true"
                 direction="row"
                 align="center"
                 background="#F3F3F3"
                 round="5px"
-                gridArea="tag"
                 elevation="small"
                 margin={{
                     "top": "20px",
                     "left": "25px",
                     "right": "25px"
                 }}
+                
             >
 
                 <Grid
@@ -77,7 +76,7 @@ export default function Service(services) {
                 </Grid>
             
             </Box>
-        </Box>
+       
     )
 }
 
