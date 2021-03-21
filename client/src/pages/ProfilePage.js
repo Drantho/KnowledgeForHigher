@@ -140,7 +140,11 @@ export default function ProfilePage(props) {
             </Box>
 
             <Box align='center' margin={{ top: headerOffset }} width='300px' gridArea='sidebar'>
-                <UserSidebar user={user} userState={props.userState} />
+                <UserSidebar 
+                    user={user}
+                    userState={props.userState} 
+                    setUserState={props.setUserState} />
+
             </Box>
 
             <Box 
