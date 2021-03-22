@@ -15,6 +15,7 @@ import AddServiceForm from '../components/AddServiceForm';
 import Ask from './Ask';
 import cardTheme from '../components/cardTheme.json'
 import NothingHereDisplay from '../components/NothingHereDisplay';
+import ProfileCreateBanner from '../components/ProfileCreateBanner';
 
 export default function ProfilePage(props) {
 
@@ -160,6 +161,7 @@ export default function ProfilePage(props) {
                             }}
                         >
                             <UserFeed targetUser={user} userState={props.userState} />
+                            <ProfileCreateBanner userState={props.userState} />
                         </Box>
                     </Tab>
 
@@ -198,6 +200,9 @@ export default function ProfilePage(props) {
                             { questions.map( 
                                 e => <EntityCard entity={e} userState={props.userState} />
                             )}
+                                <ProfileCreateBanner
+                                    container={{ width: '70%' }}
+                                    userState={props.userState} />
                             </Box>
                             </Grommet>
                         </Box>
@@ -219,30 +224,39 @@ export default function ProfilePage(props) {
                                     gap='xsmall'
                                 >
 
-                            { props.userState.id === user.id && 
-                                <Box 
-                                    hoverIndicator
-                                    onClick={() => setServiceFormOpen(true)}
-                                    width='85%' 
-                                    gap='small'
-                                    pad='small' 
-                                    round='small'
-                                    direction='row'
-                                >
-                                    <Add />
-                                    <Text>Add a new service...</Text>
-                                </Box>
-                            }
+                                { props.userState.id === user.id && 
+                                    <Box 
+                                        hoverIndicator
+                                        onClick={() => setServiceFormOpen(true)}
+                                        width='85%' 
+                                        gap='small'
+                                        pad='small' 
+                                        round='small'
+                                        direction='row'
+                                    >
+                                        <Add />
+                                        <Text>Add a new service...</Text>
+                                    </Box>
+                                }
 
-                            { services.length > 0 ? services.map(
-                                e => <EntityCard entity={e} userState={props.userState} />
-                            ) : <NothingHereDisplay container={{ 
-                                width: '70%',
-                                pad: {
-                                    vertical: 'medium'
-                                } 
-                            }} />}
-                            </Box>
+                                { services.length > 0 ?
+                                    services.map(
+                                        e => <EntityCard entity={e} userState={props.userState} />
+                                    ) 
+                                    : 
+                                    <NothingHereDisplay 
+                                        container={{ 
+                                            width: '70%',
+                                            pad: {
+                                                vertical: 'medium'
+                                            } 
+                                        }} />
+                                }
+
+                                <ProfileCreateBanner 
+                                    container={{ width: '70%' }} 
+                                    userState={props.userState} />
+                                </Box>
                             </Grommet>
                         </Box>
                     </Tab>
@@ -261,6 +275,7 @@ export default function ProfilePage(props) {
                 </Tabs>
                 </Grommet>
 
+                {/* Modal form for adding a new question */}
                 { questionFormOpen && 
                     <Layer style={{ width: '50%', padding: '10px' }}
                         modal
@@ -273,6 +288,7 @@ export default function ProfilePage(props) {
                     </Layer>
                 }
 
+                {/* Modal form for adding a new service */}
                 { serviceFormOpen && 
                     <Layer style={{ width: '50%', padding: '10px' }}
                         modal
