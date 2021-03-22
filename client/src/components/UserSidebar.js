@@ -154,19 +154,15 @@ export default function UserSidebar(props) {
                     height='1px'
                     elevation='small' />
 
-                { props.user.id === props.userState.id ? 
-                
+                { props.user.id === props.userState.id ?      
                     <TagInput placeholder='Follow a new tag'
                         selectedTags={followedTags} 
                         setSelectedTags={setFollowedTags}
                         lineBreak={true}
                         onAddTag={followTag}
                         onRemoveTag={unfollowTag} />
-                    
                     :
-
                     <TagDisplay userState={props.userState} tags={followedTags} />
-            
                 }
             </Box>
 
