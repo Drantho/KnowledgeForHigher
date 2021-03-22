@@ -193,24 +193,54 @@ router.put('/description', authenticate, (request, response) => {
     });
 });
 
-router.put('/user', authenticate, (request, response) => {
-    db.Tag.findAll({
-        where: {
-            name: { [Op.in]: request.body.tags }
+router.put('/user/:tagName', authenticate, ( request, response ) => {
+
+    db.Tag.findOne({
+        where: { 
+            name: request.params.tagName
         }
-    }).then((result) => {
-        console.log(`tags found`);
-        const insertArr = result.map((r) => {
-            return { UserId: request.userId, TagId: r.dataValues.id };
-        });
-        db.sequelize.models.following.bulkCreate(insertArr)
-            .then((linkResult) => {
-                response.json(linkResult);
-            }).catch((err) => {
+    }).then( (result) => {
+        if (result) {
+            // Check if user already follows this tag
+            db.sequelize.models.following.findOne( {
+                where: {
+                    TagId: result.dataValues.id,
+                    UserId: request.userId
+                }
+            }).then( (findLinkResult) => {
+               if (findLinkResult) {
+                   return;
+               } else {
+                   // Create a link
+                   db.sequelize.models.following.create( {
+                       TagId: result.id,
+                       UserId: request.userId
+                   }).then( (result) => {
+                       response.json(result);
+                   }).catch( (err) => {
+                       response.status(500).json(err);
+                   });
+               }
+            }).catch( (err) => {
                 response.status(500).json(err);
             });
-    }).catch((err) => {
-        console.log(err);
+        } else {
+            db.Tag.create({
+                name: request.params.tagName
+            }).then( (createResult) => {
+                db.sequelize.models.following.create( {
+                    TagId: createResult.dataValues.id,
+                    UserId: request.userId
+                }).then( (linkResult) => {
+                    response.json({
+                        msg: `User ${request.userId} now following tag ${linkResult.dataValues.TagId}`
+                    });
+                }).catch( (err) => {
+                    response.status(500).json(err);
+                });
+            })
+        }
+    }).catch( (err) => {
         response.status(500).json(err);
     });
 });
