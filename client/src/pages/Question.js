@@ -28,6 +28,7 @@ import {
 
 import API from '../utils/API';
 import UserWidget from '../components/UserWidget';
+import TagDisplay from '../components/TagDisplay';
 
 export default function Question(props) {
     const { id } = useParams();
@@ -94,7 +95,6 @@ export default function Question(props) {
 
     useEffect(async () => {
         const questionToShow = await API.getQuestionById(id).catch(err => console.log(err));
-        console.log(convertFromRaw(JSON.parse(questionToShow.data.text)))
         setQuestion(questionToShow.data);
         setEditorState(
             EditorState.createWithContent(convertFromRaw(JSON.parse(questionToShow.data.text)))
@@ -177,18 +177,14 @@ export default function Question(props) {
                                 >
                                     {question.title}
                                 </Heading>
-                                <Box direction='row'>
-                                    {question.Tags.map(e => <Tag 
-                                                                tag={e} 
-                                                                userState={props.userState}
-                                                            /> )}
-                                </Box>
+                                <TagDisplay tags={question.Tags} userState={props.userState} />
                             </Box>
                         </Box>
 
-                        <UserWidget userState={props.userState} />
+                        <UserWidget userState={question.User} />
 
                     </Box>
+
                     <Box height='3px' background='#222E42' />
 
                     <Box pad={{ vertical: '30px', horizontal: '15px' }}
@@ -212,7 +208,6 @@ export default function Question(props) {
                                 text={e.text} />
                         })}
 
-                        {/* {(props.userState.id !== question.User.id && props.userState.isSignedIn) && */}
                         {(props.userState.isSignedIn) &&
                             <Accordion margin={{ top: '15px' }} width='85%'>
                                 <AccordionPanel label='Leave a comment...'>
@@ -240,8 +235,15 @@ export default function Question(props) {
                         }
                     </Box>
 
-                    <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
+                    <Heading 
+                        margin={{ top: 'medium', bottom: 'xsmall' }} 
+                        level={3}
+                    >
+                        Answers
+                    </Heading>
+
                     <Box height='3px' background='#222E42' />
+
                     <Box margin={{ top: '10px' }}>
                         {
                             answers.map((e) => {
@@ -254,24 +256,16 @@ export default function Question(props) {
                         }
                     </Box>
 
-                    {/* {(props.userState.id !== question.User.id && props.userState.isSignedIn) && */}
-                    {(props.userState.isSignedIn) &&
-                        <Box>
-                        <PostEditor
-                            getDraftValue={(value) => setAnswer({...answer, text: JSON.stringify(value) })}
-                            controlledContent={answer.text} />
-                            <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
-                            <Box height='3px' background='#222E42' />
-                            <Form onSubmit={handleSubmit} value={answer.text}>
-                                <FormField htmlFor='text-area'
-                                    onChange={handleAnswerInput}
-                                    component={TextArea}
-                                    placeholder='Answer...'
-                                    value={answer.text} />
-                                <Button type='submit' label='Submit' />
-                            </Form>
-
-                        </Box>}
+                    { (props.userState.isSignedIn) &&
+                        <Box gap='small' fill>
+                            <PostEditor
+                                getDraftValue={
+                                    (value) => setAnswer({...answer, text: JSON.stringify(value) })
+                                }
+                                controlledContent={answer.text} />
+                            <Button label='Submit' />
+                        </Box>
+                    }
 
                     {!props.userState.isSignedIn &&
                         <Box pad='small' margin={{ top: 'xsmall' }}
