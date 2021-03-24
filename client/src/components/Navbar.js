@@ -1,6 +1,7 @@
 import { React, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Grommet, Box, Header, Heading, Image, Button, Anchor } from 'grommet';
+import { Chat } from 'grommet-icons';
 
 import UserWidget from './UserWidget';
 
@@ -28,6 +29,12 @@ export default function Navbar(props) {
 
     const icon = '/assets/images/bookicon.png';
 
+    const handleLogout = (event) => {
+        localStorage.clear("token");
+        localStorage.clear("portrait");
+        window.location.reload();
+    }
+
     return (
         <Grommet theme={theme}>
         <Header 
@@ -36,7 +43,8 @@ export default function Navbar(props) {
             id='nav' 
             pad='9px' 
             justify='between' 
-            background='#222E42'>
+            background='#222E42'
+        >
             <Box align='center' direction='row'>
                 <Image width='56px' sizes='small' src={icon} />
                 <Heading color='#FCE181' 
@@ -48,9 +56,41 @@ export default function Navbar(props) {
 
             { props.userState.isSignedIn ? 
                 <Box align='center' gap='medium' direction='row'>
-                    <Box direction='row' gap='small'>
-                        <Link to='/ask'>Ask</Link>
-                        <Link to='/home'>Home</Link>
+                    <Box direction='row' gap='medium'>
+                        
+                        <Anchor>
+                            <Link
+                                to='/ask' 
+                                style={{ color: '#fce181', textDecoration: 'inherit' }}
+                            >
+                                Ask
+                            </Link>
+                        </Anchor>
+
+                        <Anchor>
+                            <Link
+                                to='/home' 
+                                style={{ color: '#fce181', textDecoration: 'inherit' }}
+                            >
+                                Home
+                            </Link>
+                        </Anchor>
+
+                        { props.userState.isSignedIn && 
+                            <Anchor color="#FCE181">
+                                <Link 
+                                    to='/messages/1' 
+                                    style={{ color: "#FCE181", textDecoration: 'inherit' }}>
+                                        <Chat color="#FCE181" />
+                                </Link>
+                            </Anchor>
+                        }
+
+                        { props.userState.isSignedIn && 
+                            <Anchor onClick={handleLogout} color='#fce181'>
+                                Logout
+                            </Anchor>
+                        }
                     </Box>
                     <UserWidget userState={props.userState} />
                 </Box>
