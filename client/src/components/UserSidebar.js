@@ -1,14 +1,18 @@
 import { React, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import { Box, Image, Stack, Text } from 'grommet';
+import { Box, Button, Image, Stack, Text } from 'grommet';
 import TagInput from './TagInput';
 import TagDisplay from './TagDisplay';
 import API from '../utils/API';
+import messageAPI from '../utils/messageAPI';
 import NothingHereDisplay from './NothingHereDisplay';
 import { Add } from 'grommet-icons';
  
 export default function UserSidebar(props) {
+
+    const history = useHistory()
 
     const [ editorState, setEditorState ] = useState(EditorState.createEmpty());
 
@@ -83,6 +87,14 @@ export default function UserSidebar(props) {
         }
     }
 
+    const handleMessage = async (event) => {
+        event.preventDefault();
+        const newThread 
+            = await messageAPI.createThread(props.user.userName, props.userState.token);
+        console.log(newThread)
+        history.push(`/messages/${newThread.data.id}`)
+    }
+
     return (
         <Box 
             overflow={{ vertical: 'scroll' }}
@@ -126,6 +138,14 @@ export default function UserSidebar(props) {
                 <Text>{props.user.email}</Text>
             </Box>
             
+            { props.userState.isSignedIn && props.userState.id !== props.user.id &&
+                <Box alignSelf='center' width='90%'>
+                    <Button 
+                        onClick={handleMessage} 
+                        label={`Message ${props.user.userName}`} />
+                </Box>
+            }
+            
 
             <Box pad='small'>
                 <Text margin={{ bottom: '1px' }}>About {props.user.userName}</Text>
@@ -162,7 +182,10 @@ export default function UserSidebar(props) {
                         onAddTag={followTag}
                         onRemoveTag={unfollowTag} />
                     :
-                    <TagDisplay userState={props.userState} tags={followedTags} />
+                    ( followedTags.length > 0 ? 
+                     <TagDisplay userState={props.userState} tags={followedTags} />
+                     :
+                     <NothingHereDisplay />)
                 }
             </Box>
 
