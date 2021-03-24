@@ -195,9 +195,12 @@ function App() {
             setUserState={setUserState} 
           />
         </Route>
-        <ProtectedRoute exact path="/messages" isSignedIn={userState.isSignedIn}>
+          <Route exact path='/messages/:threadId'>
+            <MessageView userState={userState} />
+          </Route> 
+        {/* <ProtectedRoute exact path="/messages/:threadId" isSignedIn={userState.isSignedIn}>
           <MessageView userState={userState} />
-        </ProtectedRoute>
+        </ProtectedRoute> */}
         <Route path="*">
           <NotFound />
         </Route>
