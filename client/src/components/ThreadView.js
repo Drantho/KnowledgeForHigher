@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useRef } from 'react';
-import { Text, TextArea, Form, FormField, Button, Box, Heading } from 'grommet';
+import { Text, TextArea, Form, FormField, Button, Box, Heading, Anchor } from 'grommet';
 
 import {
     Editor,
@@ -15,8 +15,11 @@ import MessageBubble from './MessageBubble';
 
 import messageAPI from '../utils/messageAPI';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
+import { useHistory } from 'react-router';
 
 export default function ThreadView(props) {
+
+    const history = useHistory();
 
     const [messagesList, setMessagesList] = useState([]);
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
@@ -69,23 +72,39 @@ export default function ThreadView(props) {
         <Box justify='between' background={{color: '#939393', opacity:'weak'}} width='100%'>
                 {props.selectedThread !== -1 ? 
                 <>
-                <Box elevation='none' align='end' background={{ color: 'rgba(137,162,178,0.6)' }}>
-                <Heading textAlign='end' 
-                    level={2} 
-                    margin={{vertical:'small', right: 'small'}}>
-                    Conversation with {props.toUser.firstName + ' ' + props.toUser.lastName}
-                </Heading>
+
+                <Box 
+                    elevation='none' 
+                    align='end' 
+                    background={{ color: 'rgba(137,162,178,0.6)' }}
+                >
+                    <Heading textAlign='end' 
+                        level={2} 
+                        margin={{vertical:'small', right: 'small'}}>
+                        Conversation with <Anchor 
+                                            onClick={() => history.push(`/profile/${props.toUser.id}`) }
+                                          >
+                                            {props.toUser.firstName + ' ' + props.toUser.lastName}
+                                          </Anchor>
+                    </Heading>
                 </Box>
-                <Box flex='grow' 
-                    overflow={{vertical: 'scroll'}}>
-                    {messagesList.map( (e) => {
-                        return props.selectedThread ? <MessageBubble 
-                        sentOrRecieved={e.senderId === props.userState.id ? 'sent' : 'received'}
-                        body={e.body} 
-                        date={e.formattedDate} 
-                        portrait={props.userState.portrait} /> : <></>
-                    })}
-                    <div ref={messagesEndRef}></div>
+
+                <Box 
+                    flex='grow' 
+                    overflow={{vertical: 'scroll'}}
+                    pad='medium'
+                    gap='xsmall'
+                >
+                    { messagesList.map( (e) => {
+                        return props.selectedThread && 
+                            <MessageBubble 
+                                sentOrRecieved={e.senderId === props.userState.id ? 
+                                                    'sent' : 'received'}
+                                body={e.body} 
+                                date={e.formattedDate} 
+                                portrait={props.toUser.portrait} />
+                    }) }
+                    <div ref={messagesEndRef} />
                 </Box>
 
                 <Box margin={{vertical: '10px'}}>
@@ -93,8 +112,9 @@ export default function ThreadView(props) {
                         onSubmit={handleSend}>
                         <Box align='center' direction='row' margin={{'horizontal': 'medium'}}>
                             <Box fill round='small'
-                                pad='small' 
-                                background='gray'>
+                                pad='small'
+                                className='message-editor'
+                            >
                                 <Editor 
                                     onChange={onChange} 
                                     editorState={editorState}
@@ -114,11 +134,10 @@ export default function ThreadView(props) {
                     </Form>
                 </Box>
                 </> : 
-                <>
                 <Box justify='center' align='center'>
                     <Heading color='#5A6489'>Select a thread</Heading>
                 </Box>
-                </>}
+                }
             </Box>
     )
 }
