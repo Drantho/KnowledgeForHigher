@@ -14,7 +14,7 @@ export default function UserFeedComment(props) {
     const [ dateString, setDateString ] = useState('');
 
     useEffect( async () => {
-        const date = new Date(props.answer.createdAt);
+        const date = new Date(props.comment.createdAt);
         const dateStr
             = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date) + ' ' +
             date.getDate();
