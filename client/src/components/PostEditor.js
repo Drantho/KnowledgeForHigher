@@ -200,18 +200,18 @@ export default function PostEditor(props) {
 
             </Box> : <Box height='36px' /> }
 
-            <Box fill pad={{vertical: 'small'}} align='left'> 
+            <Box fill pad={{vertical: 'small'}}> 
                 <div className={className}>
-                <Editor ref={setEditorRef}
-                    editorState={editorState}
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    handleKeyCommand={handleKeyCommand}
-                    blockStyleFn={blockStyleFn} 
-                    handleReturn={handleReturn} 
-                    onTab={onTab}
-                    placeholder={props.placeholder} />
+                    <Editor ref={setEditorRef}
+                        editorState={editorState}
+                        onChange={onChange}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        handleKeyCommand={handleKeyCommand}
+                        blockStyleFn={blockStyleFn} 
+                        handleReturn={handleReturn} 
+                        onTab={onTab}
+                        placeholder={props.placeholder} />
                 </div>
             </Box>
         </Box>
