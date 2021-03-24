@@ -13,7 +13,7 @@ router.get('/', (request, response) => {
     if (request.query.id || request.query.name) {
         const condition = {};
         if (request.query.id) { condition.id = request.query.id; }
-        else { where.name = request.query.name; }
+        else { condition.name = request.query.name; }
 
         db.Tag.findOne({
             where: condition,
