@@ -137,7 +137,7 @@ export default function ProfilePage(props) {
             ]}>
 
             <Box margin={{ bottom: undefined }} gridArea='header'>
-                <Navbar userState={props.userState} />
+                <Navbar userState={props.userState} setUserState={props.setUserState} />
             </Box>
 
             <Box align='center' margin={{ top: headerOffset }} width='300px' gridArea='sidebar'>
@@ -154,14 +154,18 @@ export default function ProfilePage(props) {
                 <Grommet theme={tabTheme}>
                 <Tabs>
                     <Tab title='Activity'>
-                        <Box 
+                        <Box
                             style={{ 
                                 overflowY: 'scroll', 
                                 height: 'calc(100vh - 79px - 64px)' 
                             }}
                         >
                             <UserFeed targetUser={user} userState={props.userState} />
-                            <ProfileCreateBanner userState={props.userState} />
+                            <Box align='center'>
+                                <ProfileCreateBanner
+                                    container={{ width: '70%' }}
+                                    user={user} />
+                            </Box>
                         </Box>
                     </Tab>
 
@@ -179,32 +183,42 @@ export default function ProfilePage(props) {
                                 margin={{ vertical: 'small' }} 
                                 align='center' 
                                 gap='xsmall'
-                            >
-                            
-                            { props.userState.id === user.id &&
-                                <Box
-                                    hoverIndicator
-                                    onClick={() => setQuestionFormOpen(true)}
-                                    height={{ min: 'min-content' }}
-                                    gap='small'
-                                    width='85%'
-                                    pad='small'
-                                    round='small'
-                                    direction='row'
-                                >
-                                    <Add />
-                                    <Text>Add a new question...</Text>
-                                </Box>
-                            }
-                            
-                            { questions.map( 
-                                e => <EntityCard entity={e} userState={props.userState} />
-                            )}
+                            > 
+                                { props.userState.id === user.id &&
+                                    <Box
+                                        hoverIndicator
+                                        onClick={() => setQuestionFormOpen(true)}
+                                        height={{ min: 'min-content' }}
+                                        gap='small'
+                                        width='85%'
+                                        pad='small'
+                                        round='small'
+                                        direction='row'
+                                    >
+                                        <Add />
+                                        <Text>Add a new question...</Text>
+                                    </Box>
+                                }
+                                
+                                { questions.length > 0 ? 
+                                    questions.map( 
+                                        e => <EntityCard entity={e} userState={props.userState} />
+                                    )
+                                    : 
+                                    <NothingHereDisplay
+                                        container={{
+                                            width: '70%',
+                                            pad: {
+                                                vertical: 'medium'
+                                            }
+                                        }} />
+                                    }
                                 <ProfileCreateBanner
                                     container={{ width: '70%' }}
-                                    userState={props.userState} />
+                                    user={user} />
                             </Box>
-                            </Grommet>
+
+                        </Grommet>
                         </Box>
 
                     </Tab>
@@ -217,12 +231,12 @@ export default function ProfilePage(props) {
                             }}
                         >
 
-                            <Grommet theme={tabPaneTheme}>
-                                <Box // Container for cards
-                                    margin={{ vertical: 'small' }}
-                                    align='center'
-                                    gap='xsmall'
-                                >
+                        <Grommet theme={tabPaneTheme}>
+                            <Box // Container for cards
+                                margin={{ vertical: 'small' }}
+                                align='center'
+                                gap='xsmall'
+                            >
 
                                 { props.userState.id === user.id && 
                                     <Box 
@@ -241,7 +255,9 @@ export default function ProfilePage(props) {
 
                                 { services.length > 0 ?
                                     services.map(
-                                        e => <EntityCard entity={e} userState={props.userState} />
+                                        e => <EntityCard 
+                                                entity={e} 
+                                                userState={props.userState} />
                                     ) 
                                     : 
                                     <NothingHereDisplay 
@@ -255,10 +271,11 @@ export default function ProfilePage(props) {
 
                                 <ProfileCreateBanner 
                                     container={{ width: '70%' }} 
-                                    userState={props.userState} />
-                                </Box>
-                            </Grommet>
-                        </Box>
+                                    user={user} />
+                            </Box>
+
+                        </Grommet>
+                    </Box>
                     </Tab>
 
                     { props.userState.id === user.id && 
