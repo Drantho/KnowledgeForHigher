@@ -62,6 +62,9 @@ export default {
     console.log(`${url}/api/tag?id=${id}`);
     return axios.get(`${url}/api/tag?id=${id}`);
   },
+  getTagbyName: name => {
+    return axios.get(`${url}/api/tag?name=${name}`);
+  },
   getTagBySearch: search => {
     console.log(`${url}/api/tag?search=${search}`);
     return axios.get(`${url}/api/tag?search=${search}`);
