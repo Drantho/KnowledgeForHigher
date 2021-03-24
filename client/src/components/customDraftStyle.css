@@ -26,6 +26,10 @@ div.DraftEditor-root {
   width: min-content;
   min-width: 250px;
   min-height: min-content;
-  border: solid 2px gray;
+  border: solid 2px rgb(163, 163, 163);
   background-color: #eee;
+}
+
+.message-editor div.DraftEditor-root {
+  min-height: min-content;
 }
