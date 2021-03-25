@@ -62,7 +62,7 @@ export default function Comment(props) {
                 {truncated ? <></> :
                     <Grommet theme={theme}>
                     <Box margin={{top: '8px', left: '10px'}}>
-                        <Text size='16px'>
+                        <Text size='11pt'>
                             {` - `}
                             <Anchor onClick={() => history.push(`/profile/${props.user.id}`)}>
                                 {props.user.userName}
