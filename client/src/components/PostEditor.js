@@ -200,7 +200,12 @@ export default function PostEditor(props) {
 
             </Box> : <Box height='36px' /> }
 
-            <Box fill pad={{vertical: 'small'}}> 
+            <Box 
+                fill
+                className='post-editor' 
+                fill 
+                pad={{ vertical: 'small'}}
+            > 
                 <div className={className}>
                     <Editor ref={setEditorRef}
                         editorState={editorState}
