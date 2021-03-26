@@ -11,6 +11,7 @@ import UserFeedRating from './UserFeedRating';
 
 import cardTheme from './cardTheme.json';
 import NothingHereDisplay from './NothingHereDisplay';
+import UserFeedService from './UserFeedService';
 
 export default function UserFeed(props) {
 
@@ -44,7 +45,7 @@ export default function UserFeed(props) {
 
         setEntityList(entities);
 
-    }, []);
+    }, [props]);
 
     return (
         <Grommet theme={cardTheme}>
@@ -63,6 +64,11 @@ export default function UserFeed(props) {
                                         targetUser={props.targetUser} 
                                         userState={props.userState} 
                                         question={e} />
+                        case 'service':
+                            return <UserFeedService
+                                        targetUser={props.targetUser}
+                                        userState={props.userState}
+                                        service={e} />
                         case 'answer':
                             return <UserFeedAnswer 
                                         targetUser={props.targetUser}
