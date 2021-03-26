@@ -6,6 +6,11 @@ import API from '../utils/API';
 
 export default function Rating(props) {
 
+    const [ratings, setRatings] = useState({
+        positive: 0,
+        negative: 0
+    });
+
     const handleRating = async (event) => {
         if (!props.userState.isSignedIn || props.userState.id === props.owner) {
             return;
@@ -36,22 +41,16 @@ export default function Rating(props) {
                 result.data.negative === ratings.negative) {
                     return;
             }
-            setRatings(result);
+            setRatings(result.data);
         }).catch( (err) => {
             console.log(err);
         });
     };
 
-    const [ratings, setRatings] = useState({
-        positive: 0,
-        negative: 0
-    });
 
     useEffect( () => {
-        console.log('Getting ratings for ' + props.type + ' nummber ' + props.reference)
         API.getRating(props.reference, props.type).then( (result) => {
             setRatings(result.data);
-            console.log(result.data);
         }).catch( (err) => {
             console.log(err);
         });
@@ -81,18 +80,22 @@ export default function Rating(props) {
                     </Box>
                 </Button>
                 :
-                <Tip dropProps={{align: {bottom: 'top'}}} plain 
-                    content={
-                        <Box pad='xsmall' 
-                            round='xsmall' 
-                            background='#FCE181' 
-                            width={{ max: '90px' }}>
-                            <Text size='12px'>
-                                {props.userState.id === props.owner ?
-                                    `You cannot leave a rating on your own ${props.type}.` :
-                                    'You must be signed in to leave a rating!'
-                            }</Text>
-                        </Box>}> 
+                <Tip 
+                    plain
+                    dropProps={{ align: { bottom: 'top' } }}  
+                    content={ <Box 
+                                pad='xsmall' 
+                                round='xsmall' 
+                                background='#FCE181' 
+                                width={{ max: '90px' }}
+                              >
+                                <Text size='12px'>
+                                    { props.userState.id === props.owner ?
+                                        `You cannot leave a rating on your own ${props.type}.` :
+                                        'You must be signed in to leave a rating!' }
+                                </Text>
+                              </Box> }
+                    > 
                     <Button onClick={handleRating}>
                         <Box>
                             <Up />
@@ -105,7 +108,7 @@ export default function Rating(props) {
             }
 
             <Box width='100%' height='2px' background='#222E42' />
-            {props.userState.isSignedIn && props.userState.id !== props.owner ? 
+            { props.userState.isSignedIn && props.userState.id !== props.owner ? 
                 <Button onClick={handleRating}>
                     <Box>
                         <Text margin={{ top: '5px', bottom: '-7px' }}
@@ -115,24 +118,28 @@ export default function Rating(props) {
                     </Box>
                 </Button>
                 : 
-                    <Tip plain 
-                        content={
-                            <Box pad='xsmall' 
+                <Tip 
+                    plain 
+                    content={ <Box 
+                                pad='xsmall' 
                                 round='xsmall' 
                                 background='#FCE181' 
-                                width={{max: '90px'}}>
+                                width={{max: '90px'}}
+                            >
                                 <Text size='12px'>
                                     {props.userState.id === props.owner ? 
                                         `You cannot leave a rating on your own ${props.type}.` :
                                         'You must be signed in to leave a rating!'
                                     }
                                 </Text>
-                            </Box>}>
+                            </Box> }
+                >
                     <Button onClick={handleRating}>
                         <Box>
                             <Text margin={{ top: '5px', bottom: '-7px' }}
                                 color='red'
-                                alignSelf='center'>{ratings ? ratings.negative : ''}</Text>
+                                alignSelf='center'>{ratings ? ratings.negative : ''}
+                            </Text>
                             <Down />
                         </Box>
                     </Button>
