@@ -7,7 +7,9 @@ import API from '../utils/API';
 export default function UserFeedRating(props) {
 
     const [ dateString, setDateString ] = useState('');
-    const [targetEntity, setTargetEntity] = useState({
+    const [ cardString, setCardString ] = useState('');
+    const [ href, setHref ] = useState('');
+    const [ targetEntity, setTargetEntity ] = useState({
         User: {}
     });
 
@@ -31,15 +33,25 @@ export default function UserFeedRating(props) {
                 date.getDate();
 
         if (date.getFullYear() < new Date(Date.now()).getFullYear()) {
-            dateStr.concat(', ' + date.getFullYear());
+            setDateString(dateStr.concat(', ' + date.getFullYear()));
+        } else {
+            setDateString(dateStr);
         }
 
-        setDateString(dateStr);
+        let typeStr, urlId;
+        if (props.rating.type === 'Answer') {
+            typeStr = 'Question';
+            urlId = targetEntity.Question.id
+        } else {
+            typeStr = props.rating.type;
+            urlId = targetEntity.id;
+        }
+        setCardString(`${(props.userState.id === props.targetUser.id ? 'You' : props.targetUser.firstName)}`
+            + ` left a ${props.rating.isPositive ? 'positive' : 'negative'} rating on `);
+        setHref(`/${typeStr}/${urlId}`);
 
         setTargetEntity(targetEntity);
     }, []);
-
-    const cardString = `${props.userState.id === props.targetUser.id ? 'You' : props.targetUser.firstName} left a ${props.rating.isPositive ? 'positive' : 'negative'} rating on `
 
     return (
         <Card fill>
@@ -51,7 +63,9 @@ export default function UserFeedRating(props) {
                     <Box>
                         <Text size='small' weight='bold'>
                             {cardString}
-                            <Anchor href={`/${props.rating.type}/${targetEntity.id}`}>{`${targetEntity.User.userName}'s ${props.rating.type}`}</Anchor>
+                            <Anchor href={href}>
+                                {`${targetEntity.User.userName}'s ${props.rating.type}`}
+                            </Anchor>
                         </Text>
                     </Box>
                 </Box>
