@@ -36,6 +36,7 @@ export default function UserSidebar(props) {
 
         API.getTagsByUser(props.user.id).then( (response) => {
             setFollowedTags(response.data.map(e => e.name));
+            console.log(response.data);
         }).catch( (err) => {
             console.log(err);
         });
@@ -53,7 +54,7 @@ export default function UserSidebar(props) {
             setPortraitSrc("");
             setPortraitData(null);
         }
-    }, [portraitData]);
+    }, [portraitData, props]);
 
     const followTag = (tag) => {
         API.linkTagToUser(tag, props.userState.token).then( (response) => {
@@ -62,7 +63,6 @@ export default function UserSidebar(props) {
         }).catch( (err) => {
             console.log(err);
         });
-
     }
 
     const unfollowTag = (tag) => {
@@ -143,8 +143,7 @@ export default function UserSidebar(props) {
                     <Button 
                         onClick={handleMessage} 
                         label={`Message ${props.user.userName}`} />
-                </Box>
-            }
+                </Box> }
             
 
             <Box pad='small'>
@@ -161,9 +160,7 @@ export default function UserSidebar(props) {
                         readOnly={true}
                         blockStyleFn={blockStyleFn} />
                     :
-                    <NothingHereDisplay />
-                }
-                
+                    <NothingHereDisplay /> }  
             </Box>
 
             <Box pad='small'>
@@ -183,10 +180,9 @@ export default function UserSidebar(props) {
                         onRemoveTag={unfollowTag} />
                     :
                     ( followedTags.length > 0 ? 
-                     <TagDisplay userState={props.userState} tags={followedTags} />
-                     :
-                     <NothingHereDisplay />)
-                }
+                        <TagDisplay userState={props.userState} tags={followedTags} />
+                        :
+                        <NothingHereDisplay /> )}
             </Box>
 
         </Box>
