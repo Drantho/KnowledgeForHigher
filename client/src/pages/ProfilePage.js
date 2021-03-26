@@ -54,8 +54,8 @@ export default function ProfilePage(props) {
         setQuestions(questionGet.data.map(e => ({ ...e, type: 'question' })));
 
         const servicesGet = await API.getServicesByUser(id);
-        setServices(servicesGet.data.map( e => ({...e, type: 'service'})))
-    }, [props]);
+        setServices(servicesGet.data.map( e => ({ ...e, type: 'service' })))
+    }, [props, id]);
 
     const tabTheme = {
         global: {
@@ -202,7 +202,10 @@ export default function ProfilePage(props) {
                                 
                                 { questions.length > 0 ? 
                                     questions.map( 
-                                        e => <EntityCard entity={e} userState={props.userState} />
+                                        e => <EntityCard 
+                                                width='85%' 
+                                                entity={e} 
+                                                userState={props.userState} />
                                     )
                                     : 
                                     <NothingHereDisplay
@@ -256,6 +259,7 @@ export default function ProfilePage(props) {
                                 { services.length > 0 ?
                                     services.map(
                                         e => <EntityCard 
+                                                width='85%' 
                                                 entity={e} 
                                                 userState={props.userState} />
                                     ) 
