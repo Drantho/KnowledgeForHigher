@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Heading, Card, CardHeader, Text, CardBody } from 'grommet';
+import { Box, Heading, Card, CardHeader, Text, CardBody, Tip } from 'grommet';
 import { Link } from 'react-router-dom';
 import { convertFromRaw, ContentState } from 'draft-js';
 
 import Rating from './Rating';
 import Tag from './Tag';
+import UserWidget from './UserWidget';
 
 export default function EntityCard(props) {
 
@@ -14,17 +15,16 @@ export default function EntityCard(props) {
     useEffect( () => {
         const content = convertFromRaw(JSON.parse(props.entity.text));
         const descrStr = content.getFirstBlock().getText();
-        console.log(content.getBlocksAsArray().length);
         if (content.getBlocksAsArray().length > 1) {
             setDescriptionDisplay(descrStr.concat('...'));
         } else {
             setDescriptionDisplay(descrStr);
         }
-    }, [])
+    }, [props]);
 
     return (
         
-        <Card>
+        <Card width={props.width}>
             <CardHeader 
                 align='center' 
                 elevation='small' 
@@ -42,7 +42,7 @@ export default function EntityCard(props) {
             <CardBody>
 
                 <Box fill
-                    pad={{bottom: '10px'}}  
+                    pad={{ bottom: '10px', right: '15px' }}  
                     align='center' 
                     direction='row'
                 >
@@ -53,31 +53,60 @@ export default function EntityCard(props) {
                         reference={props.entity.id} 
                     />
 
-                    <Box fill width='100%'>
+                    <Box width='100%'>
+
                         <Link to={`/${props.entity.type}/${props.entity.id}`} >
                             <Heading fill level={3} margin={{vertical: '2px'}}>
                                 {props.entity.title}
                             </Heading>
                         </Link>
-                        {
-                            props.entity.text && 
+
+                        { props.entity.text && 
                                 <Box margin={{vertical: '10px', left: '10px'}} direction='row'>
                                     <Box width='10px' round='2px' background='rgba(0,0,0,0.25)' />
                                     <Text 
+                                        color='#919191'
                                         size='16px' 
-                                        margin={{vertical: 'small', left: '5px'}}>
+                                        margin={{vertical: 'small', left: '5px'}}
+                                    >
                                         { descriptionDisplay }
                                     </Text>
-                                </Box>
-                        }
+                                </Box> }
+
                         <Box direction='row'>
-                            {
-                                props.entity.Tags.map((e) => {
-                                    return <Tag userState={props.userState} tag={e.name} />
-                                })
-                            }
+                            { props.entity.Tags.map( e => <Tag 
+                                                            userState={props.userState} 
+                                                            tag={e.name} />) }
                         </Box>
                     </Box>
+
+                    { props.entity.type === 'service' && 
+                        <Box margin={{ horizontal: '15px' }} wrap width={{ min: 'min-content' }}>
+                        <Tip plain
+                            content={
+                                <Box
+                                    pad='xsmall'
+                                    elevation='large'
+                                    round='xsmall'
+                                    background='#FCE181'
+                                    width={{ max: '90px' }}
+                                >
+                                    <Text size='12px'>
+                                        Prices are estimates and may not represent the total cost for this service.
+                                    </Text>
+                                </Box>}>
+                            <Text 
+                                weight='bold' 
+                                color='#222e42' 
+                                size='12pt'
+                            >
+                                    {props.entity.price}
+                            </Text>
+                            </Tip>
+                        </Box> }
+
+                    { props.showUser && 
+                        <UserWidget userState={props.entity.User} /> }
                 </Box>  
             </CardBody>
         </Card>
