@@ -4,11 +4,7 @@ import { Text, TextArea, Form, FormField, Button, Box, Heading, Anchor } from 'g
 import {
     Editor,
     EditorState,
-    ContentState,
-    SelectionState,
-    RichUtils,
-    Modifier,
-    convertToRaw
+    ContentState
 } from 'draft-js';
 
 import MessageBubble from './MessageBubble';
@@ -57,10 +53,6 @@ export default function ThreadView(props) {
         scrollToBottom();
     }, [props.selectedThread]);
 
-    const onChange = (newEditorState) => {
-        setEditorState(newEditorState);
-    }
-
     const handleReturn = (event) => {
         if (isSoftNewlineEvent(event)) {
             return 'handled';
@@ -108,17 +100,25 @@ export default function ThreadView(props) {
                 </Box>
 
                 <Box margin={{vertical: '10px'}}>
-                    <Form value={editorState.getCurrentContent().getPlainText()}
-                        onSubmit={handleSend}>
-                        <Box align='center' direction='row' margin={{'horizontal': 'medium'}}>
-                            <Box fill round='small'
+                    <Form 
+                        value={editorState.getCurrentContent().getPlainText()}
+                        onSubmit={handleSend}
+                    >
+                        <Box 
+                            align='center' 
+                            direction='row' 
+                            margin={{'horizontal': 'medium'}}
+                        >
+                            <Box 
+                                fill 
+                                round='small'
                                 pad='small'
                                 className='message-editor'
                             >
                                 <Editor 
-                                    onChange={onChange} 
+                                    placeholder='Write your message here...'
+                                    onChange={ (newState) => setEditorState(newState) } 
                                     editorState={editorState}
-                                    placeholder='Enter a message...'
                                     handleReturn={handleReturn} />
                             </Box>
 
@@ -128,7 +128,7 @@ export default function ThreadView(props) {
                                     height='small'
                                     type='submit' 
                                     primary 
-                                    label='Send'/>
+                                    label='Send' />
                             </Box>
                         </Box>
                     </Form>
