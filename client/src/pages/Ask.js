@@ -78,7 +78,7 @@ export default function Ask(props) {
 
     return ( 
         
-        <Box align='center'>
+        <Box pad={props.pad} align='center'>
             <Box fill>
 
                 <Grommet theme={theme}>
