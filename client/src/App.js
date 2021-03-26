@@ -171,7 +171,7 @@ function App() {
           <UserHome userState={userState}/>
         </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
-          <Ask userState={userState}/>
+          <Ask pad='large' userState={userState}/>
         </ProtectedRoute>
         <Route path="/service/:id">
           <Service userState={userState}/>
