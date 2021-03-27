@@ -33,7 +33,6 @@ export default function Tag(props) {
         // This will control displaying a 'follow' or an 'unfollow' button
         if (props.userState.isSignedIn) {
             API.getTagsByUser(props.userState.id).then( (response) => {
-                console.log(response.data);
                 if (response.data.findIndex(e => e.name === props.tag || e.name === props.tag.name) !== -1) {
                     setFollowing(true);
                 }
