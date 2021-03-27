@@ -203,6 +203,7 @@ export default function ProfilePage(props) {
                                 { questions.length > 0 ? 
                                     questions.map( 
                                         e => <EntityCard 
+                                                key={e.id}
                                                 width='85%' 
                                                 entity={e} 
                                                 userState={props.userState} />
@@ -259,6 +260,7 @@ export default function ProfilePage(props) {
                                 { services.length > 0 ?
                                     services.map(
                                         e => <EntityCard 
+                                                key={e.id}
                                                 width='85%' 
                                                 entity={e} 
                                                 userState={props.userState} />
