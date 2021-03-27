@@ -6,8 +6,10 @@ export default function MessageBubble(props) {
 
     return (
         <Grommet>
-        <Box margin={{'vertical': '0px'}}
-            align={props.sentOrRecieved === 'sent' ? 'end' : 'start'} gap='xsmall'>
+        <Box
+            align={props.sentOrRecieved === 'sent' ? 'end' : 'start'} 
+            gap='xsmall'
+        >
             <Tip 
                 content={<Box><Text size='xsmall'>{props.date}</Text></Box>} 
                 dropProps={{
@@ -17,13 +19,21 @@ export default function MessageBubble(props) {
                     width: {max: '150px'},
                 }}
             >
-                <Box direction='row' gap='small' align='center'>
-                    { props.sentOrRecieved !== 'sent' && 
-                        <Avatar elevation='small'
+                <Box 
+                    direction='row'  
+                    gap='small' 
+                    align='center'
+                    margin={ props.sentOrRecieved !== 'sent' && props.showPortrait && { top: '-10px' }}
+                >
+                    { props.sentOrRecieved !== 'sent' && props.showPortrait && 
+                        <Avatar 
+                            elevation='small'
                             size='medium' 
                             src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/` +
                                 `${props.portrait}.png`} 
                         /> }
+                    
+                        {props.sentOrRecieved !== 'sent' && !props.showPortrait && <Box width='48px' />}
 
                     <Card 
                         height='min-content' 
