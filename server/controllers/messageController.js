@@ -15,7 +15,7 @@ router.get('/', authenticate, (request, response) => {
         },
         order: [ ['createdAt', 'DESC'] ]
     }).then( (result) => {
-        result.forEach( (e) => {
+        result.forEach( (e, idx) => {
             const newDate = new Date(Date.parse(e.createdAt));
             let minute = newDate.getMinutes();
             if (minute < 10) {
@@ -23,7 +23,17 @@ router.get('/', authenticate, (request, response) => {
             } 
 
             e.dataValues.formattedDate 
-                = `${newDate.getMonth()+1}-${newDate.getDate()} at ${newDate.getHours()}:${minute}`
+                = `${newDate.getMonth()+1}-${newDate.getDate()} at ${newDate.getHours()}:${minute}`;
+
+            if (idx > 0) {
+                if (result[idx - 1].dataValues.senderId === e.dataValues.senderId) {
+                    e.dataValues.showPortrait = false;
+                } else {
+                    e.dataValues.showPortrait = true;
+                }
+            } else if (idx === 0) {
+                e.dataValues.showPortrait = true;
+            }
         });
         response.json(result);
     }).catch( (err) => {
