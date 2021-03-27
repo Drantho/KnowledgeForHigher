@@ -75,6 +75,7 @@ export default function EntityCard(props) {
 
                         <Box direction='row'>
                             { props.entity.Tags.map( e => <Tag 
+                                                            key={e.name}
                                                             userState={props.userState} 
                                                             tag={e.name} />) }
                         </Box>
