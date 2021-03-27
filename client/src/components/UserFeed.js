@@ -44,7 +44,7 @@ export default function UserFeed(props) {
         } );
 
         setEntityList(entities);
-
+        
     }, [props]);
 
     return (
@@ -56,26 +56,31 @@ export default function UserFeed(props) {
                     switch (e.entityType) {
                         case 'comment':
                             return <UserFeedComment 
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser} 
                                         userState={props.userState}
                                         comment={e} />
                         case 'question':
-                            return <UserFeedQuestion 
+                            return <UserFeedQuestion
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser} 
                                         userState={props.userState} 
                                         question={e} />
                         case 'service':
                             return <UserFeedService
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser}
                                         userState={props.userState}
                                         service={e} />
                         case 'answer':
-                            return <UserFeedAnswer 
+                            return <UserFeedAnswer
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser}
                                         userState={props.userState} 
                                         answer={e}/>
                         case 'rating':
                             return <UserFeedRating
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser}
                                         userState={props.userState} 
                                         rating={e} />
