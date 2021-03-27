@@ -3,14 +3,14 @@ import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Home from "./pages/Home";
 import Tag from "./pages/Tag";
-import Profile from "./pages/Profile";
+import Profile from "./pages/ProfilePage";
 import Question from "./pages/Question";
 import User from "./pages/User";
 import UserHome from './pages/UserHome';
 import Ask from './pages/Ask';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import NavbarTest from './components/Navbar';
+import Navbar from './components/Navbar';
 import Browse from './pages/Browse';
 import NotFound from './pages/NotFound';
 import Service from './pages/Service';
@@ -139,13 +139,15 @@ function App() {
   return (
     <Router>
       <Grommet theme={globalGrommetTheme}>
-      <UserNavbar userState={userState}/>
-      {/* <LoginNavbar/> */}
+
+
       <Switch>
+
         <Route exact path="/">
           {userState.isSignedIn ?
             <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
         </Route>
+
         <Route exact path="/splash">
           {userState.isSignedIn ? 
             <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
@@ -153,9 +155,9 @@ function App() {
         <Route exact path="/browse">
           <Browse userState={userState}/>
         </Route>
-        <ProtectedRoute exact path="/profile" isSignedIn={userState.isSignedIn}>
+        <Route exact path="/profile/:id">
           <Profile userState={userState} setUserState={setUserState}/>
-        </ProtectedRoute>
+        </Route>
         <Route exact path="/tag/:id">
           <Tag userState={userState}/>
         </Route>
@@ -193,9 +195,12 @@ function App() {
             setUserState={setUserState} 
           />
         </Route>
-        <ProtectedRoute exact path="/messages" isSignedIn={userState.isSignedIn}>
+          <Route exact path='/messages/:threadId'>
+            <MessageView userState={userState} />
+          </Route> 
+        {/* <ProtectedRoute exact path="/messages/:threadId" isSignedIn={userState.isSignedIn}>
           <MessageView userState={userState} />
-        </ProtectedRoute>
+        </ProtectedRoute> */}
         <Route path="*">
           <NotFound />
         </Route>

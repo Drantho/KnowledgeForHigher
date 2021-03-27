@@ -1,0 +1,13 @@
+{
+
+    "card": {
+        "container": {
+            "extend":  "height: min-content",
+            "width": {
+                "min": "85%",
+                "max": "85%"
+            }
+        }
+    }
+
+}

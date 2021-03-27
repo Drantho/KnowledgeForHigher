@@ -36,8 +36,7 @@ router.get('/', (request, response) => {
         if (request.query.user) {
             includes.push({
                 model: db.User,
-                where: { id: request.query.user },
-                attributes: []
+                where: { id: request.query.user }
             });
         }
 

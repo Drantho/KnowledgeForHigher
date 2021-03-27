@@ -1,10 +1,14 @@
 import { React, useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
 
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
+
 import Comment from '../components/Comment';
 import Rating from '../components/Rating';
 import Answer from '../components/Answer';
 import Tag from '../components/Tag';
+import PostEditor from '../components/PostEditor';
+import Navbar from '../components/Navbar';
 
 import {
     Box,
@@ -23,6 +27,8 @@ import {
 } from 'grommet';
 
 import API from '../utils/API';
+import UserWidget from '../components/UserWidget';
+import TagDisplay from '../components/TagDisplay';
 
 export default function Question(props) {
     const { id } = useParams();
@@ -55,13 +61,16 @@ export default function Question(props) {
 
     const [ratings, setRatings] = useState({});
 
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
     const handleSubmit = async () => {
 
         if (answer) {
-
+            console.log(answer);
             await API.createAnswer(answer, props.userState.token).catch(err => console.log(err));
 
             setAnswer({ ...answer, text: "" });
+            setEditorState(editorState.push(EditorState.createEmpty()));
 
             const newAnswers = await API.getAnswersByQuestion(id).catch(err => console.log(err));
             setAnswers(newAnswers.data);
@@ -87,12 +96,16 @@ export default function Question(props) {
     useEffect(async () => {
         const questionToShow = await API.getQuestionById(id).catch(err => console.log(err));
         setQuestion(questionToShow.data);
+        setEditorState(
+            EditorState.createWithContent(convertFromRaw(JSON.parse(questionToShow.data.text)))
+        );
 
         const commentsToShow = await API.getAllQuestionComments(id).catch(err => console.log(err));;
         setQuestionComments(commentsToShow.data);
 
         const answerToShow = await API.getAnswersByQuestion(id).catch(err => console.log(err));;
         setAnswers(answerToShow.data);
+        console.log(answerToShow)
 
         const ratingToShow = await API.getRating(id, "question").catch(err => console.log(err));;
         setRatings(ratingToShow.data);
@@ -126,15 +139,6 @@ export default function Question(props) {
 
     }
 
-    const descriptionBoxTheme = {
-        box: {
-            extend: `
-                background-color: #FFFFFF;
-                border: 2px solid #FCE181;
-                border-radius: 10px;`
-        }
-    }
-
     const handleCommentInput = (event) => {
         setQuestionComment({ ...questionComment, text: event.target.value });
     }
@@ -143,54 +147,54 @@ export default function Question(props) {
         setAnswer({ ...answer, text: event.target.value })
     }
 
+    const blockStyleFn = (contentBlock) => {
+        if (contentBlock.getType() === 'code-block') {
+            return 'codeBlockStyle';
+        }
+    }
+
     return (
         <Grommet theme={theme}>
-            <Box margin={{ top: '100px', bottom: '20px' }} align='center'>
-                <Box width='80%'>
+            <Navbar userState={props.userState}/>
+            <Box margin={{ bottom: '20px' }} align='center'>
+                <Box margin={{ top: 79 + 15 + 'px' }} width='80%'>
 
                     <Box height='3px' background='#222E42' />
 
                     <Box justify='between' align='center' direction='row'>
                         <Box align='center' direction='row'>
-                            <Rating setAnswers={setAnswers} userState={props.userState} type='question' owner={question.User.id} reference={id} />
+                            <Rating 
+                                setAnswers={setAnswers} 
+                                userState={props.userState} 
+                                type='question' 
+                                owner={question.User.id} 
+                                reference={id}
+                            />
                             <Box pad={{ bottom: '10px' }}>
-                                <Heading fill margin={{ top: '10px' }} level={2}>{question.title}</Heading>
-                                <Box direction='row'>
-                                    {question.Tags.map(e => <Tag tag={e} userState={props.userState} />)}
-                                </Box>
+                                <Heading fill 
+                                    margin={{ top: '10px' }} 
+                                    level={2}
+                                >
+                                    {question.title}
+                                </Heading>
+                                <TagDisplay tags={question.Tags} userState={props.userState} />
                             </Box>
                         </Box>
 
-                        <Box fill width={{ max: '180px', min: '180px' }}
-                            background='#FFFFFF'
-                            border={{
-                                color: '#d6bf6b'
-                            }}
-                            round='small'
-                            align='center'
-                            direction='row'>
-                            <Box margin={{ left: '20px' }} align='end'>
-                                <Text size='small'>{question.User.userName}</Text>                                
-                            </Box>
-                            <Link to={`/users/${question.User.id}`}>
-                                <Avatar
-                                    margin='small'
-                                    size='40px'
-                                    src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/${question.User.portrait}.png`} />
-                            </Link>
-                        </Box>
+                        <UserWidget userState={question.User} />
 
                     </Box>
+
                     <Box height='3px' background='#222E42' />
 
-                    <Grommet theme={descriptionBoxTheme}>
-                        <Box pad={{ vertical: '30px', horizontal: '15px' }}
-                            background='rgba(252,225,129,0.8)'
-                            round='small'
-                            margin={{ horizontal: 'large', top: '20px' }}>
-                            <Text color='#222E42' size='large'>{question.text}</Text>
-                        </Box>
-                    </Grommet>
+                    <Box pad={{ vertical: '30px', horizontal: '15px' }}
+                        round='small'
+                        margin={{ horizontal: 'medium', top: '20px' }}>
+                        <Editor 
+                            editorState={editorState} 
+                            readOnly={true} 
+                            blockStyleFn={blockStyleFn}/>
+                    </Box>
 
 
                     <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Comments</Heading>
@@ -204,7 +208,6 @@ export default function Question(props) {
                                 text={e.text} />
                         })}
 
-                        {/* {(props.userState.id !== question.User.id && props.userState.isSignedIn) && */}
                         {(props.userState.isSignedIn) &&
                             <Accordion margin={{ top: '15px' }} width='85%'>
                                 <AccordionPanel label='Leave a comment...'>
@@ -232,8 +235,15 @@ export default function Question(props) {
                         }
                     </Box>
 
-                    <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Answers</Heading>
+                    <Heading 
+                        margin={{ top: 'medium', bottom: 'xsmall' }} 
+                        level={3}
+                    >
+                        Answers
+                    </Heading>
+
                     <Box height='3px' background='#222E42' />
+
                     <Box margin={{ top: '10px' }}>
                         {
                             answers.map((e) => {
@@ -246,22 +256,16 @@ export default function Question(props) {
                         }
                     </Box>
 
-                    {/* {(props.userState.id !== question.User.id && props.userState.isSignedIn) && */}
-                    {(props.userState.isSignedIn) &&
-                        <Box>
-
-                            <Heading margin={{ top: 'medium', bottom: 'xsmall' }} level={3}>Submit an answer</Heading>
-                            <Box height='3px' background='#222E42' />
-                            <Form onSubmit={handleSubmit} value={answer.text}>
-                                <FormField htmlFor='text-area'
-                                    onChange={handleAnswerInput}
-                                    component={TextArea}
-                                    placeholder='Answer...'
-                                    value={answer.text} />
-                                <Button type='submit' label='Submit' />
-                            </Form>
-
-                        </Box>}
+                    { (props.userState.isSignedIn) &&
+                        <Box gap='small' fill>
+                            <PostEditor
+                                getDraftValue={
+                                    (value) => setAnswer({...answer, text: JSON.stringify(value) })
+                                }
+                                controlledContent={answer.text} />
+                            <Button label='Submit' />
+                        </Box>
+                    }
 
                     {!props.userState.isSignedIn &&
                         <Box pad='small' margin={{ top: 'xsmall' }}

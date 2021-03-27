@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 
 import { 
     Accordion, 
@@ -36,14 +37,21 @@ export default function Answer(props) {
     
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState();
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
     useEffect( () => {
+        console.log('Helloooooo');
+        console.log(props)
         API.getAnswerComments(props.answer.id, props.userState.token)
             .then( (result) => {
                 setComments(result.data);
             }).catch( (err) => {
                 console.log(err);
             });
+
+        setEditorState(
+            EditorState.createWithContent(convertFromRaw(JSON.parse(props.answer.text)))
+        );
     }, []);
 
     const handleCommentInput = (event) => {
@@ -73,7 +81,7 @@ export default function Answer(props) {
                         <Rating setAnswers={props.setAnswers}
                             reference={props.answer.id} type='answer'
                             userState={props.userState} />
-                        <Text size='16px'>{props.answer.text}</Text>
+                        <Editor editorState={editorState} readOnly={true}/>
                     </Box>
                 }>
                 <Box width='85%' justify='center' alignSelf='center'>

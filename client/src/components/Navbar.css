@@ -1,0 +1,12 @@
+#nav {
+    position: fixed;
+    width: 100%;
+}
+
+a {
+    color: '#FCE181'
+}
+
+a:visited {
+    color: 'blue'
+}

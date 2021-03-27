@@ -1,12 +1,12 @@
 
 module.exports = (sequelize, DataTypes) => {
     const Service = sequelize.define('Service', {
-        name: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: { len: [1] }
         },
-        description: {
+        text: {
             type: DataTypes.TEXT,
             allowNull: true
         },
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: true
         },
         price: {
-            type: DataTypes.DECIMAL,
+            type: DataTypes.STRING,
             allowNull: false
         }
     });

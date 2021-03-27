@@ -13,7 +13,7 @@ router.get('/', (request, response) => {
     if (request.query.id || request.query.name) {
         const condition = {};
         if (request.query.id) { condition.id = request.query.id; }
-        else { where.name = request.query.name; }
+        else { condition.name = request.query.name; }
 
         db.Tag.findOne({
             where: condition,
@@ -174,18 +174,6 @@ router.post('/', authenticate, (request, response) => {
     });
 });
 
-// router.put('/name', (request, response) => {
-//     db.Tag.update({
-//         name: request.body.name
-//     }, {
-//         where: { id: request.body.id }
-//     }).then((result) => {
-//         response.json(result);
-//     }).catch((err) => {
-//         response.status(500).json(err);
-//     });
-// });
-
 router.put('/description', authenticate, (request, response) => {
     if (profanityCheck(request.body.description)) {
         response.status(400).json({
@@ -205,27 +193,83 @@ router.put('/description', authenticate, (request, response) => {
     });
 });
 
-router.put('/user', authenticate, (request, response) => {
-    db.Tag.findAll({
-        where: {
-            name: { [Op.in]: request.body.tags }
+router.put('/user/:tagName', authenticate, ( request, response ) => {
+
+    db.Tag.findOne({
+        where: { 
+            name: request.params.tagName
         }
-    }).then((result) => {
-        console.log(`tags found`);
-        const insertArr = result.map((r) => {
-            return { UserId: request.userId, TagId: r.dataValues.id };
-        });
-        db.sequelize.models.following.bulkCreate(insertArr)
-            .then((linkResult) => {
-                response.json(linkResult);
-            }).catch((err) => {
+    }).then( (result) => {
+        if (result) {
+            // Check if user already follows this tag
+            db.sequelize.models.following.findOne( {
+                where: {
+                    TagId: result.dataValues.id,
+                    UserId: request.userId
+                }
+            }).then( (findLinkResult) => {
+               if (findLinkResult) {
+                   return;
+               } else {
+                   // Create a link
+                   db.sequelize.models.following.create( {
+                       TagId: result.id,
+                       UserId: request.userId
+                   }).then( (result) => {
+                       response.json(result);
+                   }).catch( (err) => {
+                       response.status(500).json(err);
+                   });
+               }
+            }).catch( (err) => {
                 response.status(500).json(err);
             });
-    }).catch((err) => {
-        console.log(err);
+        } else {
+            db.Tag.create({
+                name: request.params.tagName
+            }).then( (createResult) => {
+                db.sequelize.models.following.create( {
+                    TagId: createResult.dataValues.id,
+                    UserId: request.userId
+                }).then( (linkResult) => {
+                    response.json({
+                        msg: `User ${request.userId} now following tag ${linkResult.dataValues.TagId}`
+                    });
+                }).catch( (err) => {
+                    response.status(500).json(err);
+                });
+            })
+        }
+    }).catch( (err) => {
         response.status(500).json(err);
     });
 });
+
+router.delete('/user/:tag', authenticate, (request, response) => {
+
+    console.log(`User ${request.userId} unfollowing tag '${request.params.tag}'`);
+    db.Tag.findOne({
+        where: {
+            name: request.params.tag
+        }
+    }).then( (result) => {
+
+        db.sequelize.models.following.destroy({
+            where: {
+                TagId: result.dataValues.id,
+                UserId: request.userId
+            }
+        }).then( (deleteResult) => {
+            console.log('Unfollow successful!');
+            response.json(deleteResult);
+        }).catch( (err) => {
+            response.status(500).json(err);
+        });
+        
+    }).catch( (err) => {
+        response.status(500).json(err);
+    })
+})
 
 router.put('/service', authenticate, (request, response) => {
     db.Tag.findAll({

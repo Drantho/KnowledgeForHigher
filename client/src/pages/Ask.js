@@ -1,27 +1,25 @@
 import React, { useState } from 'react'
 import API from "../utils/API";
-import { useHistory } from 'react-router-dom';
-import { Box, Form, FormField, TextArea, Button, Heading, Grommet } from 'grommet';
+import { Box, Form, FormField, TextInput, Button, Heading, Grommet } from 'grommet';
 
+import PostEditor from '../components/PostEditor';
+import TagInput from '../components/TagInput';
 
 export default function Ask(props) {
 
     const [formValues, setFormValues] = useState({});
+
+    const [tagNames, setTagNames] = useState([]);
 
     const handleInput = (event) => {
         setFormValues({ ...formValues, [event.target.name]: event.target.value });
     }
 
     const handleSubmit = (event) => {
-        // Convert tags string to array
-        let tags;
-        if (formValues.tags) {
-            tags = formValues.tags.split(',').map(e => e.trim());
-        }
 
         API.createQuestion({
              ...formValues,
-             tags: tags,
+             tags: tagNames,
              user: props.userState.id
         }, props.userState.token).then( (response) => {
             console.log(response);
@@ -34,6 +32,7 @@ export default function Ask(props) {
             text: '',
             tags: ''
         });
+        props.onSubmit();
     }
 
     const theme = {
@@ -67,35 +66,38 @@ export default function Ask(props) {
         }
     }
 
-    const descrTheme = {
-        global: {
-            colors: {
-                focus: {
-                    border: undefined
-                }
-            }
-        },
-        textArea: {
-            extend: `
-                height: 200px
+    const getDraftValue = (draftRawObj) => {
+        setFormValues({ ...formValues, text: JSON.stringify(draftRawObj) });
+    }
 
-            `
+    const onAddTag = (tag) => {
+        if (tagNames.indexOf(tag) < 0) {
+            setTagNames([...tagNames, tag]);
         }
     }
 
     return ( 
         
-        <Box align='center' margin={{top: '74px'}}>
-            <Box width='70%'>
+        <Box align='center'>
+            <Box fill>
+
                 <Grommet theme={theme}>
+
                 <Form onSubmit={handleSubmit} value={formValues}>
+
                     <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
                         <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
                             Submit a question!
                         </Heading>
                     </Box>
-                    <FormField required label='Title' name='title' htmlFor='new-question-title' >
-                        <TextArea
+
+                    <FormField 
+                        required 
+                        label='Title' 
+                        name='title' 
+                        htmlFor='new-question-title' 
+                    >
+                        <TextInput
                             style={{background:'white'}}
                             id='new-question-title'
                             name='title'
@@ -103,34 +105,30 @@ export default function Ask(props) {
                             value={formValues.title}
                             onChange={handleInput} />
                     </FormField>
-                    <FormField label='Description' 
-                        name='text' htmlFor='new-question-text'>
-                        <Grommet theme={descrTheme}>
-                        <TextArea
-                            style={{background:'white'}}
-                            id='new-question-text'
-                            name='text'
-                            placeholder='Enter a detailed description of your question.' 
-                            value={formValues.text}
-                            onChange={handleInput} />
-                        </Grommet>
+
+                    <FormField label='Description'>
+                        <PostEditor 
+                            getDraftValue={getDraftValue} 
+                            controlledContent={formValues.text}
+                            placeholder='Enter a detailed description for your question...' />
                     </FormField>
+
                     <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                        <TextArea
-                            style={{background:'white'}}
-                            id='new-question-tags'
-                            name='tags'
-                            placeholder='Enter a list of topics related to your question (separated by a comma).' 
-                            value={formValues.tags}
-                            onChange={handleInput} />
+                        <TagInput placeholder='Add tags...'
+                            selectedTags={tagNames} setSelectedTags={setTagNames} 
+                            onAddTag={onAddTag} />
+                        
                     </FormField>
+
                     <Box align='center'>
                         <Button size='medium' primary type='submit' label='Submit' />
                     </Box>
+                    
                 </Form>
+
                 </Grommet>
             </Box>
         </Box>
-    
+        
     )
 }

@@ -1,67 +1,109 @@
-import React from 'react'
-import {Link} from "react-router-dom";
-import { Box } from 'grommet';
+import { React, useState } from 'react'
+import { Link } from 'react-router-dom';
+import { Grommet, Box, Header, Heading, Image, Button, Anchor } from 'grommet';
+import { Chat } from 'grommet-icons';
 
-export default function NavbarTest() {
+import UserWidget from './UserWidget';
+
+import './Navbar.css';
+
+export default function Navbar(props) {
+
+    const theme = {
+        button: {
+            border: {
+                radius: '5px'
+            },
+            default: {
+                background: {
+                    color: '#FCE181'
+                }
+            }
+        },
+        global: {
+            colors: {
+                focus: undefined
+            }
+        }
+    }
+
+    const icon = '/assets/images/bookicon.png';
+
+    const handleLogout = (event) => {
+        localStorage.clear("token");
+        localStorage.clear("portrait");
+        window.location.reload();
+    }
+
     return (
-        <Box direction="row">
-                <Box>
-                    <Link to="/">
-                        Home
-                    </Link>
+        <Grommet theme={theme}>
+        <Header 
+            elevation='small'
+            border={{ side: 'bottom', color: '#FCE181', size: '5px'}} 
+            id='nav' 
+            pad='9px' 
+            justify='between' 
+            background='#222E42'
+        >
+            <Box align='center' direction='row'>
+                <Image width='56px' sizes='small' src={icon} />
+                <Heading color='#FCE181' 
+                    margin={{vertical: '0px', left: '6px'}} 
+                    level={3}>
+                        Knowledge4Hire
+                </Heading>
+            </Box>
+
+            { props.userState.isSignedIn ? 
+                <Box align='center' gap='medium' direction='row'>
+                    <Box direction='row' gap='medium'>
+                        
+                        <Anchor>
+                            <Link
+                                to='/ask' 
+                                style={{ color: '#fce181', textDecoration: 'inherit' }}
+                            >
+                                Ask
+                            </Link>
+                        </Anchor>
+
+                        <Anchor>
+                            <Link
+                                to='/home' 
+                                style={{ color: '#fce181', textDecoration: 'inherit' }}
+                            >
+                                Home
+                            </Link>
+                        </Anchor>
+
+                        { props.userState.isSignedIn && 
+                            <Anchor color="#FCE181">
+                                <Link 
+                                    to='/messages/1' 
+                                    style={{ color: "#FCE181", textDecoration: 'inherit' }}>
+                                        <Chat color="#FCE181" />
+                                </Link>
+                            </Anchor>
+                        }
+
+                        { props.userState.isSignedIn && 
+                            <Anchor onClick={handleLogout} color='#fce181'>
+                                Logout
+                            </Anchor>
+                        }
+                    </Box>
+                    <UserWidget userState={props.userState} />
                 </Box>
-                <Box>
-                    <Link to="/browse">
-                        Browse
-                    </Link>
+
+                :
+
+                <Box direction='row' gap='small'>
+                    <Button default label='Sign Up' href='/splash' />
+                    <Button default label='Sign In' href='/splash' />
                 </Box>
-                <Box>
-                    <Link to="/ask">
-                        Ask
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/profile">
-                        Profile
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/question/1">
-                        Question 1
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/tag/1">
-                        Tag 1
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/Users/1">
-                        User 1
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/home">
-                        User Home
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/signin">
-                        Sign In
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/signup">
-                        Sign Up
-                    </Link>
-                </Box>
-                <Box>
-                    <Link to="/freddyjo">
-                        404
-                    </Link>
-                </Box>
-        </Box>
+            }
             
-        
+        </Header>
+        </Grommet>
     )
 }

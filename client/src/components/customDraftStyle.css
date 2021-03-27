@@ -1,0 +1,35 @@
+.codeBlockStyle {
+    background-color: #fce181d7;
+    margin: 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 2px 1px #ffeca7d7
+}
+
+.hidePlaceholder .public-DraftEditorPlaceholder-root {
+  display: none;
+}
+
+div.DraftEditor-root {
+  box-shadow: inset 0 0 4px #222E42;
+  -webkit-box-shadow: inset 0 0 4px #222E42;
+  padding: 12px;
+  min-height: 120px;
+  border-radius: 5px;
+  background-color: #9dbacc;
+  font-size: 12pt;
+  line-height: 1em;
+}
+
+.inline-editor div.DraftEditor-root {
+  width: min-content;
+  min-width: 250px;
+  min-height: min-content;
+  border: solid 2px rgb(163, 163, 163);
+  background-color: #eee;
+}
+
+.message-editor div.DraftEditor-root {
+  min-height: min-content;
+}
