@@ -104,7 +104,7 @@ export default function TagInput(props) {
                 wrap 
             >
 
-                {props.selectedTags.map( v => <Tag name={v} />)}
+                {props.selectedTags.map( v => <Tag key={v} name={v} />)}
 
                 <Box 
                     flex={props.lineBreak ? false : true} 
