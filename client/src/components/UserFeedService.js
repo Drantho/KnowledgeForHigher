@@ -8,7 +8,6 @@ export default function UserFeedService(props) {
     const [ dateString, setDateString ] = useState('');
 
     useEffect(() => {
-        console.log(props);
         const date = new Date(props.service.createdAt);
         const dateStr
             = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date) + ' ' +
