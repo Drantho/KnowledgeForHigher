@@ -98,7 +98,7 @@ export default function UserSidebar(props) {
         <Box 
             overflow={{ vertical: 'scroll' }}
             elevation='xsmall' 
-            height='100%' 
+            height='100%'
             border={{ side: 'right', size: '2px', color: '#FCE181' }}
         >
             
@@ -132,7 +132,7 @@ export default function UserSidebar(props) {
                     </Box> }
             </Stack>
 
-            <Box pad='small'>
+            <Box style={{ minHeight: 'fit-content' }} pad='small'>
                 <Text size='32pt'>{props.user.userName}</Text>
                 <Text>{props.user.firstName} {props.user.lastName}</Text>
                 <Text>{props.user.email}</Text>
@@ -146,7 +146,7 @@ export default function UserSidebar(props) {
                 </Box> }
             
 
-            <Box pad='small'>
+            <Box style={{ minHeight: 'fit-content' }} pad='small'>
                 <Text margin={{ bottom: '1px' }}>About {props.user.userName}</Text>
                 <Box 
                     background='#222E42' 
@@ -184,7 +184,6 @@ export default function UserSidebar(props) {
                         :
                         <NothingHereDisplay /> )}
             </Box>
-
         </Box>
     )
 }

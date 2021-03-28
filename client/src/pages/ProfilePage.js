@@ -285,13 +285,22 @@ export default function ProfilePage(props) {
                     </Tab>
 
                     { props.userState.id === user.id && 
-                    
                         <Tab title='Edit'>
-                            <Box pad='large'>
+                            <Box // Container for Grommet
+                                style={{
+                                    overflowY: 'scroll',
+                                    height: 'calc(100vh - 79px - 64px)'
+                                }}
+                            >
 
-                                <UserEditForm 
-                                    userState={props.userState} 
-                                    setUserState={props.setUserState}/>
+                                <Grommet theme={tabPaneTheme}>
+                                        <Box pad='large'>
+
+                                            <UserEditForm 
+                                                userState={props.userState} 
+                                                setUserState={props.setUserState}/>
+                                        </Box>
+                                </Grommet>
                             </Box>
                         </Tab>
                     }
