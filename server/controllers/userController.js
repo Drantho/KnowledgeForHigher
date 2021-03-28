@@ -9,6 +9,7 @@ const cloudinary = require("cloudinary");
 
 const { Op } = require('sequelize');
 const { Sequelize } = require('../models');
+const { request } = require('express');
 
 require('dotenv').config();
 
@@ -216,6 +217,23 @@ router.get("/authenticate", (req, res) => {
         }
     })
 
+});
+
+router.get('/feed', async (req, res) => {
+    const userInclude = {
+        model: db.User,
+        where: { id: req.query.user }
+    }
+
+    let [ services, questions, answers, comments, ratings ] = await Promise.all([
+        db.Service  .findAll({ include: userInclude }),
+        db.Question .findAll({ include: userInclude }),
+        db.Answer   .findAll({ include: userInclude }),
+        db.Comment  .findAll({ include: userInclude }),
+        db.Rating   .findAll({ where: { UserId: req.query.user } })
+    ]);
+
+    res.json({ services, questions, answers, comments, ratings });
 });
 
 module.exports = router;
