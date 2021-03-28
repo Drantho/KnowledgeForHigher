@@ -62,6 +62,9 @@ export default function PostEditor(props) {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
         props.getDraftValue(convertToRaw(contentState));
+        if ( props.onChange ) {
+            props.onChange();
+        }
     }
 
     const onFocus = (arg) => {
