@@ -171,7 +171,7 @@ function App() {
           <UserHome userState={userState}/>
         </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
-          <Ask pad='large' userState={userState}/>
+          <Ask pad='large' showBackButton userState={userState}/>
         </ProtectedRoute>
         <Route path="/service/:id">
           <Service userState={userState}/>
@@ -195,9 +195,13 @@ function App() {
             setUserState={setUserState} 
           />
         </Route>
-          <Route exact path='/messages/:threadId'>
-            <MessageView userState={userState} />
-          </Route> 
+        <Route exact path='/messages/:threadId'>
+          <MessageView userState={userState} />
+        </Route> 
+        <Route exact path='/messages'>
+          <MessageView userState={userState} />
+        </Route> 
+
         {/* <ProtectedRoute exact path="/messages/:threadId" isSignedIn={userState.isSignedIn}>
           <MessageView userState={userState} />
         </ProtectedRoute> */}
