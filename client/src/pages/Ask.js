@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Box, Form, FormField, TextInput, Button, Heading, Grommet, Anchor } from 'grommet';
+import { Box, Form, FormField, TextInput, Button, Heading, Grommet, Anchor, Text } from 'grommet';
+import { EditorState, convertFromRaw } from 'draft-js';
 
-import API from "../utils/API";
+import API from '../utils/API';
 import PostEditor from '../components/PostEditor';
 import TagInput from '../components/TagInput';
+import Navbar from '../components/Navbar';
 
 export default function Ask(props) {
 
     const history = useHistory();
-    const [formValues, setFormValues] = useState({});
-    const [tagNames, setTagNames] = useState([]);
+    const [ formValues, setFormValues ] = useState({});
+    const [ tagNames,   setTagNames ]   = useState([]);
+    const [ errorState, setErrorState ] = useState({});
 
     const handleInput = (event) => {
         setFormValues({ ...formValues, [event.target.name]: event.target.value });
@@ -18,22 +21,34 @@ export default function Ask(props) {
 
     const handleSubmit = (event) => {
 
+        // Check if description is empty
+        if ( !(EditorState
+                .createWithContent(
+                    convertFromRaw(
+                        JSON.parse(formValues.text)))).getCurrentContent().hasText() ) {
+            setErrorState({ ...errorState, description: true });
+            return;
+        }
+
         API.createQuestion({
              ...formValues,
              tags: tagNames,
              user: props.userState.id
         }, props.userState.token).then( (response) => {
-            console.log(response);
+            setFormValues({
+                title: '',
+                text: '',
+                tags: ''
+            });
+    
+            if (props.onSubmit) {
+                props.onSubmit();
+            }
+            
+            history.push(`/question/${response.data.id}`);
         }).catch( (err) => {
             console.log(err);
         });
-
-        setFormValues({
-            title: '',
-            text: '',
-            tags: ''
-        });
-        props.onSubmit();
     }
 
     const theme = {
@@ -78,62 +93,81 @@ export default function Ask(props) {
     }
 
     return ( 
-        
+        <>
+        { props.showNav &&
+            <Navbar userState={props.userState} /> }
+
         <Box pad={props.pad} align='center'>
-            <Box fill>
+            <Box margin={ props.showNav ? { top: '94px' } : undefined } fill>
 
                 <Grommet theme={theme}>
                     { props.showBackButton && history.length > 0 &&
                         <Anchor onClick={() => history.goBack()}>
                             &lt; Back
-                        </Anchor>}
+                        </Anchor> }
 
-                <Form onSubmit={handleSubmit} value={formValues}>
+                    <Form onSubmit={handleSubmit} value={formValues}>
 
-                    <Box margin={{ vertical: '15px' }} background='#222E42' round='small'>
-                        <Heading textAlign='center' alignSelf="center" color='#FCE181' level={3}>
-                            Submit a question!
-                        </Heading>
-                    </Box>
+                        <Box 
+                            margin={{ vertical: '15px' }} 
+                            background='#222E42' 
+                            round='small'
+                        >
+                            <Heading 
+                                textAlign='center' 
+                                alignSelf='center'
+                                color='#FCE181' 
+                                level={3}
+                            >
+                                Submit a question!
+                            </Heading>
+                        </Box>
 
-                    <FormField 
-                        required 
-                        label='Title' 
-                        name='title' 
-                        htmlFor='new-question-title' 
-                    >
-                        <TextInput
-                            style={{background:'white'}}
-                            id='new-question-title'
-                            name='title'
-                            placeholder='Enter a descriptive question title.' 
-                            value={formValues.title}
-                            onChange={handleInput} />
-                    </FormField>
+                        <FormField 
+                            required 
+                            label='Title' 
+                            name='title' 
+                            htmlFor='new-question-title' 
+                        >
+                            <TextInput
+                                style={{background:'white'}}
+                                id='new-question-title'
+                                name='title'
+                                placeholder='Enter a descriptive question title.' 
+                                value={formValues.title}
+                                onChange={handleInput} />
+                        </FormField>
 
-                    <FormField label='Description'>
-                        <PostEditor 
-                            getDraftValue={getDraftValue} 
-                            controlledContent={formValues.text}
-                            placeholder='Enter a detailed description for your question...' />
-                    </FormField>
+                        <FormField label='Description'>
+                            <PostEditor 
+                                onChange={() => setErrorState({ ...errorState, description: false })}
+                                getDraftValue={getDraftValue} 
+                                controlledContent={formValues.text}
+                                placeholder='Enter a detailed description for your question...' />
+                        </FormField>
+                        { errorState.description &&
+                            <Text color='red'>Description is required</Text> }
 
-                    <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                        <TagInput placeholder='Add tags...'
-                            selectedTags={tagNames} setSelectedTags={setTagNames} 
-                            onAddTag={onAddTag} />
+                        <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
+                            <TagInput placeholder='Add tags...'
+                                selectedTags={tagNames} 
+                                setSelectedTags={setTagNames} 
+                                onAddTag={onAddTag} />
+                        </FormField>
+
+                        <Box align='center'>
+                            <Button 
+                                size='medium' 
+                                primary 
+                                type='submit' 
+                                label='Submit' />
+                        </Box>
                         
-                    </FormField>
-
-                    <Box align='center'>
-                        <Button size='medium' primary type='submit' label='Submit' />
-                    </Box>
-                    
-                </Form>
+                    </Form>
 
                 </Grommet>
             </Box>
         </Box>
-        
+        </>
     )
 }
