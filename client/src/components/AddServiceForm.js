@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 
-import { Grommet, Box, Form, FormField, TextInput, Button, Heading } from 'grommet';
+import { Grommet, Box, Form, FormField, TextInput, Button, Heading, Text } from 'grommet';
+import { EditorState, convertFromRaw } from 'draft-js';
 
 import PostEditor from './PostEditor';
 import TagInput from './TagInput';
@@ -10,19 +11,30 @@ export default function AddServiceForm(props) {
 
     const [formValues, setFormValues] = useState({});
     const [tagNames, setTagNames] = useState([]);
+    const [errorState, setErrorState] = useState({});
 
     const handleInput = (event) => {
         setFormValues({ ...formValues, [event.target.name]: event.target.value });
     }
 
     const handleSubmit = (event) => {
+        // Check if description is empty
+        if (!(EditorState
+            .createWithContent(
+                convertFromRaw(
+                    JSON.parse(formValues.text)))).getCurrentContent().hasText()) {
+            setErrorState({ ...errorState, description: true });
+            return;
+        }
+
         API.createService({
             ...formValues,
             tags: tagNames,
             user: props.userState.id
         }, props.userState.token).then( (response) => {
-            console.log(response);
-            props.onSubmit();
+            if ( props.onSubmit) { 
+                props.onSubmit();
+            }
         }).catch( (err) => {
             console.log(err);
         });
@@ -92,26 +104,27 @@ export default function AddServiceForm(props) {
                 
                 <FormField label='Description'>
                     <PostEditor 
+                        onChange={() => setErrorState({ ...errorState, description: false })}
                         getDraftValue={ 
                             val => { setFormValues({ ...formValues, text: JSON.stringify(val) }) }
                         } 
                         controlledInput={formValues.text}
                         placeholder='Enter a detailed description of your service...' />
                 </FormField>
+                { errorState.description &&
+                    <Text color='red'>Description is required</Text> }
 
                 <FormField label='Cost' name='price' htmlFor='price'>
                     <TextInput placeholder='Examples: $5/hour; $100 (one time)'
                         name='price' 
                         value={formValues.price}
-                        onChange={handleInput} 
-                    />
+                        onChange={handleInput} />
                 </FormField>
 
                 <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                     <TagInput placeholder='Add tags...'
                         selectedTags={tagNames} setSelectedTags={setTagNames}
                         onAddTag={onAddTag} />
-
                 </FormField>
                 
                 <Box align='center'>
