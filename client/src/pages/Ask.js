@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import API from "../utils/API";
-import { Box, Form, FormField, TextInput, Button, Heading, Grommet } from 'grommet';
+import { useHistory } from 'react-router-dom';
+import { Box, Form, FormField, TextInput, Button, Heading, Grommet, Anchor } from 'grommet';
 
+import API from "../utils/API";
 import PostEditor from '../components/PostEditor';
 import TagInput from '../components/TagInput';
 
 export default function Ask(props) {
 
+    const history = useHistory();
     const [formValues, setFormValues] = useState({});
-
     const [tagNames, setTagNames] = useState([]);
 
     const handleInput = (event) => {
@@ -82,6 +83,10 @@ export default function Ask(props) {
             <Box fill>
 
                 <Grommet theme={theme}>
+                    { props.showBackButton && history.length > 0 &&
+                        <Anchor onClick={() => history.goBack()}>
+                            &lt; Back
+                        </Anchor>}
 
                 <Form onSubmit={handleSubmit} value={formValues}>
 
