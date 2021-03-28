@@ -91,8 +91,7 @@ export default function UserSidebar(props) {
         event.preventDefault();
         const newThread 
             = await messageAPI.createThread(props.user.userName, props.userState.token);
-        console.log(newThread)
-        history.push(`/messages/${newThread.data.id}`)
+        history.push(`/messages/${newThread.data.thread.id}`)
     }
 
     return (
@@ -114,22 +113,23 @@ export default function UserSidebar(props) {
                     src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/` + 
                          `${props.user.portrait}.png`} 
                 />
-                <Box 
-                    onClick={() => document.getElementById('uploadPic').click()} 
-                    pad='xsmall' 
-                    background='#222e42'
-                    border={{ color: '#9dbacc', size: '3px' }}
-                    round='50%'
-                    elevation='large'
-                    margin={{ right: 'large', bottom: '10px' }}
-                >
-                    <input 
-                        type='file' 
-                        id='uploadPic' 
-                        onChange={handleChangeProfilePic} 
-                        style={{ display: 'none' }} />
-                    <Add size='32px' color='#fce181' />
-                </Box>
+                { props.userState.id === props.user.id && 
+                    <Box 
+                        onClick={() => document.getElementById('uploadPic').click()} 
+                        pad='xsmall' 
+                        background='#222e42'
+                        border={{ color: '#9dbacc', size: '3px' }}
+                        round='50%'
+                        elevation='large'
+                        margin={{ right: 'large', bottom: '10px' }}
+                    >
+                        <input 
+                            type='file' 
+                            id='uploadPic' 
+                            onChange={handleChangeProfilePic} 
+                            style={{ display: 'none' }} />
+                        <Add size='32px' color='#fce181' />
+                    </Box> }
             </Stack>
 
             <Box pad='small'>
