@@ -19,11 +19,8 @@ export default function UserFeed(props) {
 
     useEffect( async () => {
 
-        const services  = (await API.getServicesByUser(props.targetUser.id)).data;
-        const questions = (await API.getQuestionByUser(props.targetUser.id)).data;
-        const answers   = (await API.getAnswersByUser (props.targetUser.id)).data;
-        const comments  = (await API.getCommentsByUser(props.targetUser.id)).data;
-        const ratings   = (await API.getRatingsByUser (props.targetUser.id)).data;
+        const { services, questions, answers, comments, ratings } 
+            = (await API.getActivityFeed(props.targetUser.id)).data;
 
         services .forEach( e => e.entityType = 'service'  );
         questions.forEach( e => e.entityType = 'question' );
@@ -87,7 +84,7 @@ export default function UserFeed(props) {
                     }
                 })
                 :
-                <NothingHereDisplay container={{ width: '85%' }} />
+                <NothingHereDisplay container={{ width: '85%', pad: 'medium' }} />
             }
             
         </Box>
