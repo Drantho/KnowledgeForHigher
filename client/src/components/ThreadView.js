@@ -14,6 +14,7 @@ import MessageBubble from './MessageBubble';
 import messageAPI from '../utils/messageAPI';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 import { useHistory } from 'react-router';
+import NothingHereDisplay from './NothingHereDisplay';
 
 const ENDPOINT = 'localhost:3001';
 let socket = io(ENDPOINT);
@@ -91,19 +92,22 @@ export default function ThreadView(props) {
             background={{color: '#939393', opacity:'weak'}} 
             width='100%'
         >
-                {props.selectedThread !== -1 ? 
+                { props.selectedThread !== -1 ? 
                 <>
 
                 <Box 
                     elevation='none' 
                     align='end' 
                     background={{ color: 'rgba(137,162,178,0.6)' }}
+                    pad={{ top: 'small', bottom: '18px'}}
                 >
                     <Heading textAlign='end' 
                         level={2} 
-                        margin={{vertical:'small', right: 'small'}}>
+                        margin={{vertical: '0px', right: 'small'}}
+                        pad='small'    
+                    >
                         Conversation with <Anchor 
-                                            onClick={() => history.push(`/profile/${props.toUser.id}`) }
+                                            onClick={ () => history.push(`/profile/${props.toUser.id}`) }
                                           >
                                             {props.toUser.firstName + ' ' + props.toUser.lastName}
                                           </Anchor>
@@ -117,18 +121,20 @@ export default function ThreadView(props) {
                     gap='xsmall'
                     direction='column-reverse'
                 >
-                    { messagesList.map( (e) => {
-
-                        return props.selectedThread && 
-                            <MessageBubble 
-                                key={e.id}
-                                sentOrRecieved={e.senderId === props.userState.id ? 
-                                                    'sent' : 'received'}
-                                body={e.body} 
-                                date={e.formattedDate}
-                                showPortrait={e.showPortrait} 
-                                portrait={props.toUser.portrait} />
-                    }) }
+                    { messagesList.length > 0 ? 
+                        messagesList.map( (e) => {
+                            return props.selectedThread && 
+                                <MessageBubble 
+                                    key={e.id}
+                                    sentOrRecieved={e.senderId === props.userState.id ? 
+                                                        'sent' : 'received'}
+                                    body={e.body} 
+                                    date={e.formattedDate}
+                                    showPortrait={e.showPortrait} 
+                                    portrait={props.toUser.portrait} />
+                        })
+                        :
+                        <NothingHereDisplay /> }
                 </Box>
 
                 <Box margin={{vertical: '10px'}}>
