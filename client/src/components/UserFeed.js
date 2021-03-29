@@ -11,6 +11,7 @@ import UserFeedRating from './UserFeedRating';
 
 import cardTheme from './cardTheme.json';
 import NothingHereDisplay from './NothingHereDisplay';
+import UserFeedService from './UserFeedService';
 
 export default function UserFeed(props) {
 
@@ -18,11 +19,8 @@ export default function UserFeed(props) {
 
     useEffect( async () => {
 
-        const services  = (await API.getServicesByUser(props.targetUser.id)).data;
-        const questions = (await API.getQuestionByUser(props.targetUser.id)).data;
-        const answers   = (await API.getAnswersByUser (props.targetUser.id)).data;
-        const comments  = (await API.getCommentsByUser(props.targetUser.id)).data;
-        const ratings   = (await API.getRatingsByUser (props.targetUser.id)).data;
+        const { services, questions, answers, comments, ratings } 
+            = (await API.getActivityFeed(props.targetUser.id)).data;
 
         services .forEach( e => e.entityType = 'service'  );
         questions.forEach( e => e.entityType = 'question' );
@@ -43,8 +41,8 @@ export default function UserFeed(props) {
         } );
 
         setEntityList(entities);
-
-    }, []);
+        
+    }, [props]);
 
     return (
         <Grommet theme={cardTheme}>
@@ -55,28 +53,38 @@ export default function UserFeed(props) {
                     switch (e.entityType) {
                         case 'comment':
                             return <UserFeedComment 
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser} 
                                         userState={props.userState}
                                         comment={e} />
                         case 'question':
-                            return <UserFeedQuestion 
+                            return <UserFeedQuestion
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser} 
                                         userState={props.userState} 
                                         question={e} />
+                        case 'service':
+                            return <UserFeedService
+                                        key={e.entityType + e.id}
+                                        targetUser={props.targetUser}
+                                        userState={props.userState}
+                                        service={e} />
                         case 'answer':
-                            return <UserFeedAnswer 
+                            return <UserFeedAnswer
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser}
                                         userState={props.userState} 
                                         answer={e}/>
                         case 'rating':
                             return <UserFeedRating
+                                        key={e.entityType + e.id}
                                         targetUser={props.targetUser}
                                         userState={props.userState} 
                                         rating={e} />
                     }
                 })
                 :
-                <NothingHereDisplay container={{ width: '85%' }} />
+                <NothingHereDisplay container={{ width: '85%', pad: 'medium' }} />
             }
             
         </Box>

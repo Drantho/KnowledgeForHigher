@@ -9,7 +9,7 @@ export default function TagDisplay(props) {
         <Box gap='xsmall' direction='row' wrap>
             { props.tags.map( e => <Tag userState={props.userState} 
                                         tag={e}
-                                        width={{ max: 'min-content' }} /> ) }
+                                        width={{ min: 'min-content' }} /> ) }
         </Box>
     )
 }

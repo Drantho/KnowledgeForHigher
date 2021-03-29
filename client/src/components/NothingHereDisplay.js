@@ -9,7 +9,7 @@ export default function NothingHereDisplay(props) {
             align='center'
             background='rgba(0,0,0,0.1)'
             round='xxsmall'
-            style={{ boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)' }}
+            style={{ boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)', minHeight: 'fit-content' }}
             {...props.container}
         >
             <Text color='gray' {...props.text}>{props.message || 'Nothing here!'}</Text>

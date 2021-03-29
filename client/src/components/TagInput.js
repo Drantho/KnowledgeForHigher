@@ -1,4 +1,5 @@
 import { React, useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Box, Button, Grommet, Keyboard, Text, TextInput } from 'grommet';
 import { FormClose } from 'grommet-icons';
@@ -7,6 +8,7 @@ import API from '../utils/API';
 
 export default function TagInput(props) {
     
+    const history = useHistory();
     const [currentTag, setCurrentTag] = useState('');
     const [box, setBox] = useState();
     const boxRef = useCallback(setBox, []);
@@ -52,6 +54,11 @@ export default function TagInput(props) {
             props.onRemoveTag(args.name);
         }
 
+        const handleTagSelect = (event) => {
+            history.push(`/tag/${args.name}`);
+            history.go(0);
+        }
+
         return (
             <Grommet theme={ {
                 button: {
@@ -66,7 +73,14 @@ export default function TagInput(props) {
                     pad={{ horizontal: '16px', vertical: 'xxsmall' }}
                     margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}
                 >
-                    <Text size='12pt' margin={{ right: 'xsmall' }}>{args.name}</Text>
+                    <Box onClick={handleTagSelect}>
+                        <Text
+                            size='12pt'
+                            margin={{ right: 'xsmall' }}
+                        >
+                                {args.name}
+                        </Text>
+                    </Box>
                     <Button onClick={removeTag}>
                         <FormClose size='18px' color='black' />
                     </Button>
@@ -84,13 +98,14 @@ export default function TagInput(props) {
                 ref={boxRef}
                 style={{ 
                     borderRadius: '5px', 
-                    boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)' 
+                    boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)', 
+                    minHeight: 'fit-content'
                 }}
                 flex
                 wrap 
             >
 
-                {props.selectedTags.map( v => <Tag name={v} />)}
+                {props.selectedTags.map( v => <Tag key={v} name={v} />)}
 
                 <Box 
                     flex={props.lineBreak ? false : true} 

@@ -56,8 +56,9 @@ router.post('/', authenticate, async (request, response) => {
     }).then( (result) => {
         if (result) {
             response.json({
-                msg: 'Thread already exists',
-                id: result.dataValues.id
+                thread: result.dataValues,
+                user: user2,
+                isNewRecord: false
             });
         } else { // If thread doesn't exist, create it
             console.log(`Creating thread b/w user ${request.userId} and user ${user2.id}`)
@@ -65,7 +66,7 @@ router.post('/', authenticate, async (request, response) => {
                 user1Id: request.userId,
                 user2Id: user2.id
             }).then( (result) => {
-                response.json({thread: result, user: user2});
+                response.json({ thread: result, user: user2, isNewRecord: true });
             }).catch( (err) => {
                 response.status(500).json(err);
             });

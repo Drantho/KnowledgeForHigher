@@ -1,14 +1,12 @@
-import { React, useState, useEffect, useRef } from 'react';
-import { Text, TextArea, Form, FormField, Button, Box, Heading, Anchor } from 'grommet';
+import { React, useState, useEffect } from 'react';
+import { Form, Button, Box, Heading, Anchor, Text, Stack } from 'grommet';
+
+import io from 'socket.io-client';
 
 import {
     Editor,
     EditorState,
-    ContentState,
-    SelectionState,
-    RichUtils,
-    Modifier,
-    convertToRaw
+    ContentState
 } from 'draft-js';
 
 import MessageBubble from './MessageBubble';
@@ -16,13 +14,47 @@ import MessageBubble from './MessageBubble';
 import messageAPI from '../utils/messageAPI';
 import isSoftNewlineEvent from 'draft-js/lib/isSoftNewlineEvent';
 import { useHistory } from 'react-router';
+import NothingHereDisplay from './NothingHereDisplay';
+
+const ENDPOINT = 'localhost:3001';
+let socket = io(ENDPOINT);
 
 export default function ThreadView(props) {
-
+    
     const history = useHistory();
+    
+    const [ messagesList, setMessagesList ] = useState([]);
+    const [ editorState,  setEditorState ]  = useState(EditorState.createEmpty());
+    const [ typingState,  setTypingState ]  = useState(false);
 
-    const [messagesList, setMessagesList] = useState([]);
-    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+    useEffect( async () => {
+        const messages 
+            = (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data;
+        setMessagesList(messages);
+
+        socket.on('connect', data => {
+            socket.emit('join', props.selectedThread);
+        });
+
+        socket.on('newMessage', async data => {
+            setMessagesList(
+                (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data
+            );
+        });
+
+        let prevTimer;
+        socket.on( `typing-${props.selectedThread}-${props.toUser.id}`, () => {
+            setTypingState(true);
+            clearTimeout(prevTimer);
+            prevTimer = setTimeout(() => setTypingState(false), 3000);
+        });
+
+        return function cleanup() {
+            socket.emit('disconnect');
+            socket.off();
+        }
+
+    }, [props.selectedThread, ENDPOINT]);
 
     const handleSend = async (event) => {
         event.preventDefault();
@@ -31,34 +63,15 @@ export default function ThreadView(props) {
         }
 
         const data = {
+            senderId: props.userState.id,
             recipientId: props.toUser.id,
             ThreadId: props.selectedThread,
             body: editorState.getCurrentContent().getPlainText()
         }
-
-        setMessagesList([...messagesList, {...data, senderId: props.userState.id}]);
-        scrollToBottom();
-        await messageAPI.sendMessage(data, props.userState.token);
+        socket.emit('message', data);
 
         const clearedEditorState = EditorState.push(editorState, ContentState.createFromText(''));
         setEditorState( clearedEditorState );
-    }
-
-    const messagesEndRef = useRef(null)
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({behavior: 'smooth'});
-    }
-
-    useEffect( async () => {
-        const messages 
-            = (await messageAPI.getThreadMessages(props.selectedThread, props.userState.token)).data;
-        setMessagesList(messages.reverse());
-        scrollToBottom();
-    }, [props.selectedThread]);
-
-    const onChange = (newEditorState) => {
-        setEditorState(newEditorState);
     }
 
     const handleReturn = (event) => {
@@ -68,58 +81,93 @@ export default function ThreadView(props) {
         handleSend(event);
     }
 
+    const handleKeyDown = (event) => {
+        socket.emit('typing', { thread: props.selectedThread, sender: props.userState.id });
+    }
+
     return (
-        <Box justify='between' background={{color: '#939393', opacity:'weak'}} width='100%'>
-                {props.selectedThread !== -1 ? 
+        <Box 
+            style={{ height: 'calc(100vh - 79px)' }} 
+            justify='between' 
+            background={{color: '#939393', opacity:'weak'}} 
+            width='100%'
+        >
+                { props.selectedThread !== -1 ? 
                 <>
 
                 <Box 
                     elevation='none' 
                     align='end' 
                     background={{ color: 'rgba(137,162,178,0.6)' }}
+                    pad={{ top: 'small', bottom: '18px'}}
                 >
                     <Heading textAlign='end' 
                         level={2} 
-                        margin={{vertical:'small', right: 'small'}}>
+                        margin={{vertical: '0px', right: 'small'}}
+                        pad='small'    
+                    >
                         Conversation with <Anchor 
-                                            onClick={() => history.push(`/profile/${props.toUser.id}`) }
+                                            onClick={ () => history.push(`/profile/${props.toUser.id}`) }
                                           >
                                             {props.toUser.firstName + ' ' + props.toUser.lastName}
                                           </Anchor>
                     </Heading>
                 </Box>
 
-                <Box 
-                    flex='grow' 
+                <Box
+                    style={{ height: 'calc(100vh - 74px)' }}
                     overflow={{vertical: 'scroll'}}
                     pad='medium'
                     gap='xsmall'
+                    direction='column-reverse'
                 >
-                    { messagesList.map( (e) => {
-                        return props.selectedThread && 
-                            <MessageBubble 
-                                sentOrRecieved={e.senderId === props.userState.id ? 
-                                                    'sent' : 'received'}
-                                body={e.body} 
-                                date={e.formattedDate} 
-                                portrait={props.toUser.portrait} />
-                    }) }
-                    <div ref={messagesEndRef} />
+                    { messagesList.length > 0 ? 
+                        messagesList.map( (e) => {
+                            return props.selectedThread && 
+                                <MessageBubble 
+                                    key={e.id}
+                                    sentOrRecieved={e.senderId === props.userState.id ? 
+                                                        'sent' : 'received'}
+                                    body={e.body} 
+                                    date={e.formattedDate}
+                                    showPortrait={e.showPortrait} 
+                                    portrait={props.toUser.portrait} />
+                        })
+                        :
+                        <NothingHereDisplay /> }
                 </Box>
 
                 <Box margin={{vertical: '10px'}}>
-                    <Form value={editorState.getCurrentContent().getPlainText()}
-                        onSubmit={handleSend}>
-                        <Box align='center' direction='row' margin={{'horizontal': 'medium'}}>
-                            <Box fill round='small'
+                    <Form 
+                        value={editorState.getCurrentContent().getPlainText()}
+                        onSubmit={handleSend}
+                    >
+                        <Box 
+                            align='center' 
+                            direction='row' 
+                            margin={{'horizontal': 'medium'}}
+                        >
+                            <Box 
+                                fill 
+                                round='small'
                                 pad='small'
                                 className='message-editor'
                             >
-                                <Editor 
-                                    onChange={onChange} 
-                                    editorState={editorState}
-                                    placeholder='Enter a message...'
-                                    handleReturn={handleReturn} />
+                                <Stack anchor='top-left'>
+                                    <Editor 
+                                        keyBindingFn={handleKeyDown}
+                                        placeholder='Write your message here...'
+                                        onChange={ (newState) => setEditorState(newState) } 
+                                        editorState={editorState}
+                                        handleReturn={handleReturn} />
+                                    { typingState && 
+                                        <Box margin={{ top: '-25px' }}>
+                                            <Text size='12pt'>
+                                                {`${props.toUser.userName} is typing...`}
+                                            </Text>
+                                        </Box> }
+                                    
+                                </Stack>
                             </Box>
 
                             <Box justify='center' align='center'>
@@ -128,7 +176,7 @@ export default function ThreadView(props) {
                                     height='small'
                                     type='submit' 
                                     primary 
-                                    label='Send'/>
+                                    label='Send' />
                             </Box>
                         </Box>
                     </Form>

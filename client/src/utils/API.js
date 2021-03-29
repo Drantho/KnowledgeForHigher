@@ -260,5 +260,8 @@ export default {
         authorization: `Bearer: ${token}`
       }
     });
+  },
+  getActivityFeed: ( userID ) => {
+    return axios.get(`${url}/api/user/feed?user=${userID}`);
   }
 };

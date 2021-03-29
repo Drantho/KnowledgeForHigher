@@ -4,7 +4,6 @@
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
-    box-shadow: inset 1px 1px 2px 1px #ffeca7d7
 }
 
 .hidePlaceholder .public-DraftEditorPlaceholder-root {
@@ -20,6 +19,23 @@ div.DraftEditor-root {
   background-color: #9dbacc;
   font-size: 12pt;
   line-height: 1em;
+}
+
+.post-editor div.DraftEditor-root {
+  z-index: -1;
+}
+
+.answer-display div.DraftEditor-root {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: rgba(0,0,0,0);
+  min-height: 70px;
+  width: 80%;
+  z-index: -1;
+}
+
+.display-only div.DraftEditor-root {
+  z-index: -1;
 }
 
 .inline-editor div.DraftEditor-root {

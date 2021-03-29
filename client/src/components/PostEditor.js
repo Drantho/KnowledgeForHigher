@@ -62,6 +62,9 @@ export default function PostEditor(props) {
         const contentState = newEditorState.getCurrentContent();
         setEditorState(newEditorState);
         props.getDraftValue(convertToRaw(contentState));
+        if ( props.onChange ) {
+            props.onChange();
+        }
     }
 
     const onFocus = (arg) => {
@@ -200,7 +203,12 @@ export default function PostEditor(props) {
 
             </Box> : <Box height='36px' /> }
 
-            <Box fill pad={{vertical: 'small'}}> 
+            <Box 
+                fill
+                className='post-editor' 
+                fill 
+                pad={{ vertical: 'small'}}
+            > 
                 <div className={className}>
                     <Editor ref={setEditorRef}
                         editorState={editorState}

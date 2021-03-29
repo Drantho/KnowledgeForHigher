@@ -20,8 +20,8 @@ export default function ProfileCreateBanner(props) {
 
     return (
         <Box pad='small' gap='small' align='center' {...props.container}>
-            <Box background='gray' height='2px' width='100%'  />
-            <Text size='12pt' color='gray'>
+            <Box background='gray' height= {{ min: '2px' }} width='100%' />
+            <Text size='12pt' margin={{ bottom: '10px' }} color='gray'>
                 {props.user.userName} joined on {dateStr}
             </Text>
         </Box>

@@ -36,6 +36,7 @@ export default function UserSidebar(props) {
 
         API.getTagsByUser(props.user.id).then( (response) => {
             setFollowedTags(response.data.map(e => e.name));
+            console.log(response.data);
         }).catch( (err) => {
             console.log(err);
         });
@@ -53,7 +54,7 @@ export default function UserSidebar(props) {
             setPortraitSrc("");
             setPortraitData(null);
         }
-    }, [portraitData]);
+    }, [portraitData, props]);
 
     const followTag = (tag) => {
         API.linkTagToUser(tag, props.userState.token).then( (response) => {
@@ -62,7 +63,6 @@ export default function UserSidebar(props) {
         }).catch( (err) => {
             console.log(err);
         });
-
     }
 
     const unfollowTag = (tag) => {
@@ -91,15 +91,14 @@ export default function UserSidebar(props) {
         event.preventDefault();
         const newThread 
             = await messageAPI.createThread(props.user.userName, props.userState.token);
-        console.log(newThread)
-        history.push(`/messages/${newThread.data.id}`)
+        history.push(`/messages/${newThread.data.thread.id}`)
     }
 
     return (
         <Box 
             overflow={{ vertical: 'scroll' }}
             elevation='xsmall' 
-            height='100%' 
+            height='100%'
             border={{ side: 'right', size: '2px', color: '#FCE181' }}
         >
             
@@ -114,25 +113,26 @@ export default function UserSidebar(props) {
                     src={`https://res.cloudinary.com/drantho/image/upload/c_fill,w_125/` + 
                          `${props.user.portrait}.png`} 
                 />
-                <Box 
-                    onClick={() => document.getElementById('uploadPic').click()} 
-                    pad='xsmall' 
-                    background='#222e42'
-                    border={{ color: '#9dbacc', size: '3px' }}
-                    round='50%'
-                    elevation='large'
-                    margin={{ right: 'large', bottom: '10px' }}
-                >
-                    <input 
-                        type='file' 
-                        id='uploadPic' 
-                        onChange={handleChangeProfilePic} 
-                        style={{ display: 'none' }} />
-                    <Add size='32px' color='#fce181' />
-                </Box>
+                { props.userState.id === props.user.id && 
+                    <Box 
+                        onClick={() => document.getElementById('uploadPic').click()} 
+                        pad='xsmall' 
+                        background='#222e42'
+                        border={{ color: '#9dbacc', size: '3px' }}
+                        round='50%'
+                        elevation='large'
+                        margin={{ right: 'large', bottom: '10px' }}
+                    >
+                        <input 
+                            type='file' 
+                            id='uploadPic' 
+                            onChange={handleChangeProfilePic} 
+                            style={{ display: 'none' }} />
+                        <Add size='32px' color='#fce181' />
+                    </Box> }
             </Stack>
 
-            <Box pad='small'>
+            <Box style={{ minHeight: 'fit-content' }} pad='small'>
                 <Text size='32pt'>{props.user.userName}</Text>
                 <Text>{props.user.firstName} {props.user.lastName}</Text>
                 <Text>{props.user.email}</Text>
@@ -143,11 +143,10 @@ export default function UserSidebar(props) {
                     <Button 
                         onClick={handleMessage} 
                         label={`Message ${props.user.userName}`} />
-                </Box>
-            }
+                </Box> }
             
 
-            <Box pad='small'>
+            <Box style={{ minHeight: 'fit-content' }} pad='small'>
                 <Text margin={{ bottom: '1px' }}>About {props.user.userName}</Text>
                 <Box 
                     background='#222E42' 
@@ -161,9 +160,7 @@ export default function UserSidebar(props) {
                         readOnly={true}
                         blockStyleFn={blockStyleFn} />
                     :
-                    <NothingHereDisplay />
-                }
-                
+                    <NothingHereDisplay /> }  
             </Box>
 
             <Box pad='small'>
@@ -183,12 +180,10 @@ export default function UserSidebar(props) {
                         onRemoveTag={unfollowTag} />
                     :
                     ( followedTags.length > 0 ? 
-                     <TagDisplay userState={props.userState} tags={followedTags} />
-                     :
-                     <NothingHereDisplay />)
-                }
+                        <TagDisplay userState={props.userState} tags={followedTags} />
+                        :
+                        <NothingHereDisplay /> )}
             </Box>
-
         </Box>
     )
 }

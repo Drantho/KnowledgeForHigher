@@ -54,8 +54,8 @@ export default function ProfilePage(props) {
         setQuestions(questionGet.data.map(e => ({ ...e, type: 'question' })));
 
         const servicesGet = await API.getServicesByUser(id);
-        setServices(servicesGet.data.map( e => ({...e, type: 'service'})))
-    }, [props]);
+        setServices(servicesGet.data.map( e => ({ ...e, type: 'service' })))
+    }, [props, id]);
 
     const tabTheme = {
         global: {
@@ -202,7 +202,11 @@ export default function ProfilePage(props) {
                                 
                                 { questions.length > 0 ? 
                                     questions.map( 
-                                        e => <EntityCard entity={e} userState={props.userState} />
+                                        e => <EntityCard 
+                                                key={e.id}
+                                                width='85%' 
+                                                entity={e} 
+                                                userState={props.userState} />
                                     )
                                     : 
                                     <NothingHereDisplay
@@ -256,6 +260,8 @@ export default function ProfilePage(props) {
                                 { services.length > 0 ?
                                     services.map(
                                         e => <EntityCard 
+                                                key={e.id}
+                                                width='85%' 
                                                 entity={e} 
                                                 userState={props.userState} />
                                     ) 
@@ -279,13 +285,22 @@ export default function ProfilePage(props) {
                     </Tab>
 
                     { props.userState.id === user.id && 
-                    
                         <Tab title='Edit'>
-                            <Box pad='large'>
+                            <Box // Container for Grommet
+                                style={{
+                                    overflowY: 'scroll',
+                                    height: 'calc(100vh - 79px - 64px)'
+                                }}
+                            >
 
-                                <UserEditForm 
-                                    userState={props.userState} 
-                                    setUserState={props.setUserState}/>
+                                <Grommet theme={tabPaneTheme}>
+                                        <Box pad='large'>
+
+                                            <UserEditForm 
+                                                userState={props.userState} 
+                                                setUserState={props.setUserState}/>
+                                        </Box>
+                                </Grommet>
                             </Box>
                         </Tab>
                     }
