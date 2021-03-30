@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
-import { Box, Grid, Text } from 'grommet';
+import { Box, Grid, Text, Grommet, CheckBox, grommet } from 'grommet';
+import { StatusGoodSmall } from 'grommet-icons';
 
 import API from "../utils/API";
 
@@ -14,9 +15,11 @@ export default function Home(props) {
     const [ followedTags, setFollowedTags ] = useState([]);
     const [ popularTags,  setPopularTags ]  = useState([]);
     const [ filterByTags, setFilterByTags ] = useState({});
-    const [ feedQuestions, setFeedQuestions ] = useState([]);
+    const [ feedEntities, setFeedEntities ] = useState([]);
     const [ filterByPopularTags, setFilterByPopularTags ] = useState(false);
     const [ relatedUsers, setRelatedUsers ] = useState([]);
+    const [ showQuestions, setShowQuestions ] = useState(true);
+    const [ showServices, setShowServices ] = useState(true);
 
     useEffect( () => {
         if (props.userState.isSignedIn) {
@@ -60,8 +63,14 @@ export default function Home(props) {
             }
         }
         API.getTagQuestionFeed(tags).then( (response) => {
-            console.log(response);
-            setFeedQuestions(response.data.map( e => ({ ...e, type: 'question' })));
+            API.getTagServiceFeed(tags).then( (serviceResponse) => {
+                setFeedEntities([
+                    ...(response.data.map( e => ({ ...e, type: 'question' }))),
+                    ...(serviceResponse.data.map(e => ({ ...e, type: 'service' })))
+                ]);
+            }).catch( (err) => {
+                console.log(err);
+            });
         }).catch( (err) => {
             console.log(err);
         });
@@ -78,6 +87,35 @@ export default function Home(props) {
         });
         setFilterByPopularTags(!filterByPopularTags);
         setFilterByTags(obj);
+    }
+
+    const checkBoxTheme = {
+        global: {
+            colors: {
+                focus: {
+                    border: undefined
+                }
+            }
+        },
+        checkBox: {
+            color: '#222e42',
+            hover: {
+                border: {
+                    color: undefined,
+                    radius: '50%'
+                }
+            },
+            border: {
+                radius: '50%'
+            },
+            size: '22px',
+            icon: {
+                extend: `padding: 2px; fill: #222e42;`
+            },
+            icons: {
+                checked: StatusGoodSmall
+            }
+        }
     }
 
     return (
@@ -133,12 +171,20 @@ export default function Home(props) {
                     >
                         <Text color='#fce181'>Popular Tags</Text>
                     </Box>
-                    <TagDisplay 
-                        filterable
-                        filterToggle={toggleTagFilter}
-                        userState={props.userState}
-                        tags={popularTags}
-                        filteredBy={filterByTags} />
+                    <Box
+                        style={{
+                            borderRadius: '5px',
+                            boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)',
+                            minHeight: 'fit-content'
+                        }}
+                    >
+                        <TagDisplay 
+                            filterable
+                            filterToggle={toggleTagFilter}
+                            userState={props.userState}
+                            tags={popularTags}
+                            filteredBy={filterByTags} />
+                    </Box>
                 </Box>
             </Box>
 
@@ -149,39 +195,73 @@ export default function Home(props) {
                 gap='small'
                 margin={{ top: '79px' }}
             >
-                {feedQuestions.map( e => <EntityCard showUser
+                <Grommet theme={checkBoxTheme}>
+                <Box gap='small' direction='row'>
+                    <Text margin={{ right: '10px'}}>Show:</Text>
+                    <CheckBox 
+                        checked={showQuestions} 
+                        label='Questions' 
+                        onChange={() => setShowQuestions(!showQuestions)} 
+                        />
+                    <CheckBox 
+                        checked={showServices} 
+                        label='Services'
+                        onChange={() => setShowServices(!showServices)} 
+                        />
+                </Box>
+                </Grommet>
+
+                { feedEntities.map( e => {
+                    if (e.type === 'service' && !showServices) {
+                        return;
+                    }
+                    if (e.type === 'question' && !showQuestions) {
+                        return;
+                    }
+                    return <EntityCard showUser
                                             key={e.id} 
                                             width='85%'
                                             entity={e}
                                             userState={props.userState}
-                                        />) }
+                                        />
+                    }) }
             </Box>
-
+                
             <Box
                 gridArea='right'
                 width='400px'
                 pad='small'
                 gap='small'
                 margin={{ top: '79px' }}
-            >
+                >
                 <Box
                     align='center'
                     pad='small'
                     round='small'
                     background='#222e42'
-                >
+                    >
                     <Text color='#fce181'>Related Users</Text>
                 </Box>
-                { relatedUsers.map( e => {
-                    return  <Box justify='around' direction='row'>
-                                <UserWidget userState={e} width='40%' />
-                                <Box justify='center'>
-                                    <Text size='12pt'>Also follows: {e.Tags.map( t => t.name )}</Text>
+                <Box
+                    pad='small'
+                    gap='small'
+                    style={{
+                        borderRadius: '5px',
+                        boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)',
+                        minHeight: 'fit-content'
+                    }}
+                    >
+                    { relatedUsers.map( e => {
+                        return  <Box justify='around' direction='row'>
+                                    <UserWidget userState={e} width='40%' />
+                                    <Box justify='center'>
+                                        <Text size='12pt'>
+                                            Also follows: {e.Tags.map( t => t.name )}
+                                        </Text>
+                                    </Box>
                                 </Box>
-                            </Box>
-                })
-                    
-                }
+                    }) }
+                </Box>
             </Box>
         </Grid>
         

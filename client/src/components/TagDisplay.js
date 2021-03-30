@@ -7,11 +7,6 @@ import Tag from './Tag';
 export default function TagDisplay(props) {
     return (
         <Box 
-            style={{
-                borderRadius: '5px',
-                boxShadow: 'inset 0 0 3px rgba(0,0,0,0.8)',
-                minHeight: 'fit-content'
-            }}
             gap='xsmall' 
             direction='row' 
             pad={{ horizontal: 'xxsmall', vertical: 'small' }}

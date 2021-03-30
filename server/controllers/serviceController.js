@@ -6,6 +6,7 @@ const profanityCheck = require('../utils/profanityFilter');
 
 
 const { Op } = require('sequelize');
+const { request } = require('express');
 
 router.get('/', (request, response) => {
     // find an individual service
@@ -70,6 +71,36 @@ router.get('/', (request, response) => {
                 response.status(500).json(err);
             });
     }
+});
+
+router.get('/feed', (req, res) => {
+    db.Service.findAll({
+        include: {
+            model: db.Tag,
+            where: { name: { [Op.in]: req.query.tags.split(',') } }
+        }
+    }).then( (services) => {
+        db.Service.findAll({
+            where: { 
+                id: { [Op.in]: services.map( e => e.id )} 
+            },
+            include: [{
+                model: db.Tag,
+                through: { attributes: [] }
+            }, {
+                model: db.User,
+                attributes: ['id', 'userName', 'portrait']
+            }, {
+                model: db.Rating
+            }]
+        }).then( (result) => {
+            res.json(result);
+        }).catch( (err) => {
+            res.status(500).json(err);
+        });
+    }).catch( (err) => {
+        res.status(500).json(err);
+    });
 });
 
 router.post('/', authenticate, (request, response) => {

@@ -80,14 +80,8 @@ export default {
     console.log((`${url}/api/question/feed`));
     return axios.get(`${url}/api/question/feed?tags=${tags}`);
   },
-  getTagServiceFeed: (data, token) => {
-    console.log((`${url}/api/service/uniqueServicesByTags`));
-    console.log(data);
-    return axios.post(`${url}/api/service/uniqueServicesByTags`, data, {
-      headers:{
-          authorization: `Bearer: ${token}`
-      }
-    })  
+  getTagServiceFeed: (tags) => {
+    return axios.get(`${url}/api/service/feed?tags=${tags}`);
   },
   linkTagToUser: (tag, token) => {
     console.log((`${url}/api/tag/user`));

@@ -118,17 +118,17 @@ router.get('/feed', (req, res) => {
             include: [{
                 model: db.Tag, 
                 through: { attributes: [] }
-            },
-            {
+            }, {
                 model: db.User,
                 attributes: ["id", "userName", "portrait"]
-            },
-            {
+            }, {
                 model: db.Rating,
             }]
         }).then( (result) => {
             res.json(result);
-        } )
+        }).catch( (err) => {
+            res.status(500).json(err);
+        });
     }).catch( (err) => {
         console.log(err);
     })
