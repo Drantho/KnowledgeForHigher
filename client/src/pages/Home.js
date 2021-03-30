@@ -48,6 +48,15 @@ export default function Home(props) {
         } else {
             API.getPopularTags().then((popularResponse) => {
                 setPopularTags(popularResponse.data.map(e => e.name));
+                const obj = {};
+                popularResponse.data.forEach(e => obj[e.name] = true);
+                setFilterByTags(obj);
+                API.getRelatedUsers(popularResponse.data.map(e => e.name), '')
+                    .then( (relatedUsersResult) => {
+                        setRelatedUsers(relatedUsersResult.data);
+                    }).catch( (err) => {
+                        console.log(err);
+                    })
             }).catch((err) => {
                 console.log(err);
             })
@@ -141,25 +150,27 @@ export default function Home(props) {
                 gridArea='left'
                 margin={{ top: '79px' }} 
             >
-                <Box gap='small'>
-                    <Box 
-                        align='center' 
-                        pad='small' 
-                        round='small' 
-                        background='#222e42'
-                    >
-                        <Text color='#fce181'>Followed Tags</Text>
-                    </Box>
-                    <TagInput 
-                        lineBreak
-                        filterable
-                        filterToggle={toggleTagFilter}
-                        filteredBy={filterByTags}
-                        selectedTags={followedTags}
-                        setSelectedTags={setFollowedTags}
-                        userState={props.userState}
-                        placeholder='Follow a new tag...' />
-                </Box>
+                { props.userState.isSignedIn && 
+                    <Box gap='small'>
+                            (
+                            <Box 
+                                align='center' 
+                                pad='small' 
+                                round='small' 
+                                background='#222e42'
+                            >
+                                <Text color='#fce181'>Followed Tags</Text>
+                            </Box>
+                            <TagInput 
+                                lineBreak
+                                filterable
+                                filterToggle={toggleTagFilter}
+                                filteredBy={filterByTags}
+                                selectedTags={followedTags}
+                                setSelectedTags={setFollowedTags}
+                                userState={props.userState}
+                                placeholder='Follow a new tag...' />
+                    </Box> }
 
                 <Box gap='small'>
                     <Box 
