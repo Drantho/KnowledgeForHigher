@@ -144,8 +144,10 @@ function App() {
       <Switch>
 
         <Route exact path="/">
-          {userState.isSignedIn ?
-            <Redirect to='/home' /> : <Splash setUserState={setUserState} />}
+          <Home userState={ userState.isSignedIn ? userState : {} } />
+        </Route>
+        <Route exact path="/home">
+          <Home userState={ userState.isSignedIn ? userState : {} } />
         </Route>
 
         <Route exact path="/splash">
@@ -171,9 +173,6 @@ function App() {
         <Route exact path="/users/:id">
           <User />
         </Route>
-        <ProtectedRoute exact path="/home" isSignedIn={userState.isSignedIn}>
-          <Home userState={userState}/>
-        </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
           <Ask pad={{ horizontal: '10%' }} showBackButton showNav userState={userState}/>
         </ProtectedRoute>
