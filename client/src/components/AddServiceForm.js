@@ -123,6 +123,7 @@ export default function AddServiceForm(props) {
 
                 <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
                     <TagInput placeholder='Add tags...'
+                        userState={props.userState}
                         selectedTags={tagNames} setSelectedTags={setTagNames}
                         onAddTag={onAddTag} />
                 </FormField>

@@ -175,6 +175,7 @@ export default function UserSidebar(props) {
                     <TagInput placeholder='Follow a new tag'
                         selectedTags={followedTags} 
                         setSelectedTags={setFollowedTags}
+                        userState={props.userState}
                         lineBreak={true}
                         onAddTag={followTag}
                         onRemoveTag={unfollowTag} />

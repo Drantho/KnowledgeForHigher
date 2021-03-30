@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Box, Card, Button, Grommet, Tip, Text } from 'grommet';
-import { Add, Subtract } from 'grommet-icons';
+import { Add, Subtract, FormView, Hide } from 'grommet-icons';
 
 import API from '../utils/API';
 
@@ -14,14 +14,20 @@ export default function Tag(props) {
 
     const handleFollowTag = (event) => {
         if (following) {
-            API.unLinkTagFromUser(props.tag.name, props.userState.token).then( (response) => {
+            API.unLinkTagFromUser(props.tag.name || props.tag, props.userState.token).then( (response) => {
                 setFollowing(false);
+                if (props.onUnfollow) { 
+                    props.onUnfollow(); 
+                }
             }).catch( (err) => {
                 console.log(err);
             });
         } else {
-            API.linkTagToUser(props.tag.name, props.userState.token).then( (response) => {
+            API.linkTagToUser(props.tag.name || props.tag, props.userState.token).then( (response) => {
                 setFollowing(true);
+                if (props.onFollow) {
+                    props.onFollow();
+                }
             }).catch( (err) => {
                 console.log(err);
             });
@@ -52,13 +58,20 @@ export default function Tag(props) {
         history.go(0);
     }
 
-    const followTagTheme = {
+    const handleFilterToggle = (event) => {
+        props.filterToggle(props.tag.name || props.tag);
+    }
+
+    const tipTheme = {
         global: {
             font: {
                 size: '12pt'
             },
             colors: {
                 focus: undefined
+            },
+            drop: {
+                extend: ` min-width: min-content `
             }
         },
         tip: {
@@ -68,7 +81,8 @@ export default function Tag(props) {
         },
         button: {
             extend: `
-                padding: 0
+                padding: 5px 0 0 0;
+                justify: center
             `
         }
     }
@@ -81,23 +95,25 @@ export default function Tag(props) {
             background='#FCE181'
             direction='row'
             round='medium'
-            pad={{ horizontal: '16px', vertical: 'xxsmall' }}
+            pad={{ left: '16px', right: '10px' }}
             margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}
         >
 
-            <Box justify='center' direction='row'>
+            <Box justify='center' align='center' direction='row'>
 
                 <Box 
                     onClick={ handleTagSelect } 
-                    margin={{ right: '10px' }} 
+                    margin={{ right: '7px' }} 
+                    width={{ min: 'min-content' }}
                 >
                     <Text size='12pt'>{props.tag.name || props.tag}</Text>
                 </Box>
 
                 { props.userState.isSignedIn && 
-                    <Grommet theme={followTagTheme} >
+                    <Grommet theme={tipTheme} >
                         <Tip content={ following ? 'Unfollow' : 'Follow'} >
                             <Button 
+                                margin={{ right: '3px' }}
                                 onClick={handleFollowTag} 
                                 icon={ following ? 
                                         <Subtract size='16px' /> 
@@ -106,6 +122,17 @@ export default function Tag(props) {
                             />
                         </Tip>
                     </Grommet>
+                }
+
+                { props.filterable && 
+                    <Grommet theme={tipTheme}>
+                        <Tip content={ props.filteredBy ? 'Filter' : 'Unfilter' }>
+                            <Button
+                                onClick={handleFilterToggle} 
+                                icon={ props.filteredBy ? 
+                                        <FormView size='22px' /> : <Hide size='22px' /> } />
+                        </Tip>
+                    </Grommet>  
                 }
                 
             </Box>

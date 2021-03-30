@@ -149,7 +149,9 @@ export default function Ask(props) {
                             <Text color='red'>Description is required</Text> }
 
                         <FormField label='Tags' name='tags' htmlFor='new-question-tags'>
-                            <TagInput placeholder='Add tags...'
+                            <TagInput 
+                                userState={props.userState}
+                                placeholder='Add tags...'
                                 selectedTags={tagNames} 
                                 setSelectedTags={setTagNames} 
                                 onAddTag={onAddTag} />
