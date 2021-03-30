@@ -152,24 +152,23 @@ export default function Home(props) {
             >
                 { props.userState.isSignedIn && 
                     <Box gap='small'>
-                            (
-                            <Box 
-                                align='center' 
-                                pad='small' 
-                                round='small' 
-                                background='#222e42'
-                            >
-                                <Text color='#fce181'>Followed Tags</Text>
-                            </Box>
-                            <TagInput 
-                                lineBreak
-                                filterable
-                                filterToggle={toggleTagFilter}
-                                filteredBy={filterByTags}
-                                selectedTags={followedTags}
-                                setSelectedTags={setFollowedTags}
-                                userState={props.userState}
-                                placeholder='Follow a new tag...' />
+                        <Box 
+                            align='center' 
+                            pad='small' 
+                            round='small' 
+                            background='#222e42'
+                        >
+                            <Text color='#fce181'>Followed Tags</Text>
+                        </Box>
+                        <TagInput 
+                            lineBreak
+                            filterable
+                            filterToggle={toggleTagFilter}
+                            filteredBy={filterByTags}
+                            selectedTags={followedTags}
+                            setSelectedTags={setFollowedTags}
+                            userState={props.userState}
+                            placeholder='Follow a new tag...' />
                     </Box> }
 
                 <Box gap='small'>
