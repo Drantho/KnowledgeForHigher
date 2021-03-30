@@ -219,6 +219,25 @@ router.get("/authenticate", (req, res) => {
 
 });
 
+router.get('/related', (req, res) => {
+    const includes = [{
+        model: db.Tag,
+        where: { name: { [Op.in]: req.query.tags.split(',') } },
+        through: { attributes: [] }
+    }];
+    
+    db.User.findAll({
+        where: {
+            username: { [Op.ne]: req.query.username }
+        },
+        include: includes 
+    }).then( (findResult) => {
+        res.json(findResult);
+    }).catch( (err) => {
+        res.status(500).json(err);
+    });
+});
+
 router.get('/feed', async (req, res) => {
     const userInclude = {
         model: db.User,

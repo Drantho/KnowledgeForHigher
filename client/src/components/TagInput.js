@@ -5,6 +5,7 @@ import { Box, Button, Grommet, Keyboard, Text, TextInput } from 'grommet';
 import { FormClose } from 'grommet-icons';
 
 import API from '../utils/API';
+import Tag from './Tag';
 
 export default function TagInput(props) {
     
@@ -39,54 +40,17 @@ export default function TagInput(props) {
         }
     };
 
+    const handleRemove = (event) => {
+        // props.setSelectedTags(
+    //             props.selectedTags.filter( e => e !== args.name )
+    //         )
+    //         props.onRemoveTag(args.name);
+    }
+
     const handleSuggestionSelect = (event) => {
         props.onAddTag(event.suggestion);
         setCurrentTag('');
         setSuggestions([]);
-    }
-
-    const Tag = (args) => {
-        
-        const removeTag = (event) => {
-            props.setSelectedTags(
-                props.selectedTags.filter( e => e !== args.name )
-            )
-            props.onRemoveTag(args.name);
-        }
-
-        const handleTagSelect = (event) => {
-            history.push(`/tag/${args.name}`);
-            history.go(0);
-        }
-
-        return (
-            <Grommet theme={ {
-                button: {
-                    extend: `width: min-content`
-                }
-            } }>
-                <Box 
-                    align='center' 
-                    background='#FCE181'
-                    direction='row'
-                    round='medium'
-                    pad={{ horizontal: '16px', vertical: 'xxsmall' }}
-                    margin={{ horizontal: 'xxsmall', vertical: 'xsmall' }}
-                >
-                    <Box onClick={handleTagSelect}>
-                        <Text
-                            size='12pt'
-                            margin={{ right: 'xsmall' }}
-                        >
-                                {args.name}
-                        </Text>
-                    </Box>
-                    <Button onClick={removeTag}>
-                        <FormClose size='18px' color='black' />
-                    </Button>
-                </Box>
-            </Grommet>
-        )
     }
 
     return (
@@ -105,7 +69,14 @@ export default function TagInput(props) {
                 wrap 
             >
 
-                {props.selectedTags.map( v => <Tag key={v} name={v} />)}
+                { props.selectedTags.map(e => <Tag
+                                                key={e.name || e}
+                                                userState={props.userState}
+                                                filterable={props.filterable}
+                                                {...props}
+                                                filteredBy={props.filterable ? props.filteredBy[e.name || e] : undefined}
+                                                tag={e}
+                                                width={{ min: 'min-content' }} /> )}
 
                 <Box 
                     flex={props.lineBreak ? false : true} 

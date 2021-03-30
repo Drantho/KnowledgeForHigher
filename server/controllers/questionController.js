@@ -57,6 +57,12 @@ router.get('/', (request, response) => {
                 attributes: [],
                 through: { attributes: [] }
             });
+        } else if (request.query.tags) {
+            includes.push({
+                model: db.Tag,
+                through: { attributes: [] }
+            });
+            
         }
 
         // If a user ID is provided, include the Users table and specify which user
@@ -69,16 +75,19 @@ router.get('/', (request, response) => {
         }
 
         const queryParams = { include: includes };
+        queryParams['where'] = {
+            '$Tags.name$': { [Op.in]: request.query.tags.split(',') }
+        }
 
         // Add a search condition to the query if one is provided
-        if (request.query.search) {
-            queryParams["where"] = {
-                [Op.or]: [
-                    { title: { [Op.like]: '%' + request.query.search + '%' } },
-                    { text: { [Op.like]: '%' + request.query.search + '%' } }
-                ]
-            };
-        }
+        // if (request.query.search) {
+        //     queryParams["where"] = {
+        //         [Op.or]: [
+        //             { title: { [Op.like]: '%' + request.query.search + '%' } },
+        //             { text: { [Op.like]: '%' + request.query.search + '%' } }
+        //         ]
+        //     };
+        // }
 
         db.Question.findAll(queryParams)
             .then((result) => {
@@ -90,9 +99,44 @@ router.get('/', (request, response) => {
 
 });
 
+router.get('/feed', (req, res) => {
+    const tagNames = req.query.tags.split(',');
+    console.log(tagNames);
+
+    db.Question.findAll({
+        attributes: ['id'],
+        include: [{
+            model: db.Tag,
+            where: { name: { [ Op.in ]: tagNames } }
+        }]
+    }).then( questions => {
+        
+        db.Question.findAll({
+            where: {
+                id: { [Op.in]: questions.map( e => e.id ) }
+            },
+            include: [{
+                model: db.Tag, 
+                through: { attributes: [] }
+            },
+            {
+                model: db.User,
+                attributes: ["id", "userName", "portrait"]
+            },
+            {
+                model: db.Rating,
+            }]
+        }).then( (result) => {
+            res.json(result);
+        } )
+    }).catch( (err) => {
+        console.log(err);
+    })
+});
+
 // Get a list of unique questions when passed an array of tag names
 // Also conditionally show/hide tags based on "show" property
-router.post("/uniqueQuestionsByTags", (request, response) => {
+router.get("/uniqueQuestionsByTags", (request, response) => {
 
     db.Question.findAll({
         attributes: ["id"],
@@ -100,12 +144,13 @@ router.post("/uniqueQuestionsByTags", (request, response) => {
             {
                 model: db.Tag,
                 where: {
-                    [Op.or]: request.body.tags.map(tag => tag.show ? {name: tag.name} : null)
+                    [Op.or]: request.query.tags.split(',')
                 },
                 through: { attributes: [] }
             }
         ]
     }).then(data => {
+        console.log(data);
         questionsArr = [];
         data.forEach(question => questionsArr.push({ id: question.id }));
 
@@ -223,16 +268,5 @@ router.put('/deactivate/:id', authenticate, (request, response) => {
         response.status(500).json(err);
     });
 });
-
-// Delete a question (will delete any attached comments, answers, ratings)
-// router.delete('/:id', (request, response) => {
-//     db.Question.destroy({
-//         where: { id: request.params.id }
-//     }).then((result) => {
-//         response.json(result);
-//     }).catch((err) => {
-//         response.status(500).json(err);
-//     });
-// });
 
 module.exports = router;

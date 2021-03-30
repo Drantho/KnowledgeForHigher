@@ -172,7 +172,7 @@ function App() {
           <User />
         </Route>
         <ProtectedRoute exact path="/home" isSignedIn={userState.isSignedIn}>
-          <UserHome userState={userState}/>
+          <Home userState={userState}/>
         </ProtectedRoute>
         <ProtectedRoute exact path="/ask" isSignedIn={userState.isSignedIn}>
           <Ask pad={{ horizontal: '10%' }} showBackButton showNav userState={userState}/>

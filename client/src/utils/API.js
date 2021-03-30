@@ -20,6 +20,9 @@ export default {
     console.log(`${url}/api/question?search=${search}`);
     return axios.get(`${url}/api/question?search=${search}`);
   },
+  getQuestionsByTags: tags => {
+    return axios.get(`${url}/api/question?tags=${tags}`);
+  },
   getAllQuestions: () => {
     console.log(`${url}/api/question`);
     return axios.get(`${url}/api/question`);
@@ -73,14 +76,9 @@ export default {
     console.log(`${url}/api/tag?user=${id}`);
     return axios.get(`${url}/api/tag?user=${id}`);
   },
-  getTagQuestionFeed: (data, token) => {
-    console.log((`${url}/api/question/uniqueQuestionsByTags`));
-    console.log(data);
-    return axios.post(`${url}/api/question/uniqueQuestionsByTags`, data, {
-      headers:{
-          authorization: `Bearer: ${token}`
-      }
-    })  
+  getTagQuestionFeed: (tags) => {
+    console.log((`${url}/api/question/feed`));
+    return axios.get(`${url}/api/question/feed?tags=${tags}`);
   },
   getTagServiceFeed: (data, token) => {
     console.log((`${url}/api/service/uniqueServicesByTags`));
@@ -263,5 +261,8 @@ export default {
   },
   getActivityFeed: ( userID ) => {
     return axios.get(`${url}/api/user/feed?user=${userID}`);
+  },
+  getRelatedUsers: (tags, username) => {
+    return axios.get(`${url}/api/user/related?username=${username}&tags=${tags}`)
   }
 };
